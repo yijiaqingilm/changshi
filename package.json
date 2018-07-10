@@ -22,6 +22,7 @@
     "animate.css": "^3.5.2",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-polyfill": "^6.23.0",
+    "dplayer": "^1.23.0",
     "framework7": "^1.5.4",
     "framework7-vue": "^0.9.4",
     "js-md5": "^0.6.1",
