@@ -4,6 +4,7 @@ import * as profile from './modules/profile'
 import * as auth from './modules/auth'
 import * as article from './modules/article'
 import * as income from './modules/income'
+import * as answer from './modules/answer.module'
 import { globalConst as native } from 'lib/const'
 
 Vue.use(Vuex)
@@ -18,13 +19,8 @@ export default new Vuex.Store({
       token: '',
       expireTime: ''
     },
-    activeTabbarItem: 'home',
   },
-  mutations: {
-    setCredential (state, nowCredential) {
-      state.credential = nowCredential
-    },
-  },
+  mutations: {},
   actions: {},
-  modules: {profile, auth, article, income}
+  modules: {profile, auth, article, income, answer}
 })

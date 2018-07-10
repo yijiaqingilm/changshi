@@ -4,14 +4,7 @@ const FAILURE = 'FAILURE'
 const REQUEST = 'REQUEST'
 const ERROR_UNAUTHORIZED = 'ERROR_UNAUTHORIZED'
 const globalConst = {
-  doLoadProfile: 'doLoadProfile',
-  doLoadConfig: 'doLoadConfig',
-  doIncomeList: 'doIncomeList',
-  doArticleList: 'doArticleList',
-  doArticleDetail: 'doArticleDetail',
-  readThisArticle: 'readThisArticle',
-  doSaveShareUserId: 'doSaveShareUserId',
-  doWechatBind: 'doWechatBind'
+  doAnswer: 'doAnswer'
 }
 let methods = [SUCCESS.toLowerCase(), FAILURE.toLowerCase(), REQUEST.toLowerCase()]
 const mutationNames = {}

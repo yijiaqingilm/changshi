@@ -1,7 +1,5 @@
 <template>
-    <div class="article-list">
-        <slot></slot>
-    </div>
+    
 </template>
 
 <script>

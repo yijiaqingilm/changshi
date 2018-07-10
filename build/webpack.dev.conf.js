@@ -7,7 +7,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 
 var bundleConfig = require('../libConfig/bundle-config')
-var defineConfig = Object.assign({'process.env': config.dev.env}, config.globals)
+var defineConfig = Object.assign({'process.env': config.dev.env}, config.dev.globals)
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
   baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])

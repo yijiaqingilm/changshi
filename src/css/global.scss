@@ -1,6 +1,7 @@
 @import "globalFunc.scss";
 // @import "resetFramework7.scss";
 @import "fonts/iconfont.css";
+@import "~vue-dplayer/dist/vue-dplayer.css";
 
 body, p {
   @include setFontSize($baseFontSize);

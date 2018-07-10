@@ -1,7 +1,5 @@
 <template>
-    <div class="home-list">
-        <slot></slot>
-    </div>
+    
 </template>
 
 <script>
@@ -11,5 +9,5 @@
 </script>
 
 <style lang="scss" scoped type="text/css">
-    @import "homeList.scss";
+
 </style>

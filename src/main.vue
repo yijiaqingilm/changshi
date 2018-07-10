@@ -6,7 +6,7 @@
         <f7-statusbar></f7-statusbar>
         <!-- Main Views -->
         <f7-views>
-            <f7-view id="main-view" navbar-through :toolbar-fixed="true" :dynamic-navbar="true" main :domCache="false">
+            <f7-view id="main-view" navbar-through :toolbar-fixed="true" :dynamic-navbar="true" main :domCache="true">
                 <!-- Navbar -->
                 <f7-navbar title="" :back-link="false" sliding></f7-navbar>
                 <!-- Pages -->

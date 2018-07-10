@@ -49,7 +49,7 @@ let handleJump = function (orderNo) {
   window.location.href = `${payUrl}?id=${orderNo}`
 }
 const saveStore = (store) => {
-  sessionStorage.setItem('maimeng_user_store', JSON.stringify(store))
+  // sessionStorage.setItem('maimeng_user_store', JSON.stringify(store))
 }
 
 export { ActionManager, common, setToken, getToken, handleJump, saveStore }

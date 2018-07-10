@@ -1,5 +1,3 @@
-# Framework7 Vue + Webpack App 
-
 
 ## Build Setup
 
@@ -15,4 +13,4 @@ npm run dev
 
 npm run build
 ```
-#第一次发布正式环境请先 npm run build:dll 
+#第一次发布正式环境请先 npm run build:dll

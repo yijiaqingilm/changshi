@@ -18,12 +18,6 @@ class ApiConfig {
 }
 
 let apiConfig = [
-  new ApiConfig(native.doLoadConfig, '/api/wechat/config'),
-  new ApiConfig(native.doLoadProfile, '/api/user/profile/main'),
-  new ApiConfig(native.doIncomeList, '/api/user/income/list'),
-  new ApiConfig(native.doArticleDetail, '/api/article/detail'),
-  new ApiConfig(native.doArticleList, '/api/article/list'),
-  new ApiConfig(native.readThisArticle, '/api/article/read'),
-  new ApiConfig(native.doWechatBind, '/callback/bind')
+  new ApiConfig(native.doAnswer, '/api/user/profile/main'),
 ]
 export default apiConfig

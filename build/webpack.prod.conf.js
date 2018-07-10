@@ -11,7 +11,7 @@ var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 
 var env = config.build.env
 var bundleConfig = require('../libConfig/bundle-config')
-var defineConfig = Object.assign({'process.env': env}, config.globals)
+var defineConfig = Object.assign({'process.env': env}, config.build.globals)
 var webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({
