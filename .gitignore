@@ -40,5 +40,4 @@ jspm_packages
 node_modules/
 dist/
 npm-debug.log
-/.idea
 /config/index.js
