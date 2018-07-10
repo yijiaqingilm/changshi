@@ -1,0 +1,5 @@
+@import "globalFunc";
+
+.strong {
+  @include setFontSize($middleFontSize)
+}

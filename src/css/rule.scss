@@ -1,0 +1,32 @@
+@import "globalFunc";
+
+.rule {
+  @include setFontSize($baseFontSize)
+}
+
+.header {
+  font-weight: bold;
+  @include setFontSize($middleFontSize);
+  margin: 20px 0 10px 0;
+}
+
+.rule-table {
+  margin: 20px 0;
+  border: 1px solid rgb(204, 204, 204);
+  .thead, .tbody {
+    display: flex;
+    width: 100%;
+    text-align: center;
+    > div {
+      flex: 1;
+    }
+  }
+  .thead {
+    background-color: rgb(204, 204, 204);
+  }
+  .tbody {
+    > div:nth-child(1), :nth-child(2) {
+      border-right: 1px solid rgb(204, 204, 204);
+    }
+  }
+}

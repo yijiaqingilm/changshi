@@ -1,0 +1,49 @@
+@mixin setFontSize($fontSize) {
+  font-size: $fontSize; /*no*/
+}
+
+@mixin onepx {
+  content: ' ';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: auto;
+  top: auto;
+  height: 1px; /*no*/
+  width: 100%;
+  background-color: #eaeaea;
+  display: block;
+  z-index: 15;
+  transform-origin: 50% 100%;
+}
+
+@mixin ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin clamp($line:2) {
+  overflow: hidden;
+  -webkit-line-clamp: $line;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+}
+
+@mixin bg-url($url) {
+  background: url($url) no-repeat;
+}
+
+$theme_color: #007aff;
+$warn_color: #c4201c;
+$gray_color: #727272;
+$miniFontSize: 13px;
+$baseFontSize: 15px; /* 默认字体*/
+$middleFontSize: 16px;
+$maxFontSize: 18px;
+$superMaxFontSize: 24px;
+
+
+
+
+
