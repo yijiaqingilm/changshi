@@ -10,7 +10,7 @@
                     已观看时间：xxx分钟
                 </div>
                 <div>
-                    <d-player ref="player"></d-player>
+                    <d-player class='' ref="player" container=""></d-player>
                 </div>
             </header>
             <section v-if='isShow' class='subject'>
