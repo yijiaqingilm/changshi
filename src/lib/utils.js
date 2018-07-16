@@ -3,44 +3,61 @@ import flowRight from 'lodash/flowRight'
 import Vue from 'vue'
 import { FAILURE, REQUEST, SUCCESS } from 'lib/const'
 import moment from './moment'
+import md5 from 'js-md5'
 // Cache processor
 const Cache = {
   get: (key) => {
-    if (!window.sessionStorage) {return false}
+    if (!window.sessionStorage) {
+      return false
+    }
     return JSON.parse(window.sessionStorage.getItem(key))
   },
   set: (key, data) => {
-    if (!window.sessionStorage) {return false}
+    if (!window.sessionStorage) {
+      return false
+    }
     window.sessionStorage.setItem(key, JSON.stringify(data))
     return true
   },
   has: (key) => Boolean(window.sessionStorage && window.sessionStorage.hasOwnProperty(key)),
   clear: () => {
-    if (!window.sessionStorage) {return false}
+    if (!window.sessionStorage) {
+      return false
+    }
     window.sessionStorage.clear()
   },
   del: (key) => {
-    if (!window.sessionStorage) {return false}
+    if (!window.sessionStorage) {
+      return false
+    }
     window.sessionStorage.removeItem(key)
   }
 }
 const LocalCache = {
   get: (key) => {
-    if (!window.localStorage) {return false}
+    if (!window.localStorage) {
+      return false
+    }
     return JSON.parse(window.localStorage.getItem(key))
   },
   set: (key, data) => {
-    if (!window.localStorage) {return false}
+    if (!window.localStorage) {
+      return false
+    }
     window.localStorage.setItem(key, JSON.stringify(data))
     return true
   },
   has: (key) => Boolean(window.localStorage && window.localStorage.hasOwnProperty(key)),
   clear: () => {
-    if (!window.localStorage) {return false}
+    if (!window.localStorage) {
+      return false
+    }
     window.localStorage.clear()
   },
   del: (key) => {
-    if (!window.localStorage) {return false}
+    if (!window.localStorage) {
+      return false
+    }
     window.localStorage.removeItem(key)
   }
 }
@@ -261,6 +278,30 @@ let margeMutations = (actions) => {
 const dataFormat = (value, format = 'YYYY-MM-DD HH:mm:ss') => {
   return moment(value).format(format)
 }
+
+class Params {
+  constructor (key, value) {
+    this.key = key
+    this.value = value
+    this.initials = this.key.substr(0, 1)
+  }
+
+  formatString () {
+    return this.key + '=' + this.value
+  }
+}
+
+const getSignature = (p) => {
+  let wrap = []
+  for (let key in p) {
+    if (p.hasOwnProperty(key)) {
+      wrap.push(new Params(key, p[key]))
+    }
+  }
+  wrap.sort((a, b) => a.initials > b.initials)
+  wrap = wrap.map((row) => row.formatString())
+  return md5(wrap.join('&'))
+}
 export {
   Cache,
   LocalCache,
@@ -271,5 +312,6 @@ export {
   findRule,
   wx_share,
   margeMutations,
-  dataFormat
+  dataFormat,
+  getSignature
 }

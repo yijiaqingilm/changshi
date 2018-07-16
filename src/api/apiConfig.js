@@ -19,5 +19,18 @@ class ApiConfig {
 
 let apiConfig = [
   new ApiConfig(native.doAnswer, '/api/user/profile/main'),
+  new ApiConfig(native.doWorkSender, '/work/sender'),
+  new ApiConfig(native.doGetWorkBase, '/work-base/index'),
+  new ApiConfig(native.doAddresList, '/address/index'),
+  new ApiConfig(native.doGetAmmeter, '/ammeter/index'),
+  new ApiConfig(native.doGetDynamotor, '/dynamotor/index'),
+  new ApiConfig(native.doDynamotorCreate, '/dynamotor/create'),
+  new ApiConfig(native.doWorkNumber, '/work-number/index'),
+  new ApiConfig(native.doWorkNumberDetail, '/work-number/detail'),
+  new ApiConfig(native.doWorkNumberUpdate, '/work-number/update'),
+  new ApiConfig(native.doLeaveQuestion, '/leave-question/index'),
+  new ApiConfig(native.doLeaveQuestionDetail, '/leave-question/detail'),
+  new ApiConfig(native.doLeaveQuestionUpdate, '/leave-question/update'),
+  new ApiConfig(native.doWorkType, '/work-type/index'),
 ]
 export default apiConfig

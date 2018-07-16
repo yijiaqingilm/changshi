@@ -40,6 +40,7 @@
 <script>
   // import VueDPlayer from 'vue-dplayer'
   import DPlayer from 'dplayer'
+
   export default {
     name: 'videoMain',
     data () {
@@ -51,13 +52,13 @@
 
       }
     },
-    created(){
+    created () {
     },
     methods: {
-      pause(){
+      pause () {
         this.dp.pause()
       },
-      hidePauseBtn(){
+      hidePauseBtn () {
         this.dp.pause()
         this.$$('.dplayer  .dplayer-play-icon').hide()
       },
@@ -65,7 +66,7 @@
         this.$$('.dplayer  .dplayer-play-icon').show()
         this.dp.play()
       },
-      showSubject(){
+      showSubject () {
         this.hidePauseBtn()
       }
     },
@@ -93,11 +94,11 @@
         this.$$('.dplayer .dplayer-full').hide()
         this.dp.on('timeupdate', () => {
           this.currentTime = Math.floor(this.dp.video.currentTime / 60)
-        });
+        })
       })
     },
     watch: {
-      currentTime(nowTime, oldTime){
+      currentTime (nowTime, oldTime) {
         if (nowTime % this.step === 0) {
           this.showSubject()
         }

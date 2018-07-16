@@ -1,10 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as profile from './modules/profile'
-import * as auth from './modules/auth'
-import * as article from './modules/article'
-import * as income from './modules/income'
 import * as answer from './modules/answer.module'
+import * as base from './modules/base.module'
 import { globalConst as native } from 'lib/const'
 
 Vue.use(Vuex)
@@ -22,5 +19,5 @@ export default new Vuex.Store({
   },
   mutations: {},
   actions: {},
-  modules: {profile, auth, article, income, answer}
+  modules: {answer, base}
 })
