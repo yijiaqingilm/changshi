@@ -90,5 +90,6 @@ export {
   client,
   clientValue,
   major,
-  majorValue
+  majorValue,
+  workType
 }

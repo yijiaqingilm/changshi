@@ -24,8 +24,14 @@
         </section>
         <section>
             <div class='s-label'><span class="mark">*</span>作业点</div>
-            <div class='s-input'>
-                <input type="text" readonly v-model="orderPoint">
+            <div class="s-item">
+                <div class='s-input'>
+                    <input type="text" readonly v-model="jobPoint">
+                </div>
+                <div class="city">xxx</div>
+                <div>
+                    <input type="hidden" v-model='jobPoint'>
+                </div>
             </div>
         </section>
     </f7-page>
@@ -45,6 +51,7 @@
         majorPicker: null,
         major: major.xianlu,
         majorValue,
+        jobPoint: null
       }
     },
     created () {
