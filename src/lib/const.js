@@ -78,6 +78,11 @@ const workType = {
   count: 2,
   other: 3
 }
+const workTypeValue = [
+  {key: workType.year, value: '包年'},
+  {key: workType.count, value: '按次'},
+  {key: workType.other, value: '其他'},
+]
 export {
   globalConst,
   modalTitle,
@@ -91,5 +96,6 @@ export {
   clientValue,
   major,
   majorValue,
-  workType
+  workType,
+  workTypeValue
 }

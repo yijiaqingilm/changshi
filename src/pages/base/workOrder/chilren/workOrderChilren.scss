@@ -1,0 +1,21 @@
+@import "../../../../css/globalFunc";
+
+.h-list {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding: 20px 20px;
+}
+
+.h-list-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  &:nth-child(n) {
+    border-right: 1px solid red; /*no*/
+  }
+  &:nth-last-child(1) {
+    border-right: 0;
+  }
+}
