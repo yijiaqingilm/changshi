@@ -83,6 +83,16 @@ const workTypeValue = [
   {key: workType.count, value: '按次'},
   {key: workType.other, value: '其他'},
 ]
+const workOrderTypeStatus = {
+  undone: 0,
+  review: 1,
+  done: 2
+}
+const workOrderTypes = [
+  {key: workOrderTypeStatus.undone, value: '未归档'},
+  {key: workOrderTypeStatus.review, value: '待审核'},
+  {key: workOrderTypeStatus.done, value: '已归档'}
+]
 export {
   globalConst,
   modalTitle,
@@ -97,5 +107,7 @@ export {
   major,
   majorValue,
   workType,
-  workTypeValue
+  workTypeValue,
+  workOrderTypes,
+  workOrderTypeStatus
 }

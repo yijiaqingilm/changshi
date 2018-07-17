@@ -78,22 +78,23 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: vueLoaderConfig
+        options: vueLoaderConfig,
       },
 
       {
         test: /\.scss$/,
-        loader: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
-      },
-      {
-        test: /\.less$/,
-        loader: ['style-loader', 'css-loader', 'less-loader']
+        loader: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
       },
       {
         test: /\.js$/,
         // loader: 'babel-loader',
         loader: 'happypack/loader?id=happy-babel-js',
-        include: [resolve('src'), resolve('test')],
+        include: [
+          resolve('src'),
+          resolve('test'),
+          resolve('node_modules/vue-echarts'),
+          resolve('node_modules/resize-detector')
+        ],
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

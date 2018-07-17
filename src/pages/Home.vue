@@ -2,7 +2,7 @@
     <f7-page class='home'>
         <f7-navbar>
             <f7-nav-left :back-link="false" sliding></f7-nav-left>
-            <f7-nav-center>麦芽同盟会</f7-nav-center>
+            <f7-nav-center>长实智能维护</f7-nav-center>
         </f7-navbar>
         <section>
             <header class='h-header'>

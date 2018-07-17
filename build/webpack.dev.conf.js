@@ -30,10 +30,18 @@ module.exports = merge(baseWebpackConfig, {
     new webpack.DllReferencePlugin({
       manifest: require('../libConfig/vueLibs-mainfest'),
     }),
+    new webpack.DllReferencePlugin({
+      manifest: require('../libConfig/echartLibs-mainfest'),
+    }),
+    new webpack.DllReferencePlugin({
+      manifest: require('../libConfig/dplayerLibs-mainfest'),
+    }),
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       vueLibJsName: bundleConfig.vueLibs.js,
       libJsName: bundleConfig.libs.js,
+      echartJsName: bundleConfig.echartLibs.js,
+      dplayerJsName: bundleConfig.dplayerLibs.js,
       filename: 'index.html',
       template: 'index.html',
       inject: true

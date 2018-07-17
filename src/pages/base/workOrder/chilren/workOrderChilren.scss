@@ -19,3 +19,14 @@
     border-right: 0;
   }
 }
+
+.base-tab {
+  position: relative;
+  &.is-checked {
+    border-bottom: 1px solid red; /*no*/
+  }
+  .base-tab-input {
+    position: absolute;
+    opacity: 0;
+  }
+}

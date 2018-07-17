@@ -13,7 +13,13 @@ module.exports = {
     libs: [
       'babel-polyfill',
       'velocity-animate',
-    ]
+    ],
+    echartLibs: [
+      'echarts/lib/chart/bar',
+      'echarts/lib/component/tooltip',
+      'echarts/lib/chart/pie'
+    ],
+    dplayerLibs: ['dplayer']
   },
   output: {
     path: path.resolve(__dirname, '../static'),

@@ -9,8 +9,16 @@
     props: {
       value: {}
     },
+    componentName: 'BaseTabs',
     data () {
       return {}
+    },
+    watch: {
+      value (nowValue, oldValue) {
+        if (nowValue !== oldValue) {
+          this.$emit('change', nowValue)
+        }
+      }
     }
   }
 </script>

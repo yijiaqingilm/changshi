@@ -5,22 +5,10 @@ import './lib/flexible.js'
 import ApiClient from 'lib/client'
 import clientMiddleware from 'lib/clientMiddleware'
 import { saveStore } from './lib/common'
-// import FastClick from 'fastclick'
 
-// FastClick.attach(document.body)
-
-// import Framework7Vue from 'lib/framework7-vue-v9'
 import Framework7Vue from 'framework7-vue'
 import 'velocity-animate'
 
-// require('src/css/global_loser.scss')
-// Import F7 iOS Theme Styles
-/* import Framework7Theme from 'framework7/dist/css/framework7.ios.min.css'
-import Framework7ThemeColors from 'framework7/dist/css/framework7.ios.colors.min.css'*/
-/* OR for Material Theme:
- import Framework7Theme from 'framework7/dist/css/framework7.material.min.css'
- import Framework7ThemeColors from 'framework7/dist/css/framework7.material.colors.min.css'
- */
 import Routes from './router/router'
 import App from './main.vue'
 import VueResource from 'vue-resource'
@@ -28,11 +16,20 @@ import './directives/commonDirective.js'
 import './filters/commonFilter'
 import './lib/vueExends'
 
-Vue.use(VueResource)
-Vue.use(Framework7Vue)
+/* 引入 echart*/
+import ECharts from 'vue-echarts/components/ECharts.vue'
+import 'echarts/lib/chart/bar'
+import 'echarts/lib/component/tooltip'
+import 'echarts/lib/chart/pie'
+Vue.component('chart', ECharts)
 
 import mask from 'components/masking/masking.vue'
 import ErrPanel from 'components/errorPanel/errorPanel'
+
+
+Vue.use(VueResource)
+Vue.use(Framework7Vue)
+
 
 Vue.component('masking', mask)
 Vue.component('errPanel', ErrPanel)

@@ -19,43 +19,16 @@
             </h-list-item>
         </h-list>
         <section>
-            <base-tabs v-model="workOrderType">
-                <tab title="未归档" value="1" active></tab>
-                <tab title="待审核" value="2" ></tab>
-                <tab title="已归档" value="3" ></tab>
+            {{workOrderType}}
+            <base-tabs v-model="workOrderType" @change="showTab">
+                <tab v-for="(type,index) in workOrderTypes" :key="index" :title="type.value" :label="type.key"></tab>
             </base-tabs>
             <f7-tabs animated>
-                <f7-tab class="tab-0" active>
-                    <section class='subject'>
-                        <header class='s-title'>1.xxx</header>
-                        <section class='s-body'>
-                            <f7-list form>
-                                <f7-list-item checkbox name="t-c-1" value="A" title="Checkbox A"></f7-list-item>
-                                <f7-list-item checkbox name="t-c-1" value="B" title="Checkbox B"></f7-list-item>
-                                <f7-list-item checkbox name="t-c-1" value="C" title="Checkbox C"></f7-list-item>
-                            </f7-list>
-                        </section>
-                        <footer class='s-footer'>
-                            <div>回答正确，正确答案：A</div>
-                            <div>答案解析：xxx</div>
-                        </footer>
-                    </section>
-                </f7-tab>
-                <f7-tab class="tab-1">
-                    <section class='subject'>
-                        <header class='s-title'>2.xxx</header>
-                        <section class='s-body'>
-                            <f7-list form>
-                                <f7-list-item checkbox name="t-c-2" value="A1" title="Checkbox Ax"></f7-list-item>
-                                <f7-list-item checkbox name="t-c-2" value="B1" title="Checkbox Bx"></f7-list-item>
-                                <f7-list-item checkbox name="t-c-2" value="C2" title="Checkbox Cx"></f7-list-item>
-                            </f7-list>
-                        </section>
-                        <footer class='s-footer'>
-                            <div>回答正确，正确答案：B</div>
-                            <div>答案解析：xxx</div>
-                        </footer>
-                    </section>
+                <f7-tab v-for="(type,index) in workOrderTypes"
+                        :key="index"
+                        :class="{['tab-'+type.key]:true}"
+                        :active="workOrderType===type.key">
+                    <component :is="'orderTypeView_'+ type.key"></component>
                 </f7-tab>
             </f7-tabs>
         </section>
@@ -63,22 +36,40 @@
 </template>
 
 <script>
-  import { globalConst as native } from 'lib/const'
+  import { globalConst as native, workOrderTypes, workOrderTypeStatus } from 'lib/const'
   import HList from './chilren/HList.vue'
   import HListItem from './chilren/HListItem.vue'
+  import BaseTabs from './chilren/BaseTabs'
+  import Tab from './chilren/BaseTab'
+  import ViewDone from './chilren/WorkOrderDone'
+  import ViewReview from './chilren/WorkOrderReview'
+  import ViewUndone from './chilren/WorkOrderUndone'
+
   export default {
     name: 'workOrder',
     data () {
       return {
-        workOrderType: 1
+        workOrderTypes,
+        workOrderType: workOrderTypeStatus.undone
       }
     },
     created () {
     },
     computed: {},
-    methods: {},
-    mounted () {
-    }, components: {HList, HListItem}
+    methods: {
+      showTab (value) {
+        this.$f7.showTab(`.tab-${value}`)
+      }
+    },
+    components: {
+      HList,
+      HListItem,
+      BaseTabs,
+      Tab,
+      [`orderTypeView_${workOrderTypeStatus.done}`]: ViewDone,
+      [`orderTypeView_${workOrderTypeStatus.review}`]: ViewReview,
+      [`orderTypeView_${workOrderTypeStatus.undone}`]: ViewUndone,
+    }
   }
 </script>
 

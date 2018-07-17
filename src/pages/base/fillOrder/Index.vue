@@ -55,7 +55,18 @@
         </section>
         <section>
             <header><span class='mark'>*</span>作业起止时间</header>
-            <div>xxx/yyy</div>
+            <div>
+                <span>
+                    <my-datepicker :date="startTime"
+                                   :option="datePickerOption"
+                    >
+
+                    </my-datepicker>
+                </span>
+                <span>
+                    /yyy
+                </span>
+            </div>
         </section>
         <section>
             <div class="s-label">劳务费用</div>
@@ -73,7 +84,51 @@
         </section>
         <section>
             <div class="s-label">是否存在遗留问题</div>
-            <div class="s-item"><f7-input type="switch"></f7-input></div>
+            <div class="s-item">
+                <f7-input type="switch"></f7-input>
+            </div>
+        </section>
+        <section v-if="showAmmeter">
+            <f7-list class="ammeter-accordion">
+                <f7-list-item accordion-item
+                              v-for="(ammeter,index) in ammeterList"
+                              :key="index"
+                              :title="'电表'+(index+1)">
+                    <f7-accordion-content>
+                        <f7-list>
+                            <f7-list-item>
+                                <f7-label>电表编号</f7-label>
+                                <f7-input type="text" placeholder="Name"/>
+                            </f7-list-item>
+                            <f7-list-item>
+                                <f7-label>抄表时间</f7-label>
+                                <f7-input type="text" placeholder="Name"/>
+                            </f7-list-item>
+                            <f7-list-item>
+                                <f7-label>上一周期抄电表度数</f7-label>
+                                <f7-input type="text" placeholder="Name"/>
+                            </f7-list-item>
+                            <f7-list-item>
+                                <f7-label>本周期抄电表度数</f7-label>
+                                <f7-input type="text" placeholder="Name"/>
+                            </f7-list-item>
+                            <f7-list-item>
+                                <f7-label>使用度数</f7-label>
+                                <f7-input type="text" placeholder="Name"/>
+                            </f7-list-item>
+                            <f7-list-item>
+                                <f7-label>上传电表照</f7-label>
+                                <f7-input type="text" placeholder="Name"/>
+                            </f7-list-item>
+                        </f7-list>
+                    </f7-accordion-content>
+                </f7-list-item>
+                <f7-list-item accordion-item :title="'电表'+(ammeterList.length+1)">
+                    <f7-accordion-content>
+                        <div @click="addAmmeter">添加电表</div>
+                    </f7-accordion-content>
+                </f7-list-item>
+            </f7-list>
         </section>
         <f7-block>
             <f7-button full active big>提交</f7-button>
@@ -85,6 +140,18 @@
   import { client, clientValue, globalConst as native, major, majorValue, workType, workTypeValue } from 'lib/const'
   import BaseRadioGroup from 'components/baseRadioGroup/BaseRadioGroup'
   import BaseRadio from 'components/baseRadioGroup/children/BaseRadio'
+  import myDatepicker from 'components/mydatepicker/vue-datepicker-es6'
+
+  class Ammeter {
+    constructor (code, date, currentNum, useNum, img) {
+      this.code = code
+      this.date = date
+      this.currentNum = currentNum
+      this.useNum = useNum
+      this.img = img
+    }
+  }
+
   export default {
     name: 'fillorder',
     data () {
@@ -95,16 +162,48 @@
         currentWorkType: workType.year,
         majorPicker: null,
         workSortPicker: null,
-        major: major.xianlu,
+        major: major.jizhan,
         workSort: null,
         majorValue,
-        jobPoint: null
+        jobPoint: null,
+        startTime: {
+          time: ''
+        },
+        datePickerOption: {
+          type: 'day',
+          week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+          month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+          format: 'YYYY-MM-DD',
+          inputStyle: {
+            'display': 'inline-block',
+            'padding': '6px',
+            'line-height': '22px',
+            'font-size': '16px',
+            'border': '2px solid #fff',
+            'box-shadow': '0 1px 3px 0 rgba(0, 0, 0, 0.2)',
+            'border-radius': '2px',
+            'color': '#5F5F5F'
+          },
+        },
+        /* 电表数据 */
+        ammeterList: []
       }
     },
     created () {
     },
     computed: {
+      showAmmeter () {
+        switch (this.major >>> 0) {
+          case major.jizhan:
+          case major.jf:
+          case major.wlan:
+            return true
+          default:
+            return false
+        }
+      },
       dispalymajorValue () {
+        console.log('test', this.major, Array.isArray(this.major))
         return majorValue.filter((row) => row.key >>> 0 === this.major >>> 0)[0].value
       },
       // 需要修改
@@ -113,10 +212,13 @@
       },
     },
     methods: {
+      addAmmeter () {
+        this.ammeterList.push(new Ammeter())
+      },
       openMajorSelect () {
         this.majorPicker.open()
       },
-      openWorkSortSelect(){
+      openWorkSortSelect () {
         this.workSortPicker.open()
       }
     },
@@ -133,7 +235,7 @@
             }
           ],
           onClose: ({cols, value}) => {
-            this.major = value
+            this.major = value[0]
           }
         })
         // 需要修改
@@ -152,13 +254,14 @@
           }
         })
         // 手动初始化picker cols
-        this.majorPicker.open()
-        this.majorPicker.close()
-        this.workSortPicker.open()
-        this.workSortPicker.close()
+        //  this.majorPicker.open()
+        // this.majorPicker.close()
+        // this.workSortPicker.open()
+        // this.workSortPicker.close()
+        this.$f7.accordionOpen('.accordion-item')
       })
     },
-    components: {BaseRadio, BaseRadioGroup}
+    components: {BaseRadio, BaseRadioGroup, myDatepicker}
   }
 </script>
 
