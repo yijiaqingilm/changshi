@@ -1,0 +1,21 @@
+@import "globalFunc";
+
+.fill-order {
+  section {
+    padding: 0 35px;
+  }
+  .header {
+    margin-top: 40px;
+  }
+  .radio-group {
+    margin-top: 25px;
+  }
+  .mb-c-20 {
+    > div {
+      margin-bottom: 20px;
+      &:nth-last-child(1) {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

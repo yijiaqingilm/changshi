@@ -4,7 +4,7 @@
   display: inline-block;
   padding-left: 35px;
   color: #999999;
-  $icon_name:"check" "edit" "void";
+  $icon_name:"check" "edit" "void" "del";
   @each $name in $icon_name{
     &.icon-#{$name}{
       background-size: 30px 30px;

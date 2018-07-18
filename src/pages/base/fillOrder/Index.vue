@@ -5,8 +5,8 @@
             <f7-nav-center>作业填报</f7-nav-center>
         </f7-navbar>
         <section>
-            <header><span class='mark'>*</span>客户选择</header>
-            <base-radio-group v-model="currentClient">
+            <header class='header'><span class='mark'>*</span>客户选择</header>
+            <base-radio-group v-model="currentClient" class="radio-group">
                 <base-radio v-for="(client,index) in clientValue"
                             :label="client.key"
                             name="client"
@@ -15,30 +15,33 @@
                 </base-radio>
             </base-radio-group>
         </section>
-        <section>
+        <section class='fo-form-group'>
             <div class='s-label'><span class="mark">*</span>专业选择</div>
-            <div class='s-select' @click="openMajorSelect">
+            <div class='s-item' @click="openMajorSelect">
                 <input type="hidden" v-model="major" class='major-value'>
-                {{dispalymajorValue}}
+                <span class='s-select'>{{dispalymajorValue}}</span>
             </div>
         </section>
-        <section>
+        <section class='fo-form-group'>
             <div class='s-label'><span class="mark">*</span>作业点</div>
-            <div class="s-item">
-                <div class='s-input'>
-                    <input type="text" readonly v-model="jobPoint">
-                </div>
-                <div class="city">xxx</div>
+            <div class="s-item mb-c-20">
                 <div>
+                    <input class='s-input' placeholder="请从下方选择或搜索作业点" type="text" readonly v-model="jobPoint">
+                </div>
+                <div class="city"><span class='s-select'>{{dispalyjobPointValue}}</span></div>
+                <div>
+                    <span class='s-select'>{{dispalyjobPointValue}}</span>
                     <input type="hidden" v-model='jobPoint'>
                 </div>
                 <div>
-                    search
+                    <input class='s-input' placeholder="请搜索作业点" type="text">
                 </div>
             </div>
         </section>
+        <line-10></line-10>
         <section>
-            <base-radio-group v-model="currentWorkType">
+            <header class='header'><span class='mark'>*</span>年包/按次</header>
+            <base-radio-group v-model="currentWorkType" class="radio-group">
                 <base-radio v-for="(workType,index) in workTypeValue"
                             :key="index"
                             :label="workType.key">
@@ -46,21 +49,20 @@
                 </base-radio>
             </base-radio-group>
         </section>
-        <section>
+        <section class='fo-form-group'>
             <div class='s-label'><span class="mark">*</span>作业类别</div>
             <div class='s-select' @click="openWorkSortSelect">
                 <input type="hidden" v-model="workSort" class='workSort-value'>
                 {{dispalyWorkSortValue}}
             </div>
         </section>
-        <section>
-            <header><span class='mark'>*</span>作业起止时间</header>
-            <div>
+        <section class='fo-form-group'>
+            <div class='s-label'><span class="mark">*</span>作业起止时间</div>
+            <div class='s-item'>
                 <span>
                     <my-datepicker :date="startTime"
                                    :option="datePickerOption"
                     >
-
                     </my-datepicker>
                 </span>
                 <span>
@@ -69,25 +71,28 @@
             </div>
         </section>
         <section>
-            <div class="s-label">劳务费用</div>
-            <div class="s-item"><input type="number" placeholder="请填写劳务费用"><span>元</span></div>
-        </section>
-        <section>
-            <div class="s-label">关联工单号</div>
-            <div class="s-item"><input type="text" placeholder="请填写甲方关联工单号（非必填）"></div>
-        </section>
-        <section>
             <header><span class='mark'>*</span>作业内容</header>
             <div>
-                <textarea placeholder='请填写详细的作业内容'></textarea>
+                <textarea class='s-textarea' placeholder='请填写详细的作业内容'></textarea>
             </div>
         </section>
-        <section>
+        <line-10></line-10>
+        <section class='fo-form-group'>
+            <div class="s-label">劳务费用</div>
+            <div class="s-item"><input class='s-input' type="number" placeholder="请填写劳务费用"><span>元</span></div>
+        </section>
+        <section class='fo-form-group'>
+            <div class="s-label">关联工单号</div>
+            <div class="s-item"><input class='s-input' type="text" placeholder="请填写甲方关联工单号（非必填）"></div>
+        </section>
+        <line-10></line-10>
+        <section class='fo-form-group'>
             <div class="s-label">是否存在遗留问题</div>
             <div class="s-item">
                 <f7-input type="switch"></f7-input>
             </div>
         </section>
+        <question></question>
         <section v-if="showAmmeter">
             <f7-list class="ammeter-accordion">
                 <f7-list-item accordion-item
@@ -141,7 +146,7 @@
   import BaseRadioGroup from 'components/baseRadioGroup/BaseRadioGroup'
   import BaseRadio from 'components/baseRadioGroup/children/BaseRadio'
   import myDatepicker from 'components/mydatepicker/vue-datepicker-es6'
-
+  import Question from 'components/baseQuestion/BaseQuestion.vue'
   class Ammeter {
     constructor (code, date, currentNum, useNum, img) {
       this.code = code
@@ -185,7 +190,7 @@
             'color': '#5F5F5F'
           },
         },
-        /* 电表数据 */
+          /* 电表数据 */
         ammeterList: []
       }
     },
@@ -210,6 +215,9 @@
       dispalyWorkSortValue () {
         return majorValue.filter((row) => row.key >>> 0 === this.major >>> 0)[0].value
       },
+      dispalyjobPointValue(){
+
+      }
     },
     methods: {
       addAmmeter () {
@@ -261,10 +269,10 @@
         this.$f7.accordionOpen('.accordion-item')
       })
     },
-    components: {BaseRadio, BaseRadioGroup, myDatepicker}
+    components: {BaseRadio, BaseRadioGroup, myDatepicker, Question}
   }
 </script>
 
 <style lang="scss" scoped type="text/css">
-
+    @import "../../../css/fillOrder.scss";
 </style>
