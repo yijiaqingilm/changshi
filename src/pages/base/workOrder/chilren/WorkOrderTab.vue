@@ -1,5 +1,5 @@
 <template>
-    <label class='base-tab' :class="[{'is-checked':label===model}]">
+    <label class='work-order-tab' :class="[{'is-checked':label===model}]">
         {{title}}
         <input type="radio" @change="handleChange" class="base-tab-input" :value="label" v-model="model">
     </label>

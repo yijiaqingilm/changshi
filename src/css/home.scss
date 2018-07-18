@@ -3,3 +3,39 @@
 .strong {
   @include setFontSize($middleFontSize)
 }
+
+.home {
+  @include setFontSize($baseFontSize);
+  .h-header {
+    position: relative;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    justify-content: flex-start;
+    height: 180px;
+    .h-avatar {
+      width: 110px;
+      height: 110px;
+      margin-left: 30px;
+      border-radius: 100%;
+      .avatar {
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
+      }
+    }
+    .h-title {
+      margin-left: 25px;
+    }
+    .h-exit {
+      position: absolute;
+      top: 35px;
+      right: 0;
+      padding: 10px 15px;
+      padding-right: 25px;
+      border-radius: 10px 0 0 10px;
+      background-color: $gray_color;
+      @include setFontSize($maxFontSize)
+    }
+  }
+}

@@ -6,21 +6,42 @@
         </f7-navbar>
         <section>
             <header class='h-header'>
-                <div class='h-title'>
-                    <div>mingc</div>
-                    <div>退出</div>
+                <div class='h-avatar'>
+                    <img src="../assets/icon_avatar.png" class='avatar' alt="">
                 </div>
-                <div class='h-banner'>
-                    xxx
+                <div class='h-title'>
+                    <div>1235</div>
+                    <div>作业员</div>
+                </div>
+                <div class='h-exit'>
+                    退出<span class='gt'></span>
                 </div>
             </header>
-            <section class='h-module'>
-                <header class='m-header'>基础维护</header>
-                <section class='m-body'>
-                    <div>作业填报</div>
-                    <div>我的工单</div>
-                    <div>遗留问题工单</div>
-                </section>
+            <line-10></line-10>
+            <section>
+                <base-title title="基础维护"></base-title>
+                <base-tabs>
+                    <base-tab label="作业填报" :icon="iconSrc.orderAdd"></base-tab>
+                    <base-tab label="我的工单" :icon="iconSrc.myOrder"></base-tab>
+                    <base-tab label="遗留问题工单" :icon="iconSrc.question"></base-tab>
+                </base-tabs>
+            </section>
+            <section>
+                <base-title title="资源管理"></base-title>
+                <base-tabs>
+                    <base-tab label="发电机管理" :icon="iconSrc.dynamo"></base-tab>
+                    <base-tab label="车辆管理" :icon="iconSrc.vehicle"></base-tab>
+                    <base-tab label="记录管理" :icon="iconSrc.logs"></base-tab>
+                </base-tabs>
+            </section>
+            <section>
+                <base-title title="在线培训"></base-title>
+                <base-tabs>
+                    <base-tab label="在线答题" :icon="iconSrc.online"></base-tab>
+                    <base-tab label="在线视频" :icon="iconSrc.video"></base-tab>
+                    <base-tab label="考试" :icon="iconSrc.test"></base-tab>
+                    <base-tab label="培训记录" :icon="iconSrc.train"></base-tab>
+                </base-tabs>
             </section>
         </section>
     </f7-page>
@@ -30,17 +51,32 @@
   import { mapState } from 'vuex'
   import { globalConst as native } from 'lib/const'
   import Vue from 'vue'
+  import BaseTitle from 'components/baseTitle/BaseTitle'
+  import BaseTabs from 'components/baseTabs/BaseTabs'
+  import BaseTab from 'components/baseTabs/BaseTab'
 
   export default {
     data () {
-      return {}
+      return {
+        iconSrc: {
+          orderAdd: require('../assets/icon_order_add.png'),
+          myOrder: require('../assets/icon_order.png'),
+          question: require('../assets/icon_question.png'),
+          dynamo: require('../assets/icon_dynamo.png'),
+          vehicle: require('../assets/icon_vehicle.png'),
+          logs: require('../assets/icon_jilu.png'),
+          online: require('../assets/icon_online.png'),
+          video: require('../assets/icon_video.png'),
+          train: require('../assets/icon_train.png'),
+          test: require('../assets/icon_test.png')
+        }
+      }
     },
     created () {
-      console.log('测试', __DEBUG__)
     },
     methods: {},
     computed: {},
-    components: {}
+    components: {BaseTitle, BaseTabs, BaseTab}
 
   }
 </script>

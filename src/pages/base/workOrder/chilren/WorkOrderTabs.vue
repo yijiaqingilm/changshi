@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class='work-order-tabs'>
         <slot></slot>
     </div>
 </template>
@@ -24,4 +24,5 @@
 </script>
 
 <style lang="scss" scoped type="text/css">
+    @import "./workOrderChilren.scss";
 </style>

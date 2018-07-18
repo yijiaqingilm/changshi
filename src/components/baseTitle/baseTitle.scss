@@ -1,0 +1,19 @@
+@import "../../css/globalFunc";
+
+.base-title {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  padding: 60px 40px 40px 40px;
+  @include setFontSize($maxFontSize);
+  $lineColor: #f5f5f5;
+  .center {
+    flex: 1;
+    text-align: center;
+  }
+  .before, .after {
+    width: 170px;
+    height: 1px; /*no*/
+    background-color: $lineColor;
+  }
+}

@@ -1,9 +1,11 @@
 <template>
     <div class='h-list-item'>
-        <div v-if="!$slots.title">
+        <div v-if="$slots.title">
             {{title}}
         </div>
-        <slot v-else name="title"></slot>
+        <slot v-else name="title">
+            <div><span class='title'>{{title}}</span><span>单</span></div>
+        </slot>
         <div v-if="!$slots.desc">{{desc}}</div>
         <slot v-else name="desc"></slot>
     </div>
@@ -18,7 +20,7 @@
     data () {
       return {}
     },
-    created(){
+    created () {
       console.log('created', this.$slots.title)
     }
   }

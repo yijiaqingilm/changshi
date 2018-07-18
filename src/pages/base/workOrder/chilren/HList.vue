@@ -13,5 +13,12 @@
 </script>
 
 <style lang="scss" scoped type="text/css">
-    @import "./workOrderChilren.scss";
+    .h-list {
+        display: flex;
+        width: 100%;
+        height: 140px;
+        align-items: center;
+        background-color: #f5f5f5;
+        color: #999;
+    }
 </style>

@@ -86,7 +86,7 @@
           mutex: true,
           video: {
             url: 'https://lightsns.oss-cn-qingdao.aliyuncs.com/demo_video.mp4',
-            pic: require('../../../assets/icon_change.png'),
+            pic: require('../../../assets/icon_add.png'),
             type: 'auto'
           },
         })

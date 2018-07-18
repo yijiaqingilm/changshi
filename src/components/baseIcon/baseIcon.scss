@@ -1,0 +1,16 @@
+@import "../../css/globalFunc";
+
+.base-icon {
+  display: inline-block;
+  padding-left: 35px;
+  color: #999999;
+  $icon_name:"check" "edit" "void";
+  @each $name in $icon_name{
+    &.icon-#{$name}{
+      background-size: 30px 30px;
+      background-image: url("icon_#{$name}.png");
+      background-repeat: no-repeat;
+      background-position-y: center;
+    }
+  }
+}

@@ -21,16 +21,19 @@ import ECharts from 'vue-echarts/components/ECharts.vue'
 import 'echarts/lib/chart/bar'
 import 'echarts/lib/component/tooltip'
 import 'echarts/lib/chart/pie'
+
 Vue.component('chart', ECharts)
 
 import mask from 'components/masking/masking.vue'
 import ErrPanel from 'components/errorPanel/errorPanel'
-
+import Line10 from 'components/line10/Line10'
+import BaseIcon from 'components/baseIcon/BaseIcon'
 
 Vue.use(VueResource)
 Vue.use(Framework7Vue)
 
-
+Vue.component('line-10', Line10)
+Vue.component('base-icon', BaseIcon)
 Vue.component('masking', mask)
 Vue.component('errPanel', ErrPanel)
 

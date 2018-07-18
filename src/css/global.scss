@@ -9,6 +9,7 @@ body, p {
 }
 
 div {
+  @include setFontSize($baseFontSize);
   box-sizing: border-box;
 }
 
@@ -17,12 +18,15 @@ img {
 }
 
 .gt {
+  position: absolute;
+  top: 50%;
+  right: 10px;
   display: inline-block;
-  width: 40px;
-  height: 40px;
-  border-top: 5px solid #eaeaea;
-  border-right: 5px solid #eaeaea;
-  transform: rotate(45deg);
+  width: 10px;
+  height: 10px;
+  border-top: 1px solid #000000; /*no*/
+  border-right: 1px solid #000000; /*no*/
+  transform: translateY(-50%) rotate(45deg) skew(-20deg, -20deg);
 }
 
 .btn-link {
@@ -47,7 +51,7 @@ img {
 
 .line-10 {
   height: 10px;
-  background: #EEEEEE;
+  background: #f5f5f5;
 }
 
 .ml-10 {
