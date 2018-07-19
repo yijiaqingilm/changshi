@@ -1,3 +1,6 @@
+/**
+ * Created by admin on 2018/7/19.
+ */
 import { setToken } from 'lib/common'
 import api from 'api/api'
 import { isEmptyObject, margeMutations } from 'lib/utils'
@@ -6,25 +9,17 @@ import Vue from 'vue'
 import { applyClientMiddleware } from 'src/main'
 
 const state = {
-  workType: []
+  sessionKey: 'GfJ9pNWwMjFyZDyPwVGqwWVa2zQZWN'
 }
 const getters = {}
 const actions = {
-  [native.doAddressList] ({state}, refs) {
-    console.log('refs', refs)
-    return applyClientMiddleware(api.doAddressList)(refs)
-  },
-  [native.doWorkSort] ({state}, refs) {
-    return applyClientMiddleware(api.doWorkSort)(refs)
+  [native.doLogin] ({state}, refs) {
+    return applyClientMiddleware(api.doLogin)(refs)
   }
 }
 let mutations = {
-  [mutationNames.doAddressList_success] (state, {data}) {
-    console.log(data, 'data')
-    // state.workType = data
-  },
-  [mutationNames.doWorkSort_success] (state, {data}) {
-    state.workType = data
+  [mutationNames.doLogin] (state, {data}) {
+    console.log('data', data)
   }
 }
 mutations = Object.assign(margeMutations(actions), mutations)

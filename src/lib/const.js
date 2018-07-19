@@ -7,7 +7,7 @@ const globalConst = {
   doAnswer: 'doAnswer',
   doWorkSender: 'doWorkSender',
   doGetWorkBase: 'doGetWorkBase',
-  doAddresList: 'doAddressList',
+  doAddressList: 'doAddressList',
   doGetAmmeter: 'doGetAmmeter',
   doGetDynamotor: 'doGetDynamotor',
   doDynamotorCreate: 'doDynamotorCreate',
@@ -17,7 +17,8 @@ const globalConst = {
   doLeaveQuestion: 'doLeaveQuestion',
   doLeaveQuestionDetail: 'doLeaveQuestionDetail',
   doLeaveQuestionUpdate: 'doLeaveQuestionUpdate',
-  doWorkType: 'doWorkType'
+  doWorkSort: 'doWorkSort',
+  doLogin: 'doLogin'
 }
 let methods = [SUCCESS.toLowerCase(), FAILURE.toLowerCase(), REQUEST.toLowerCase()]
 const mutationNames = {}

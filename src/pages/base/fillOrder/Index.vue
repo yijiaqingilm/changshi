@@ -5,9 +5,10 @@
             <f7-nav-center>作业填报</f7-nav-center>
         </f7-navbar>
         <div @click="formatTest">测试</div>
+        {{jobCard}}
         <section>
             <header class='header'><span class='mark'>*</span>客户选择</header>
-            <base-radio-group v-model="currentClient" class="radio-group">
+            <base-radio-group v-model="jobCard.client" class="radio-group">
                 <base-radio v-for="(client,index) in clientValue"
                             :label="client.key"
                             name="client"
@@ -16,11 +17,11 @@
                 </base-radio>
             </base-radio-group>
         </section>
-        <base-form-group label="专业选择" mark @click="openMajorSelect">
-            <input type="hidden" v-model="major" class='major-value'>
+        <base-form-group class="m-40" label="专业选择" mark @click="openMajorSelect">
+            <input type="hidden" v-model="jobCard.major" class='major-value'>
             <span class='s-select'>{{dispalymajorValue}}</span>
         </base-form-group>
-        <base-form-group label="作业点" mark>
+        <base-form-group class="m-40" label="作业点" mark>
             <div class='mb-c-20'>
                 <div>
                     <input class='s-input' placeholder="请从下方选择或搜索作业点" type="text" readonly v-model="jobPoint">
@@ -38,7 +39,7 @@
         <line-10></line-10>
         <section>
             <header class='header'><span class='mark'>*</span>年包/按次</header>
-            <base-radio-group v-model="currentWorkType" class="radio-group">
+            <base-radio-group v-model="jobCard.workType" class="radio-group">
                 <base-radio v-for="(workType,index) in workTypeValue"
                             :key="index"
                             :label="workType.key">
@@ -46,49 +47,55 @@
                 </base-radio>
             </base-radio-group>
         </section>
-        <base-form-group label="作业类别" mark>
+        <base-form-group class="m-40" label="作业类别" mark>
             <div class='s-select' @click="openWorkSortSelect">
                 <input type="hidden" v-model="workSort" class='workSort-value'>
                 {{dispalyWorkSortValue}}
             </div>
         </base-form-group>
-        <base-form-group label="作业起止时间" mark></base-form-group>
+        <base-form-group class="m-40" label="作业起止时间" mark></base-form-group>
         <div class='time-group'>
             <span class='time-slash'></span>
             <div>
-                <datetime class="time-input" placeholder="请选择开始时间" v-model='startTime' :format="dateTime.options.format" type="datetime"
-                            :phrases="dateTime.options.phrases"></datetime>
+                <datetime class="time-input" placeholder="请选择开始时间" v-model='jobCard.startDate'
+                          :format="dateTime.options.format"
+                          type="datetime"
+                          :phrases="dateTime.options.phrases"></datetime>
             </div>
             <div>
-                <datetime placeholder="请选择结束时间" v-model='endTime' :format="dateTime.options.format" type="datetime"
-                             :phrases="dateTime.options.phrases"></datetime>
+                <datetime placeholder="请选择结束时间" v-model='jobCard.endDate' :format="dateTime.options.format"
+                          type="datetime"
+                          :phrases="dateTime.options.phrases"></datetime>
             </div>
         </div>
         <section class='mt-40'>
             <header><span class='mark'>*</span>作业内容</header>
             <div class='mt-30'>
-                <textarea class='s-textarea' placeholder='请填写详细的作业内容'></textarea>
+                <textarea class='s-textarea' v-model="jobCard.content" placeholder='请填写详细的作业内容'></textarea>
             </div>
         </section>
         <line-10></line-10>
-        <base-form-group label="劳务费用">
-            <input class='s-input' type="number" placeholder="请填写劳务费用"><span>元</span>
+        <base-form-group class="m-40" label="劳务费用">
+            <input class='s-input' type="number" v-model='jobCard.fee' placeholder="请填写劳务费用"><span>元</span>
         </base-form-group>
-        <base-form-group label="关联工单号">
-            <input class='s-input' type="text" placeholder="请填写甲方关联工单号（非必填）">
+        <base-form-group class="m-40" label="关联工单号">
+            <input class='s-input' type="text" v-model="jobCard.refWorkNumber" placeholder="请填写甲方关联工单号（非必填）">
         </base-form-group>
         <line-10></line-10>
-        <base-form-group label="是否存在遗留问题">
-            <f7-input type="switch"></f7-input>
+        <base-form-group class="m-40" label="是否存在遗留问题">
+            <f7-input type="switch" v-model="jobCard.isLeaveQuestion"></f7-input>
         </base-form-group>
         <question></question>
-        <section v-if="showAmmeter">
+        <div v-if="showAmmeter">
             <f7-list class="ammeter-accordion">
                 <f7-list-item accordion-item
                               v-for="(ammeter,index) in ammeterList"
                               :key="index"
                               :title="'电表'+(index+1)">
                     <f7-accordion-content>
+                        <base-form-group label="电表编号">
+                            <input class='s-input' type="text" v-model='ammeter.code' placeholder="请扫描或输入电表编号">
+                        </base-form-group>
                         <f7-list>
                             <f7-list-item>
                                 <f7-label>电表编号</f7-label>
@@ -123,7 +130,7 @@
                     </f7-accordion-content>
                 </f7-list-item>
             </f7-list>
-        </section>
+        </div>
         <f7-block>
             <f7-button full active big>提交</f7-button>
         </f7-block>
@@ -156,18 +163,28 @@
     name: 'fillorder',
     data () {
       return {
+        jobCard: {
+          client: client.mobile,
+          major: major.jizhan,
+          workBase: '',
+          workType: workType.year,
+          workSort: '',
+          content: '',
+          startDate: new Date().toISOString(),
+          endDate: '',
+          fee: '',
+          refWorkNumber: '',
+          isLeaveQuestion: true,
+          leave: [],
+          ammeter: []
+        },
         clientValue,
         workTypeValue,
-        currentClient: client.mobile,
-        currentWorkType: workType.year,
         majorPicker: null,
         workSortPicker: null,
-        major: major.jizhan,
         workSort: null,
         majorValue,
         jobPoint: null,
-        startTime: new Date().toISOString(),
-        endTime: '',
         dateTime: {
           options: {
             phrases: {
@@ -177,11 +194,15 @@
             format: 'yyyy-MM-dd HH:mm:ss'
           }
         },
-        /* 电表数据 */
+          /* 电表数据 */
         ammeterList: []
       }
     },
     created () {
+      this.$store.dispatch({
+        type: native.doAddressList,
+        s: 'province'
+      })
     },
     computed: {
       showAmmeter () {
@@ -195,21 +216,20 @@
         }
       },
       dispalymajorValue () {
-        console.log('test', this.major, Array.isArray(this.major))
-        return majorValue.filter((row) => row.key >>> 0 === this.major >>> 0)[0].value
+        return majorValue.filter((row) => row.key >>> 0 === this.jobCard.major >>> 0)[0].value
       },
       // 需要修改
       dispalyWorkSortValue () {
-        return majorValue.filter((row) => row.key >>> 0 === this.major >>> 0)[0].value
+        return majorValue.filter((row) => row.key >>> 0 === this.jobCard.major >>> 0)[0].value
       },
       dispalyjobPointValue () {
 
       }
     },
     methods: {
-      formatTest () {
-        console.log(moment(this.startTime).format('YYYY-MM-DD HH:mm:ss'))
-      },
+        /* formatTest () {
+         console.log(moment(this.startTime).format('YYYY-MM-DD HH:mm:ss'))
+         },*/
       addAmmeter () {
         this.ammeterList.push(new Ammeter())
       },
@@ -233,8 +253,15 @@
             }
           ],
           onClose: ({cols, value}) => {
-            this.major = value[0]
+            this.jobCard.major = value[0]
           }
+        })
+        let {client, major, workType}=this.jobCard
+        this.$store.dispatch({
+          type: native.doWorkSort,
+          client,
+          work_type: workType,
+          major
         })
         // 需要修改
         this.workSortPicker = this.$f7.picker({

@@ -10,16 +10,11 @@ export default class ApiClient {
         if (!url) {
           reject({_error: '错误的请求地址'})
         }
-        const token = app.$store.state.auth.token
-        if (__DEBUG__) {
-          Vue.http.headers.common['Authorization'] = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjgwLCJhZ2VudElkIjo4MDAwMSwiaWF0IjoxNTI4NjgxMjk3LCJleHAiOjE1Mjg3Njc2OTd9.IRS9MjWVc99fnVvjCdtfAGU2LIJvk6iCKToq4kYct9A'
-        }
-        if (token) {
-          Vue.http.headers.common['Authorization'] = `Bearer ${token}`
-        }
+        const sessionKey = app.$store.state.auth.sessionKey
+        console.log(serverUrl, 'xx', url)
         Vue.http({
           method: method,
-          url: serverUrl + url,
+          url: serverUrl + url + (sessionKey && '?sessionKey=' + sessionKey),
           [method === 'get' ? 'params' : 'body']: params,
           global: global
         }).then((response) => {
