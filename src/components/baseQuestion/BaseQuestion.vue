@@ -7,16 +7,13 @@
                     <base-icon iconName="del" label="删除"></base-icon>
                 </div>
             </div>
-            <div class='fo-form-group'>
-                <div class='s-label'>遗留问题级别：</div>
-                <div class='s-item'>
-                    <span class='s-select'>test</span>
-                    <input type="hidden">
-                </div>
-            </div>
+            <base-form-group label="遗留问题级别：">
+                <span class='s-select'>test</span>
+                <input type="hidden">
+            </base-form-group>
             <div>
                 <header>遗留问题:</header>
-                <div>
+                <div class='mt-30'>
                     <textarea class='s-textarea' placeholder='请填写遗留问题内容'></textarea>
                 </div>
             </div>
@@ -30,6 +27,7 @@
 
 <script type="text/ecmascript-6">
   import BaseTab from 'components/baseTabs/BaseTab.vue'
+
   let iconAdd = require('../../assets/icon_add.png')
   export default {
     props: {

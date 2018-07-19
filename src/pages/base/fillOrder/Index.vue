@@ -4,6 +4,7 @@
             <f7-nav-left :back-link="false" sliding></f7-nav-left>
             <f7-nav-center>作业填报</f7-nav-center>
         </f7-navbar>
+        <div @click="formatTest">测试</div>
         <section>
             <header class='header'><span class='mark'>*</span>客户选择</header>
             <base-radio-group v-model="currentClient" class="radio-group">
@@ -15,16 +16,12 @@
                 </base-radio>
             </base-radio-group>
         </section>
-        <section class='fo-form-group'>
-            <div class='s-label'><span class="mark">*</span>专业选择</div>
-            <div class='s-item' @click="openMajorSelect">
-                <input type="hidden" v-model="major" class='major-value'>
-                <span class='s-select'>{{dispalymajorValue}}</span>
-            </div>
-        </section>
-        <section class='fo-form-group'>
-            <div class='s-label'><span class="mark">*</span>作业点</div>
-            <div class="s-item mb-c-20">
+        <base-form-group label="专业选择" mark @click="openMajorSelect">
+            <input type="hidden" v-model="major" class='major-value'>
+            <span class='s-select'>{{dispalymajorValue}}</span>
+        </base-form-group>
+        <base-form-group label="作业点" mark>
+            <div class='mb-c-20'>
                 <div>
                     <input class='s-input' placeholder="请从下方选择或搜索作业点" type="text" readonly v-model="jobPoint">
                 </div>
@@ -37,7 +34,7 @@
                     <input class='s-input' placeholder="请搜索作业点" type="text">
                 </div>
             </div>
-        </section>
+        </base-form-group>
         <line-10></line-10>
         <section>
             <header class='header'><span class='mark'>*</span>年包/按次</header>
@@ -49,49 +46,41 @@
                 </base-radio>
             </base-radio-group>
         </section>
-        <section class='fo-form-group'>
-            <div class='s-label'><span class="mark">*</span>作业类别</div>
+        <base-form-group label="作业类别" mark>
             <div class='s-select' @click="openWorkSortSelect">
                 <input type="hidden" v-model="workSort" class='workSort-value'>
                 {{dispalyWorkSortValue}}
             </div>
-        </section>
-        <section class='fo-form-group'>
-            <div class='s-label'><span class="mark">*</span>作业起止时间</div>
-            <div class='s-item'>
-                <span>
-                    <my-datepicker :date="startTime"
-                                   :option="datePickerOption"
-                    >
-                    </my-datepicker>
-                </span>
-                <span>
-                    /yyy
-                </span>
-            </div>
-        </section>
-        <section>
-            <header><span class='mark'>*</span>作业内容</header>
+        </base-form-group>
+        <base-form-group label="作业起止时间" mark></base-form-group>
+        <div class='time-group'>
+            <span class='time-slash'></span>
             <div>
+                <datetime class="time-input" placeholder="请选择开始时间" v-model='startTime' :format="dateTime.options.format" type="datetime"
+                            :phrases="dateTime.options.phrases"></datetime>
+            </div>
+            <div>
+                <datetime placeholder="请选择结束时间" v-model='endTime' :format="dateTime.options.format" type="datetime"
+                             :phrases="dateTime.options.phrases"></datetime>
+            </div>
+        </div>
+        <section class='mt-40'>
+            <header><span class='mark'>*</span>作业内容</header>
+            <div class='mt-30'>
                 <textarea class='s-textarea' placeholder='请填写详细的作业内容'></textarea>
             </div>
         </section>
         <line-10></line-10>
-        <section class='fo-form-group'>
-            <div class="s-label">劳务费用</div>
-            <div class="s-item"><input class='s-input' type="number" placeholder="请填写劳务费用"><span>元</span></div>
-        </section>
-        <section class='fo-form-group'>
-            <div class="s-label">关联工单号</div>
-            <div class="s-item"><input class='s-input' type="text" placeholder="请填写甲方关联工单号（非必填）"></div>
-        </section>
+        <base-form-group label="劳务费用">
+            <input class='s-input' type="number" placeholder="请填写劳务费用"><span>元</span>
+        </base-form-group>
+        <base-form-group label="关联工单号">
+            <input class='s-input' type="text" placeholder="请填写甲方关联工单号（非必填）">
+        </base-form-group>
         <line-10></line-10>
-        <section class='fo-form-group'>
-            <div class="s-label">是否存在遗留问题</div>
-            <div class="s-item">
-                <f7-input type="switch"></f7-input>
-            </div>
-        </section>
+        <base-form-group label="是否存在遗留问题">
+            <f7-input type="switch"></f7-input>
+        </base-form-group>
         <question></question>
         <section v-if="showAmmeter">
             <f7-list class="ammeter-accordion">
@@ -145,8 +134,14 @@
   import { client, clientValue, globalConst as native, major, majorValue, workType, workTypeValue } from 'lib/const'
   import BaseRadioGroup from 'components/baseRadioGroup/BaseRadioGroup'
   import BaseRadio from 'components/baseRadioGroup/children/BaseRadio'
-  import myDatepicker from 'components/mydatepicker/vue-datepicker-es6'
   import Question from 'components/baseQuestion/BaseQuestion.vue'
+  import Vue from 'vue'
+  import Datetime from 'vue-datetime'
+  import 'vue-datetime/dist/vue-datetime.css'
+  import moment from 'lib/moment'
+
+  Vue.use(Datetime)
+
   class Ammeter {
     constructor (code, date, currentNum, useNum, img) {
       this.code = code
@@ -171,26 +166,18 @@
         workSort: null,
         majorValue,
         jobPoint: null,
-        startTime: {
-          time: ''
+        startTime: new Date().toISOString(),
+        endTime: '',
+        dateTime: {
+          options: {
+            phrases: {
+              ok: '确定',
+              cancel: '关闭'
+            },
+            format: 'yyyy-MM-dd HH:mm:ss'
+          }
         },
-        datePickerOption: {
-          type: 'day',
-          week: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
-          month: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-          format: 'YYYY-MM-DD',
-          inputStyle: {
-            'display': 'inline-block',
-            'padding': '6px',
-            'line-height': '22px',
-            'font-size': '16px',
-            'border': '2px solid #fff',
-            'box-shadow': '0 1px 3px 0 rgba(0, 0, 0, 0.2)',
-            'border-radius': '2px',
-            'color': '#5F5F5F'
-          },
-        },
-          /* 电表数据 */
+        /* 电表数据 */
         ammeterList: []
       }
     },
@@ -215,11 +202,14 @@
       dispalyWorkSortValue () {
         return majorValue.filter((row) => row.key >>> 0 === this.major >>> 0)[0].value
       },
-      dispalyjobPointValue(){
+      dispalyjobPointValue () {
 
       }
     },
     methods: {
+      formatTest () {
+        console.log(moment(this.startTime).format('YYYY-MM-DD HH:mm:ss'))
+      },
       addAmmeter () {
         this.ammeterList.push(new Ammeter())
       },
@@ -269,7 +259,7 @@
         this.$f7.accordionOpen('.accordion-item')
       })
     },
-    components: {BaseRadio, BaseRadioGroup, myDatepicker, Question}
+    components: {BaseRadio, BaseRadioGroup, Question}
   }
 </script>
 

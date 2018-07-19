@@ -1,7 +1,7 @@
 <template>
     <div class='work-order-undone'>
-        <list>
-            <list-item
+        <base-list>
+            <base-list-item
                     @click="goDetail"
                     showAction
                     workName="工单1"
@@ -9,9 +9,8 @@
                     workClient="客户"
                     workMajor="专业"
                     workPoint="作业点">
-            </list-item>
-            <line-10></line-10>
-            <list-item
+            </base-list-item>
+            <base-list-item
                     @click="goDetail"
                     showAction
                     workName="工单1"
@@ -19,24 +18,19 @@
                     workClient="客户"
                     workMajor="专业"
                     workPoint="作业点">
-            </list-item>
-            <line-10></line-10>
-        </list>
+            </base-list-item>
+        </base-list>
     </div>
 </template>
 
 <script>
-  import List from './WorkOrderList'
-  import ListItem from './WorkOrderListItem'
-
   export default {
     name: '',
     methods: {
       goDetail () {
-
+        this.$router.loadPage('/base/workOrder/detail/1')
       }
     },
-    components: {List, ListItem}
   }
 </script>
 

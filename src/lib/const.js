@@ -93,6 +93,10 @@ const workOrderTypes = [
   {key: workOrderTypeStatus.review, value: '待审核'},
   {key: workOrderTypeStatus.done, value: '已归档'}
 ]
+const baseListTypes = {
+  workOrder: 0,
+  questionOrder: 1
+}
 export {
   globalConst,
   modalTitle,
@@ -109,5 +113,6 @@ export {
   workType,
   workTypeValue,
   workOrderTypes,
-  workOrderTypeStatus
+  workOrderTypeStatus,
+  baseListTypes
 }

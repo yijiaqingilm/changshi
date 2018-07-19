@@ -28,12 +28,18 @@ import mask from 'components/masking/masking.vue'
 import ErrPanel from 'components/errorPanel/errorPanel'
 import Line10 from 'components/line10/Line10'
 import BaseIcon from 'components/baseIcon/BaseIcon'
+import BaseFormGroup from 'components/baseFormGroup/BaseFormGroup'
+import BaseList from 'components/baseList/BaseList'
+import BaseListItem from 'components/baseList/BaseListItem'
 
 Vue.use(VueResource)
 Vue.use(Framework7Vue)
 
 Vue.component('line-10', Line10)
 Vue.component('base-icon', BaseIcon)
+Vue.component('base-form-group', BaseFormGroup)
+Vue.component('base-list', BaseList)
+Vue.component('base-list-item', BaseListItem)
 Vue.component('masking', mask)
 Vue.component('errPanel', ErrPanel)
 

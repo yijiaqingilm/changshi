@@ -199,22 +199,6 @@ textarea {
   color: red;
 }
 
-.fo-form-group {
-  display: flex;
-  margin: 40px 0;
-  .s-label {
-    flex: none;
-    height: 50px;
-    line-height: 50px;
-    min-width: 180px;
-    padding-top: 5px;
-  }
-  .s-item {
-    flex: auto;
-    padding-left: 15px;
-  }
-}
-
 .s-select {
   display: inline-block;
   width: 400px;
@@ -241,4 +225,17 @@ textarea {
   padding-left: 15px;
   border: 1px solid $gray_color; /*no*/
   border-radius: 14px;
+}
+
+.vdatetime-input {
+  border: 0;
+  text-align: center;
+}
+
+.mt-40 {
+  margin-top: 40px;
+}
+
+.mt-30 {
+  margin-top: 30px;
 }
