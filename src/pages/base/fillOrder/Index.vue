@@ -85,7 +85,16 @@
         <base-form-group class="m-40" label="是否存在遗留问题">
             <f7-input type="switch" v-model="jobCard.isLeaveQuestion"></f7-input>
         </base-form-group>
-        <question></question>
+        {{jobCard.leave}}
+        <question-group @handleAdd="addQuestion">
+            <question-item v-for="(question,index) in jobCard.leave"
+                           :key="index"
+                           :index="index+1"
+                           @del="handleDelQuestion(question)"
+                           :leave.sync="question.leave"
+                           :question.sync="question.question">
+            </question-item>
+        </question-group>
         <div v-if="showAmmeter">
             <f7-list class="ammeter-accordion">
                 <f7-list-item accordion-item
@@ -138,10 +147,20 @@
 </template>
 
 <script>
-  import { client, clientValue, globalConst as native, major, majorValue, workType, workTypeValue } from 'lib/const'
+  import {
+    leave as leaveType,
+    client,
+    clientValue,
+    globalConst as native,
+    major,
+    majorValue,
+    workType,
+    workTypeValue
+  } from 'lib/const'
   import BaseRadioGroup from 'components/baseRadioGroup/BaseRadioGroup'
   import BaseRadio from 'components/baseRadioGroup/children/BaseRadio'
-  import Question from 'components/baseQuestion/BaseQuestion.vue'
+  import QuestionGroup from 'components/baseQuestion/BaseQuestion.vue'
+  import QuestionItem from 'components/baseQuestion/BaseQuestionItem.vue'
   import Vue from 'vue'
   import Datetime from 'vue-datetime'
   import 'vue-datetime/dist/vue-datetime.css'
@@ -156,6 +175,13 @@
       this.currentNum = currentNum
       this.useNum = useNum
       this.img = img
+    }
+  }
+
+  class Question {
+    constructor (question = 'test', leave = leaveType.two) {
+      this.question = question
+      this.leave = leave
     }
   }
 
@@ -194,15 +220,16 @@
             format: 'yyyy-MM-dd HH:mm:ss'
           }
         },
-          /* 电表数据 */
+        /* 电表数据 */
         ammeterList: []
       }
     },
     created () {
-      this.$store.dispatch({
+      /* this.$store.dispatch({
         type: native.doAddressList,
-        s: 'province'
-      })
+        s: 'city',
+        province_id: 2
+      })*/
     },
     computed: {
       showAmmeter () {
@@ -227,9 +254,16 @@
       }
     },
     methods: {
-        /* formatTest () {
-         console.log(moment(this.startTime).format('YYYY-MM-DD HH:mm:ss'))
-         },*/
+      handleDelQuestion () {
+        console.log('del 问题')
+      },
+      addQuestion () {
+        this.jobCard.leave.push(new Question())
+        console.log('添加问题')
+      },
+      formatTest () {
+        // console.log(moment(this.startTime).format('YYYY-MM-DD HH:mm:ss'))
+      },
       addAmmeter () {
         this.ammeterList.push(new Ammeter())
       },
@@ -256,7 +290,7 @@
             this.jobCard.major = value[0]
           }
         })
-        let {client, major, workType}=this.jobCard
+        let {client, major, workType} = this.jobCard
         this.$store.dispatch({
           type: native.doWorkSort,
           client,
@@ -283,10 +317,10 @@
         // this.majorPicker.close()
         // this.workSortPicker.open()
         // this.workSortPicker.close()
-        this.$f7.accordionOpen('.accordion-item')
+        //  this.$f7.accordionOpen('.accordion-item')
       })
     },
-    components: {BaseRadio, BaseRadioGroup, Question}
+    components: {BaseRadio, BaseRadioGroup, QuestionGroup, QuestionItem}
   }
 </script>
 

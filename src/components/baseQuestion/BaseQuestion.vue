@@ -1,25 +1,7 @@
 <template>
     <div class='base-question-group'>
-        <div class='base-question'>
-            <div class='title'>
-                <div>问题1</div>
-                <div>
-                    <base-icon iconName="del" label="删除"></base-icon>
-                </div>
-            </div>
-            <base-form-group label="遗留问题级别：">
-                <span class='s-select'>test</span>
-                <input type="hidden">
-            </base-form-group>
-            <div>
-                <header>遗留问题:</header>
-                <div class='mt-30'>
-                    <textarea class='s-textarea' placeholder='请填写遗留问题内容'></textarea>
-                </div>
-            </div>
-            <div></div>
-        </div>
-        <div class='base-question-add'>
+        <slot></slot>
+        <div class='base-question-add' @click="handleAdd">
             <base-tab label="添加问题" :icon="iconSrc.iconAdd"></base-tab>
         </div>
     </div>
@@ -43,6 +25,11 @@
         iconSrc: {
           iconAdd
         }
+      }
+    },
+    methods: {
+      handleAdd () {
+        this.$emit('handleAdd')
       }
     },
     components: {BaseTab}

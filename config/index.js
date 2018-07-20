@@ -52,7 +52,7 @@ module.exports = {
     cssSourceMap: true,
     globals: {
       __DEBUG__: true,
-      serverUrl: JSON.stringify('http://127.0.0.1:8080/api'),
+      serverUrl: JSON.stringify('http://127.0.0.1:8008/api'),
       VERSION: JSON.stringify('V.1.0')
     }
   },

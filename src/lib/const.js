@@ -98,6 +98,17 @@ const baseListTypes = {
   workOrder: 0,
   questionOrder: 1
 }
+// 1紧急，2一般，3非紧急’
+const leave = {
+  three: 1,
+  two: 2,
+  one: 3
+}
+const leaveValue = [
+  {key: leave.three, value: '紧急'},
+  {key: leave.two, value: '一般'},
+  {key: leave.one, value: '非紧急'},
+]
 export {
   globalConst,
   modalTitle,
@@ -111,9 +122,11 @@ export {
   clientValue,
   major,
   majorValue,
+  leaveValue,
   workType,
   workTypeValue,
   workOrderTypes,
   workOrderTypeStatus,
-  baseListTypes
+  baseListTypes,
+  leave
 }
