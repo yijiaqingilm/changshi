@@ -1,0 +1,35 @@
+@import "../../css/globalFunc";
+.work-order-tabs {
+  display: flex;
+  width: 100%;
+  height: 80px;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid $gray_color; /*no*/
+}
+
+.work-order-tab {
+  position: relative;
+  flex: 1;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  @include setFontSize($middleFontSize);
+  &.is-checked {
+    color: $theme_color;
+    &:after {
+      position: absolute;
+      bottom: 0;
+      display: block;
+      content: '';
+      width: 30%;
+      height: 2px; /*no*/
+      background-color: $theme_color;
+    }
+  }
+  .base-tab-input {
+    position: absolute;
+    opacity: 0;
+  }
+}

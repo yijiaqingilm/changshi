@@ -17,6 +17,7 @@
                 </base-radio>
             </base-radio-group>
         </section>
+        <base-select v-model="jobCard.major" text="请选择" :data="majorValue"></base-select>
         <base-form-group class="m-40" label="专业选择" mark @click="openMajorSelect">
             <input type="hidden" v-model="jobCard.major" class='major-value'>
             <span class='s-select'>{{dispalymajorValue}}</span>

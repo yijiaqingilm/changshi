@@ -24,5 +24,5 @@
 </script>
 
 <style lang="scss" scoped type="text/css">
-    @import "./workOrderChilren.scss";
+    @import "baseTabsCtrl.scss";
 </style>

@@ -94,9 +94,11 @@ const workOrderTypes = [
   {key: workOrderTypeStatus.review, value: '待审核'},
   {key: workOrderTypeStatus.done, value: '已归档'}
 ]
+
 const baseListTypes = {
   workOrder: 0,
-  questionOrder: 1
+  questionOrder: 1,
+  sysOrder: 2
 }
 // 1紧急，2一般，3非紧急’
 const leave = {
@@ -109,6 +111,7 @@ const leaveValue = [
   {key: leave.two, value: '一般'},
   {key: leave.one, value: '非紧急'},
 ]
+const generatorIds = [15, 55]
 export {
   globalConst,
   modalTitle,

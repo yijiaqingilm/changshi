@@ -11,9 +11,9 @@
             <h-list-item desc="已归档工单" title="263"></h-list-item>
         </h-list>
         <section>
-            <tabs v-model="workOrderType" @change="showTab">
+            <tabs-ctrl v-model="workOrderType" @change="showTab">
                 <tab v-for="(type,index) in workOrderTypes" :key="index" :title="type.value" :label="type.key"></tab>
-            </tabs>
+            </tabs-ctrl>
             <f7-tabs animated>
                 <f7-tab v-for="(type,index) in workOrderTypes"
                         :key="index"
@@ -30,8 +30,8 @@
   import { globalConst as native, workOrderTypes, workOrderTypeStatus } from 'lib/const'
   import HList from './chilren/HList.vue'
   import HListItem from './chilren/HListItem.vue'
-  import Tabs from './chilren/WorkOrderTabs'
-  import Tab from './chilren/WorkOrderTab'
+  import TabsCtrl from 'components/baseTabsCtrl/BaseTabs.vue'
+  import Tab from 'components/baseTabsCtrl/BaseTab.vue'
   import ViewDone from './chilren/WorkOrderDone'
   import ViewReview from './chilren/WorkOrderReview'
   import ViewUndone from './chilren/WorkOrderUndone'
@@ -55,7 +55,7 @@
     components: {
       HList,
       HListItem,
-      Tabs,
+      TabsCtrl,
       Tab,
       [`orderTypeView_${workOrderTypeStatus.done}`]: ViewDone,
       [`orderTypeView_${workOrderTypeStatus.review}`]: ViewReview,

@@ -20,7 +20,7 @@
     div {
       width: 100%;
       @include ellipsis;
-      margin-bottom: 30px;
+      margin-bottom: 15px;
       &:nth-child(1) {
         @include setFontSize($middleFontSize)
       }
@@ -32,7 +32,7 @@
     height: 80px;
     justify-content: center;
     align-items: center;
-    div {
+    > div {
       text-align: center;
       flex: 1;
       border-right: 1px solid #999999; /*no*/
@@ -40,5 +40,13 @@
         border-right: 0;
       }
     }
+  }
+}
+
+.sys-buttons {
+  display: flex;
+  justify-content: space-around;
+  > div {
+    flex: 0 0 40%
   }
 }

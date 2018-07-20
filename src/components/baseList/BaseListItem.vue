@@ -2,9 +2,9 @@
     <div>
         <div class='list-item'>
             <div class='item-ctrl' @click="_click">
-                <div>工单：{{workName}}</div>
-                <div>工单号：{{workNo}}</div>
                 <template v-if="itemType===baseListTypes.workOrder">
+                    <div>工单：{{workName}}</div>
+                    <div>工单号：{{workNo}}</div>
                     <div>客户：{{workClient}}</div>
                     <div>专业：{{workMajor}}</div>
                     <div>作业点：{{workPoint}}</div>
@@ -13,8 +13,17 @@
                     <div v-if='workPassTime'>审核归档时间：{{workPassTime}}</div>
                 </template>
                 <template v-if="itemType===baseListTypes.questionOrder">
+                    <div>工单：{{workName}}</div>
+                    <div>工单号：{{workNo}}</div>
                     <div>问题数：{{questionCount}}个</div>
                     <div>问题级别：{{questionLevel}}</div>
+                </template>
+                <template v-if="itemType===baseListTypes.sysOrder">
+                    <div>待审核工单：{{workName}}</div>
+                    <div>工单号：{{workNo}}</div>
+                    <div>客户：{{workClient}}</div>
+                    <div>专业：{{workMajor}}</div>
+                    <div>作业点：{{workPoint}}</div>
                 </template>
                 <span class='item-ctrl-gt'></span>
             </div>
@@ -28,6 +37,16 @@
                     </div>
                     <div>
                         <base-icon label="提交审核" iconName='check'></base-icon>
+                    </div>
+                </template>
+                <template v-if="itemType===baseListTypes.sysOrder">
+                    <div class='sys-buttons'>
+                        <div>
+                            <f7-button color="gray" @click="handleApply(0)">审核不通过</f7-button>
+                        </div>
+                        <div>
+                            <f7-button active full @click="handleApply(1)">审核通过</f7-button>
+                        </div>
                     </div>
                 </template>
             </div>
@@ -64,12 +83,15 @@
       }
     },
     created () {
-      console.log('获取父元素对象', this.$parent)
+      console.log('获取父元素对象', this.$parent, this.$parent.$props.type)
       this.itemType = this.$parent.$props.type
     },
     methods: {
       _click () {
         this.$emit('click')
+      },
+      handleApply (value) {
+        value ? this.$emit('apply:pass') : this.$emit('apply:noPass')
       }
     }
   }

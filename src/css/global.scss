@@ -220,6 +220,20 @@ textarea {
   border-radius: 14px;
 }
 
+.s-scan {
+  display: inline-block;
+  width: 400px;
+  height: 50px;
+  line-height: 50px;
+  padding-left: 15px;
+  border: 1px solid $gray_color; /*no*/
+  border-radius: 14px;
+  background-image: url("~assets/icon_scan.png");
+  background-repeat: no-repeat;
+  background-size: 35px;
+  background-position: right 10px center;
+}
+
 .s-textarea {
   padding-top: 15px;
   padding-left: 15px;
@@ -242,4 +256,8 @@ textarea {
 
 .mt-30 {
   margin-top: 30px;
+}
+
+.w-40 {
+  width: 40%;
 }

@@ -31,7 +31,9 @@ import BaseIcon from 'components/baseIcon/BaseIcon'
 import BaseFormGroup from 'components/baseFormGroup/BaseFormGroup'
 import BaseList from 'components/baseList/BaseList'
 import BaseListItem from 'components/baseList/BaseListItem'
-
+import BaseRadioGroup from 'components/baseRadioGroup/BaseRadioGroup.vue'
+import BaseRadio from 'components/baseRadioGroup/children/BaseRadio.vue'
+import BaseSelect from 'components/baseSelect/BaseSelect.vue'
 Vue.use(VueResource)
 Vue.use(Framework7Vue)
 
@@ -40,11 +42,14 @@ Vue.component('base-icon', BaseIcon)
 Vue.component('base-form-group', BaseFormGroup)
 Vue.component('base-list', BaseList)
 Vue.component('base-list-item', BaseListItem)
+Vue.component('base-radio-group', BaseRadioGroup)
+Vue.component('base-radio', BaseRadio)
+Vue.component('base-select',BaseSelect)
 Vue.component('masking', mask)
 Vue.component('errPanel', ErrPanel)
 
 /* let user_store = sessionStorage.getItem('user_store')
-user_store && store.replaceState(Object.assign(store.state, JSON.parse(user_store)))*/
+ user_store && store.replaceState(Object.assign(store.state, JSON.parse(user_store)))*/
 // Init App
 let app = new Vue({
   template: '<app/>',
