@@ -21,9 +21,9 @@
             <section>
                 <base-title title="基础维护"></base-title>
                 <base-tabs>
-                    <base-tab label="作业填报" :icon="iconSrc.orderAdd"></base-tab>
-                    <base-tab label="我的工单" :icon="iconSrc.myOrder"></base-tab>
-                    <base-tab label="遗留问题工单" :icon="iconSrc.question"></base-tab>
+                    <base-tab label="作业填报" link="/base/fillOrder/index" :icon="iconSrc.orderAdd"></base-tab>
+                    <base-tab label="我的工单" link="/base/workOrder/index" :icon="iconSrc.myOrder"></base-tab>
+                    <base-tab label="遗留问题工单" link="/base/questionOrder/index" :icon="iconSrc.question"></base-tab>
                 </base-tabs>
             </section>
             <section>

@@ -12,14 +12,16 @@
         </h-list>
         <section>
             <tabs-ctrl v-model="workOrderType" @change="showTab">
-                <tab v-for="(type,index) in workOrderTypes" :key="index" :title="type.value" :label="type.key"></tab>
+                <tab v-for="(type,index) in workOrderTypes" :key="index" :title="type.label" :label="type.value"></tab>
             </tabs-ctrl>
             <f7-tabs animated>
                 <f7-tab v-for="(type,index) in workOrderTypes"
                         :key="index"
-                        :class="{['tab-'+type.key]:true}"
-                        :active="workOrderType===type.key">
-                    <component :is="'orderTypeView_'+ type.key"></component>
+                        :class="{['tab-'+type.value]:true}"
+                        :active="workOrderType===type.value">
+                    <keep-alive>
+                        <component :is="'orderTypeView_'+ type.value"></component>
+                    </keep-alive>
                 </f7-tab>
             </f7-tabs>
         </section>

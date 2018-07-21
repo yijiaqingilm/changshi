@@ -1,5 +1,5 @@
 <template>
-    <span class="base-icon" :class="'icon-'+iconName">{{label}}</span>
+    <span @click="_click" class="base-icon" :class="'icon-'+iconName">{{label}}</span>
 </template>
 
 <script>
@@ -8,10 +8,15 @@
       label: String,
       iconName: String
     },
-    name: ''
+    name: '',
+    methods: {
+      _click () {
+        this.$emit('click')
+      }
+    }
   }
 </script>
 
 <style lang="scss" scoped type="text/css">
-@import "./baseIcon.scss";
+    @import "./baseIcon.scss";
 </style>

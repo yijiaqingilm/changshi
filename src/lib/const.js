@@ -65,12 +65,12 @@ const major = {
   jf: 6
 }
 const majorValue = [
-  {key: major.xianlu, value: '线路'},
-  {key: major.jizhan, value: '基站'},
-  {key: major.ironTower, value: '铁塔'},
-  {key: major.jtzx, value: '集团专线'},
-  {key: major.wlan, value: 'wlan'},
-  {key: major.jf, value: '机房'}
+  {value: major.xianlu, label: '线路'},
+  {value: major.jizhan, label: '基站'},
+  {value: major.ironTower, label: '铁塔'},
+  {value: major.jtzx, label: '集团专线'},
+  {value: major.wlan, label: 'wlan'},
+  {value: major.jf, label: '机房'}
 ]
 const workType = {
   // 按年
@@ -87,12 +87,12 @@ const workTypeValue = [
 const workOrderTypeStatus = {
   undone: 0,
   review: 1,
-  done: 2
+  done: 3
 }
 const workOrderTypes = [
-  {key: workOrderTypeStatus.undone, value: '未归档'},
-  {key: workOrderTypeStatus.review, value: '待审核'},
-  {key: workOrderTypeStatus.done, value: '已归档'}
+  {value: workOrderTypeStatus.undone, label: '未归档'},
+  {value: workOrderTypeStatus.review, label: '待审核'},
+  {value: workOrderTypeStatus.done, label: '已归档'}
 ]
 
 const baseListTypes = {
@@ -107,9 +107,9 @@ const leave = {
   one: 3
 }
 const leaveValue = [
-  {key: leave.three, value: '紧急'},
-  {key: leave.two, value: '一般'},
-  {key: leave.one, value: '非紧急'},
+  {value: leave.three, label: '紧急'},
+  {value: leave.two, label: '一般'},
+  {value: leave.one, label: '非紧急'},
 ]
 const generatorIds = [15, 55]
 export {
@@ -131,5 +131,6 @@ export {
   workOrderTypes,
   workOrderTypeStatus,
   baseListTypes,
-  leave
+  leave,
+  generatorIds
 }

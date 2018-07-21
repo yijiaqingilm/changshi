@@ -9,10 +9,16 @@
   export default {
     props: {
       icon: {},
-      label: String
+      label: String,
+      link: {}
     },
     methods: {
       _click () {
+        if (this.link) {
+          console.log('this', this)
+          this.$router.loadPage(this.link)
+          return
+        }
         this.$emit('click')
       }
     },

@@ -17,20 +17,18 @@
                 </base-radio>
             </base-radio-group>
         </section>
-        <base-select v-model="jobCard.major" text="请选择" :data="majorValue"></base-select>
-        <base-form-group class="m-40" label="专业选择" mark @click="openMajorSelect">
-            <input type="hidden" v-model="jobCard.major" class='major-value'>
-            <span class='s-select'>{{dispalymajorValue}}</span>
+
+        <base-form-group class="m-40" label="专业选择" mark>
+            <base-select v-model="jobCard.major" text="请选择专业" :data="majorValue"></base-select>
         </base-form-group>
         <base-form-group class="m-40" label="作业点" mark>
             <div class='mb-c-20'>
                 <div>
                     <input class='s-input' placeholder="请从下方选择或搜索作业点" type="text" readonly v-model="jobPoint">
                 </div>
-                <div class="city"><span class='s-select'>{{dispalyjobPointValue}}</span></div>
+                <div class="city"><span class='s-select'>城市</span></div>
                 <div>
-                    <span class='s-select'>{{dispalyjobPointValue}}</span>
-                    <input type="hidden" v-model='jobPoint'>
+                    <base-select v-model='jobCard.workBase' text="请选择作业点" :data="majorValue"></base-select>
                 </div>
                 <div>
                     <input class='s-input' placeholder="请搜索作业点" type="text">
@@ -48,11 +46,9 @@
                 </base-radio>
             </base-radio-group>
         </section>
-        <base-form-group class="m-40" label="作业类别" mark>
-            <div class='s-select' @click="openWorkSortSelect">
-                <input type="hidden" v-model="workSort" class='workSort-value'>
-                {{dispalyWorkSortValue}}
-            </div>
+        <base-form-group class="m-40" label="作业类别" mark v-if='workSortList && workSortList.length>0'>
+            <base-select v-model='jobCard.workSort' nodeKey="id" nodeLabel="name" text="请选择作业类别"
+                         :data="workSortList"></base-select>
         </base-form-group>
         <base-form-group class="m-40" label="作业起止时间" mark></base-form-group>
         <div class='time-group'>
@@ -86,60 +82,56 @@
         <base-form-group class="m-40" label="是否存在遗留问题">
             <f7-input type="switch" v-model="jobCard.isLeaveQuestion"></f7-input>
         </base-form-group>
-        {{jobCard.leave}}
-        <question-group @handleAdd="addQuestion">
+        {{ jobCard.leave}}
+        <question-group @handleAdd="addQuestion" v-if="jobCard.isLeaveQuestion">
             <question-item v-for="(question,index) in jobCard.leave"
                            :key="index"
                            :index="index+1"
-                           @del="handleDelQuestion(question)"
+                           @del="handleDelQuestion(question,index)"
                            :leave.sync="question.leave"
                            :question.sync="question.question">
             </question-item>
         </question-group>
+        {{showAmmeter}}
         <div v-if="showAmmeter">
-            <f7-list class="ammeter-accordion">
-                <f7-list-item accordion-item
-                              v-for="(ammeter,index) in ammeterList"
-                              :key="index"
-                              :title="'电表'+(index+1)">
-                    <f7-accordion-content>
-                        <base-form-group label="电表编号">
-                            <input class='s-input' type="text" v-model='ammeter.code' placeholder="请扫描或输入电表编号">
-                        </base-form-group>
-                        <f7-list>
-                            <f7-list-item>
-                                <f7-label>电表编号</f7-label>
-                                <f7-input type="text" placeholder="Name"/>
-                            </f7-list-item>
-                            <f7-list-item>
-                                <f7-label>抄表时间</f7-label>
-                                <f7-input type="text" placeholder="Name"/>
-                            </f7-list-item>
-                            <f7-list-item>
-                                <f7-label>上一周期抄电表度数</f7-label>
-                                <f7-input type="text" placeholder="Name"/>
-                            </f7-list-item>
-                            <f7-list-item>
-                                <f7-label>本周期抄电表度数</f7-label>
-                                <f7-input type="text" placeholder="Name"/>
-                            </f7-list-item>
-                            <f7-list-item>
-                                <f7-label>使用度数</f7-label>
-                                <f7-input type="text" placeholder="Name"/>
-                            </f7-list-item>
-                            <f7-list-item>
-                                <f7-label>上传电表照</f7-label>
-                                <f7-input type="text" placeholder="Name"/>
-                            </f7-list-item>
-                        </f7-list>
-                    </f7-accordion-content>
-                </f7-list-item>
-                <f7-list-item accordion-item :title="'电表'+(ammeterList.length+1)">
-                    <f7-accordion-content>
-                        <div @click="addAmmeter">添加电表</div>
-                    </f7-accordion-content>
-                </f7-list-item>
-            </f7-list>
+            <ammeter-group @addAmmeter="addAmmeter">
+                <ammeter-item v-for="(ammeter,index) in jobCard.ammeter"
+                              :index="index+1"
+                              :code.sync="ammeter.code"
+                              :date.sync="ammeter.date"
+                              :prevNum="ammeter.prevNum"
+                              :currentNum.sync="ammeter.currentNum"
+                              :useNum.sync="ammeter.useNum"
+                              :img.sync="ammeter.img"
+                              @del="handleDelAmmeter(ammeter,index)"
+                              @scanAmmeter="scanAmmeter(ammeter,index)"
+                              :key="index">
+                </ammeter-item>
+            </ammeter-group>
+        </div>
+        <div v-if="showDynamotor">
+            <base-form-group label="电表编号">
+                <input type="text" class='s-scan' @click="scanDynamotor" placeholder='请扫描或输入电表编号'>
+            </base-form-group>
+            <base-form-group label="发电时间">
+                <div>
+                    <div>2018:08dfaf</div>
+                    <div>
+                        <f7-button active full>开始发电</f7-button>
+                    </div>
+                </div>
+            </base-form-group>
+            <base-form-group label="结束时间">
+                <div>
+                    <div>2018:08dfaf</div>
+                    <div>
+                        <f7-button active full>结束发电</f7-button>
+                    </div>
+                </div>
+            </base-form-group>
+            <base-form-group label="发电时长">
+                8个小时
+            </base-form-group>
         </div>
         <f7-block>
             <f7-button full active big>提交</f7-button>
@@ -156,24 +148,29 @@
     major,
     majorValue,
     workType,
-    workTypeValue
+    workTypeValue,
+    generatorIds
   } from 'lib/const'
   import BaseRadioGroup from 'components/baseRadioGroup/BaseRadioGroup'
   import BaseRadio from 'components/baseRadioGroup/children/BaseRadio'
   import QuestionGroup from 'components/baseQuestion/BaseQuestion.vue'
   import QuestionItem from 'components/baseQuestion/BaseQuestionItem.vue'
+  import AmmeterGroup from 'components/baseAmmeter/BaseAmmeter'
+  import AmmeterItem from 'components/baseAmmeter/BaseAmmeterItem'
   import Vue from 'vue'
   import Datetime from 'vue-datetime'
   import 'vue-datetime/dist/vue-datetime.css'
   import moment from 'lib/moment'
+  import { mapState } from 'vuex'
 
   Vue.use(Datetime)
 
   class Ammeter {
-    constructor (code, date, currentNum, useNum, img) {
+    constructor (code, date, currentNum, useNum, img, prevNum) {
       this.code = code
       this.date = date
       this.currentNum = currentNum
+      this.prevNum = prevNum
       this.useNum = useNum
       this.img = img
     }
@@ -203,13 +200,14 @@
           refWorkNumber: '',
           isLeaveQuestion: true,
           leave: [],
-          ammeter: []
+          ammeter: [],
+          dynamotor: {
+            code: '',
+            lastNum: ''
+          }
         },
         clientValue,
         workTypeValue,
-        majorPicker: null,
-        workSortPicker: null,
-        workSort: null,
         majorValue,
         jobPoint: null,
         dateTime: {
@@ -221,8 +219,10 @@
             format: 'yyyy-MM-dd HH:mm:ss'
           }
         },
-        /* 电表数据 */
-        ammeterList: []
+        workSortList: [],
+        iconSrc: {
+          add: require('../../../assets/icon_add.png'),
+        }
       }
     },
     created () {
@@ -234,7 +234,7 @@
     },
     computed: {
       showAmmeter () {
-        switch (this.major >>> 0) {
+        switch (this.jobCard.major >>> 0) {
           case major.jizhan:
           case major.jf:
           case major.wlan:
@@ -243,20 +243,80 @@
             return false
         }
       },
-      dispalymajorValue () {
-        return majorValue.filter((row) => row.key >>> 0 === this.jobCard.major >>> 0)[0].value
+      showDynamotor () {
+        return generatorIds.indexOf(this.jobCard.workSort >>> 0) !== -1
+      }
+    },
+    watch: {
+      'jobCard.client': {
+        handler: function (nowClient, oldClient) {
+          this.changeSortTypeList()
+        },
+        immediate: true
       },
-      // 需要修改
-      dispalyWorkSortValue () {
-        return majorValue.filter((row) => row.key >>> 0 === this.jobCard.major >>> 0)[0].value
+      'jobCard.workType': {
+        handler: function (nowWorkType, oldWorkType) {
+          this.changeSortTypeList()
+        },
+        immediate: true
       },
-      dispalyjobPointValue () {
-
+      'jobCard.major': {
+        handler: function (nowMajor, oldMajor) {
+          this.changeSortTypeList()
+        },
+        immediate: true
       }
     },
     methods: {
-      handleDelQuestion () {
+      // 发电机
+      scanDynamotor () {
+        let code = ''
+        if (__DEBUG__) {
+          code = '1'
+        }
+        this.$store.dispatch({
+          type: native.doGetDynamotor,
+          code
+        }).then((data) => {
+          this.jobCard.dynamotor = 'xxxx编号'
+        })
+        if (__DEBUG__) {
+          this.jobCard.dynamotor = 'xxxx编号'
+        }
+      },
+      // 电表
+      scanAmmeter (ammeter, index) {
+        let code = ''
+        if (__DEBUG__) {
+          code = '123'
+        }
+        this.$store.dispatch({
+          type: native.doGetAmmeter,
+          code
+        }).then(({data}) => {
+          ammeter.code = data.id + ''
+          ammeter.prevNum = data.last_num ? data.last_num + '' : '0'
+          ammeter.date = new Date().getTime() + ''
+        })
+        if (__DEBUG__) {
+          ammeter.code = 'xxxx'
+        }
+      },
+      changeSortTypeList () {
+        let {client, workType, major} = this.jobCard
+        this.$store.dispatch({
+          type: native.doWorkSort,
+          client,
+          work_type: workType,
+          major
+        }).then((data) => {
+          this.workSortList = data.data
+        })
+        console.log('cest', this.jobCard.client)
+      },
+      handleDelQuestion (question, index) {
         console.log('del 问题')
+        this.jobCard.leave.splice(index, 1)
       },
       addQuestion () {
         this.jobCard.leave.push(new Question())
@@ -266,62 +326,17 @@
         // console.log(moment(this.startTime).format('YYYY-MM-DD HH:mm:ss'))
       },
       addAmmeter () {
-        this.ammeterList.push(new Ammeter())
+        console.log('???')
+        this.jobCard.ammeter.push(new Ammeter())
       },
-      openMajorSelect () {
-        this.majorPicker.open()
-      },
-      openWorkSortSelect () {
-        this.workSortPicker.open()
+      handleDelAmmeter (ammeter, index) {
+        this.jobCard.ammeter.splice(index, 1)
       }
     },
     mounted () {
-      this.$nextTick(() => {
-        this.majorPicker = this.$f7.picker({
-          closeByOutsideClick: false,
-          input: '.major-value',
-          cols: [
-            {
-              textAlign: 'center',
-              displayValues: majorValue.map((row) => row.value),
-              values: majorValue.map((row) => row.key)
-            }
-          ],
-          onClose: ({cols, value}) => {
-            this.jobCard.major = value[0]
-          }
-        })
-        let {client, major, workType} = this.jobCard
-        this.$store.dispatch({
-          type: native.doWorkSort,
-          client,
-          work_type: workType,
-          major
-        })
-        // 需要修改
-        this.workSortPicker = this.$f7.picker({
-          closeByOutsideClick: false,
-          input: '.workSort-value',
-          cols: [
-            {
-              textAlign: 'center',
-              displayValues: workTypeValue.map((row) => row.value),
-              values: workTypeValue.map((row) => row.key)
-            }
-          ],
-          onClose: ({cols, value}) => {
-            this.workSort = value
-          }
-        })
-        // 手动初始化picker cols
-        //  this.majorPicker.open()
-        // this.majorPicker.close()
-        // this.workSortPicker.open()
-        // this.workSortPicker.close()
-        //  this.$f7.accordionOpen('.accordion-item')
-      })
+
     },
-    components: {BaseRadio, BaseRadioGroup, QuestionGroup, QuestionItem}
+    components: {BaseRadio, BaseRadioGroup, QuestionGroup, QuestionItem, AmmeterGroup, AmmeterItem}
   }
 </script>
 

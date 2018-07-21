@@ -9,7 +9,7 @@
   export default {
     props: {
       label: {},
-      title: String,
+      title: {},
       active: {
         type: Boolean,
         default: false

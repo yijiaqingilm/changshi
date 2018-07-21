@@ -6,9 +6,9 @@
                 <base-icon @click="handleDel" iconName="del" label="删除"></base-icon>
             </div>
         </div>
-        <base-form-group label="遗留问题级别：" @click="openLeaveSelect">
-            <input type="hidden" v-model="_leave" class='major-value'>
-            <span class='s-select'>{{dispalyLeaveValue}}</span>
+
+        <base-form-group label="遗留问题级别：">
+            <base-select v-model="_leave" text="text" :data="leaveValue"></base-select>
         </base-form-group>
         <div>
             <header>遗留问题:</header>
@@ -35,13 +35,10 @@
     name: '',
     data () {
       return {
-        leavePicker: null
+        leaveValue
       }
     },
     methods: {
-      openLeaveSelect () {
-        this.leavePicker.open()
-      },
       handleDel () {
         this.$emit('del')
       }
@@ -64,28 +61,7 @@
         }
 
       },
-      dispalyLeaveValue () {
-        return leaveValue.filter((row) => row.key >>> 0 === this._leave >>> 0)[0].value
-      },
     },
-    mounted () {
-      this.$nextTick(() => {
-        this.leavePicker = this.$f7.picker({
-          closeByOutsideClick: false,
-          input: '.leave-value',
-          cols: [
-            {
-              textAlign: 'center',
-              displayValues: leaveValue.map((row) => row.value),
-              values: leaveValue.map((row) => row.key)
-            }
-          ],
-          onClose: ({cols, value}) => {
-            this._leave = value[0] >>> 0
-          }
-        })
-      })
-    }
   }
 </script>
 
