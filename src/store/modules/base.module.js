@@ -7,10 +7,20 @@ import { applyClientMiddleware } from 'src/main'
 
 const state = {
   workSortList: [],
-  workOrder: {}
+  workOrder: {},
+  questionOrder: {}
 }
 const getters = {}
 const actions = {
+  [native.doLeaveQuestionDetail] ({state}, refs) {
+    let quesitonOrderId = refs.work_id
+    if (isEmptyObject(state.questionOrder[quesitonOrderId])) {
+      return applyClientMiddleware(api.doLeaveQuestionDetail)(refs)
+    }
+  },
+  [native.doLeaveQuestion] ({state}, refs) {
+    return applyClientMiddleware(api.doLeaveQuestion)(refs)
+  },
   [native.doWorkNumberDetail] ({state}, refs) {
     let workOrderId = refs.work_id
     if (isEmptyObject(state.workOrder[workOrderId])) {
@@ -47,6 +57,14 @@ const actions = {
   }
 }
 let mutations = {
+  [mutationNames.doLeaveQuestionDetail_success] (state, {data, refs}) {
+    let questionOrderId = refs.work_id
+    Vue.set(state.questionOrder, questionOrderId, data)
+    console.log(data, 'data')
+  },
+  [mutationNames.doLeaveQuestion_success] (state, {data}) {
+    console.log(data, 'data')
+  },
   [mutationNames.doWorkNumberDetail_success] (state, {data, refs}) {
     let workOrderId = refs.work_id
     Vue.set(state.workOrder, workOrderId, data)

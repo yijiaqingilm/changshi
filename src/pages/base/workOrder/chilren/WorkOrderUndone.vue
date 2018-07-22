@@ -91,7 +91,6 @@
             $state.complete()
           }
         })
-
       },
     },
     components: {InfiniteLoading}
