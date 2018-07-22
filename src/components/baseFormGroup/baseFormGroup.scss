@@ -6,7 +6,6 @@
     height: 50px;
     line-height: 50px;
     min-width: 180px;
-    padding-top: 5px;
     &.title {
       @include setFontSize($middleFontSize);
     }

@@ -14,7 +14,7 @@ export default class ApiClient {
         console.log(serverUrl, 'xx', url)
         Vue.http({
           method: method,
-          url: serverUrl + url + (sessionKey && '?sessionKey=' + sessionKey),
+          url: serverUrl + url + (sessionKey && '?sessionkey=' + sessionKey),
           [method === 'get' ? 'params' : 'body']: params,
           global: global
         }).then((response) => {

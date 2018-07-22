@@ -4,22 +4,18 @@
             <base-list-item
                     v-for="(order,index) in workList"
                     :key="index"
-                    @click="goDetail"
+                    @click="goDetail(order)"
+                    @workOrder:del="hanleDel(order,index)"
+                    @workOrder:edit="handleEdit(order,index)"
+                    @workOrder:apply="handleApply(order,index)"
                     showAction
-                    workName="工单1"
-                    workNo="工单号"
-                    workClient="客户"
-                    workMajor="专业"
-                    workPoint="作业点">
-            </base-list-item>
-            <base-list-item
-                    @click="goDetail"
-                    showAction
-                    workName="工单1"
-                    workNo="工单号"
-                    workClient="客户"
-                    workMajor="专业"
-                    workPoint="作业点">
+                    :workName="index+1"
+                    :workNo="order.number"
+                    :workClient="order.client"
+                    :workMajor="order.major"
+                    :workCreateTime="order.created_at"
+                    :workSort="order.work_sort"
+                    :workPoint="order.work_base">
             </base-list-item>
             <infinite-loading @infinite="loadData">
                 <div slot="no-results">没有数据</div>
@@ -29,28 +25,59 @@
     </div>
 </template>
 <script>
-  import { globalConst as native, pageSize, workOrderTypeStatus } from 'lib/const'
+  import { globalConst as native, pageSize, workOrderTypeStatus} from 'lib/const'
   import InfiniteLoading from 'vue-infinite-loading'
-
   export default {
     name: '',
     data () {
       return {
         page: 1,
-        workList: []
+        workList: [],
       }
     },
     methods: {
-      goDetail () {
-        this.$router.loadPage('/base/workOrder/detail/1')
+      goDetail (order) {
+        this.$router.loadPage(`/base/workOrder/detail/${order.id}`)
+      },
+      hanleDel (order = {}, index) {
+        console.log('handle del')
+        if (__DEBUG__) {
+          order.id = 1
+        }
+        this.$f7.confirm('是否确定该工单作废？', '', () => {
+          this.$store.dispatch({
+            type: native.doWorkNumberCancel,
+            work_id: order.id
+          }).then((data) => {
+            this.workList.splice(index, 1)
+          })
+        })
+      },
+      handleEdit (order = {}, index) {
+        if (__DEBUG__) {
+          order.id = 1
+        }
+        console.log('handle edit')
+        this.$router.loadPage(`/base/workOrder/edit/${order.id}`)
+      },
+      handleApply (order = {}, index) {
+        if (__DEBUG__) {
+          order.id = 1
+        }
+        this.$f7.confirm('是否提交审核？', '', () => {
+          this.$store.dispatch({
+            type: native.doWorkNumberApprove,
+            work_id: order.id
+          }).then((data) => {
+            this.workList.splice(index, 1)
+          })
+        })
       },
       loadData ($state) {
-        console.log('??loadData?')
         this.$store.dispatch({
           type: native.doWorkNumber,
           page: this.page,
           approve: workOrderTypeStatus.undone
-
         }).then(({data}) => {
           console.log('data', data)
           if (Array.isArray(data) && data.length > 0) {
@@ -64,6 +91,7 @@
             $state.complete()
           }
         })
+
       },
     },
     components: {InfiniteLoading}

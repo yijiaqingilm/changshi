@@ -31,7 +31,7 @@
                     <base-select v-model='jobCard.workBase' text="请选择作业点" :data="majorValue"></base-select>
                 </div>
                 <div>
-                    <input class='s-input' placeholder="请搜索作业点" type="text">
+                    <autocomplate v-model="jobPoint" :placeholder='请搜索作业点' :loadData="getJobPointList"></autocomplate>
                 </div>
             </div>
         </base-form-group>
@@ -82,7 +82,7 @@
         <base-form-group class="m-40" label="是否存在遗留问题">
             <f7-input type="switch" v-model="jobCard.isLeaveQuestion"></f7-input>
         </base-form-group>
-        {{ jobCard.leave}}
+        {{jobCard.leave}}
         <question-group @handleAdd="addQuestion" v-if="jobCard.isLeaveQuestion">
             <question-item v-for="(question,index) in jobCard.leave"
                            :key="index"
@@ -157,6 +157,7 @@
   import QuestionItem from 'components/baseQuestion/BaseQuestionItem.vue'
   import AmmeterGroup from 'components/baseAmmeter/BaseAmmeter'
   import AmmeterItem from 'components/baseAmmeter/BaseAmmeterItem'
+  import Autocomplate from 'components/autocomplate/Autocomplate.vue'
   import Vue from 'vue'
   import Datetime from 'vue-datetime'
   import 'vue-datetime/dist/vue-datetime.css'
@@ -226,11 +227,11 @@
       }
     },
     created () {
-      /* this.$store.dispatch({
-        type: native.doAddressList,
-        s: 'city',
-        province_id: 2
-      })*/
+        /* this.$store.dispatch({
+         type: native.doAddressList,
+         s: 'city',
+         province_id: 2
+         })*/
     },
     computed: {
       showAmmeter () {
@@ -268,6 +269,24 @@
       }
     },
     methods: {
+      getJobPointList () {
+        console.log('getJobPoint')
+        let {provinceId, cityId, districtId, client, major}=this.jobCard
+        if (__DEBUG__) {
+          provinceId = 1
+          cityId = 1
+          districtId = 1
+        }
+        return this.$store.dispatch({
+          type: native.doGetWorkBase,
+          province_id: provinceId,
+          city_id: cityId,
+          district_id: districtId,
+          client,
+          major,
+          name: this.jobPoint
+        })
+      },
       // 发电机
       scanDynamotor () {
         let code = ''
@@ -336,7 +355,7 @@
     mounted () {
 
     },
-    components: {BaseRadio, BaseRadioGroup, QuestionGroup, QuestionItem, AmmeterGroup, AmmeterItem}
+    components: {BaseRadio, BaseRadioGroup, QuestionGroup, QuestionItem, AmmeterGroup, AmmeterItem, Autocomplate}
   }
 </script>
 

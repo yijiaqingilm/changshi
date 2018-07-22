@@ -1,0 +1,7 @@
+@import "../../css/globalFunc";
+
+.hint {
+  color: #b91212;
+  margin: 20px 35px;
+  @include setFontSize($baseFontSize);
+}

@@ -8,6 +8,10 @@
 <script>
   export default {
     props: {
+      isInit: {
+        type: Boolean,
+        default: false
+      },
       value: {},
       data: {},
       text: {

@@ -31,9 +31,9 @@ export default function clientMiddleware (client) {
           resolve({data: result.data})
         } else {
           commit(mutation_fail, {
-            error: result.message, refs: rest
+            error: result.msg, refs: rest
           })
-          reject(result.message)
+          reject(result.msg)
         }
 
       }).catch((error) => {

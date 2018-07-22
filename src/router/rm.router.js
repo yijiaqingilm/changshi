@@ -1,9 +1,12 @@
 /**
  * Created by admin on 2018/7/20.
  */
-import dynamotor from 'src/pages/rm/dynamotor/Dynamotor.vue'
-
+import Dynamotor from 'src/pages/rm/dynamotor/Dynamotor.vue'
+import Vehicle from 'src/pages/rm/vehicle/Vehicle.vue'
+import Logs from 'src/pages/rm/logs/RmLogs.vue'
 let router = [
-  {path: '/rm/dynamotor', component: dynamotor}
+  {path: '/rm/dynamotor', component: Dynamotor},
+  {path: '/rm/vehicle', component: Vehicle},
+  {path: '/rm/logs', component: Logs}
 ]
 export default router

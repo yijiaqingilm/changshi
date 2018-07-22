@@ -29,9 +29,9 @@
             <section>
                 <base-title title="资源管理"></base-title>
                 <base-tabs>
-                    <base-tab label="发电机管理" :icon="iconSrc.dynamo"></base-tab>
-                    <base-tab label="车辆管理" :icon="iconSrc.vehicle"></base-tab>
-                    <base-tab label="记录管理" :icon="iconSrc.logs"></base-tab>
+                    <base-tab label="发电机管理" link="/rm/dynamotor" :icon="iconSrc.dynamo"></base-tab>
+                    <base-tab label="车辆管理" link="/rm/vehicle" :icon="iconSrc.vehicle"></base-tab>
+                    <base-tab label="记录管理" link="/rm/logs" :icon="iconSrc.logs"></base-tab>
                 </base-tabs>
             </section>
             <section>

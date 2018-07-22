@@ -6,10 +6,29 @@ import Vue from 'vue'
 import { applyClientMiddleware } from 'src/main'
 
 const state = {
-  workSortList: []
+  workSortList: [],
+  workOrder: {}
 }
 const getters = {}
 const actions = {
+  [native.doWorkNumberDetail] ({state}, refs) {
+    let workOrderId = refs.work_id
+    if (isEmptyObject(state.workOrder[workOrderId])) {
+      return applyClientMiddleware(api.doWorkNumberDetail)(refs)
+    }
+  },
+  [native.doWorkNumberUpdate] ({state}, refs) {
+    return applyClientMiddleware(api.doWorkNumberUpdate)(refs)
+  },
+  [native.doWorkNumberApprove] ({state}, refs) {
+    return applyClientMiddleware(api.doWorkNumberApprove)(refs)
+  },
+  [native.doWorkNumberCancel] ({state}, refs) {
+    return applyClientMiddleware(api.doWorkNumberCancel)(refs)
+  },
+  [native.doGetWorkBase] ({state}, refs) {
+    return applyClientMiddleware(api.doGetWorkBase)(refs)
+  },
   [native.doWorkNumber] ({state}, refs) {
     return applyClientMiddleware(api.doWorkNumber)(refs)
   },
@@ -28,6 +47,23 @@ const actions = {
   }
 }
 let mutations = {
+  [mutationNames.doWorkNumberDetail_success] (state, {data, refs}) {
+    let workOrderId = refs.work_id
+    Vue.set(state.workOrder, workOrderId, data)
+    console.log(data, 'data')
+  },
+  [mutationNames.doWorkNumberUpdate_success] (state, {data}) {
+    console.log(data, 'data')
+  },
+  [mutationNames.doWorkNumberApprove_success] (state, {data}) {
+    console.log(data, 'data')
+  },
+  [mutationNames.doWorkNumberCancel_success] (state, {data}) {
+    console.log(data, 'data')
+  },
+  [mutationNames.doGetWorkBase_success] (state, {data}) {
+    console.log(data, 'data')
+  },
   [mutationNames.doWorkNumber_success] (state, {data}) {
     console.log(data, 'data')
   },

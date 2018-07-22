@@ -7,6 +7,7 @@
                     <div>工单号：{{workNo}}</div>
                     <div>客户：{{workClient}}</div>
                     <div>专业：{{workMajor}}</div>
+                    <div>类别：{{workSort}}</div>
                     <div>作业点：{{workPoint}}</div>
                     <div v-if='workCreateTime'>创建时间：{{workCreateTime}}</div>
                     <div v-if='workCheckTime'>提交审核时间：{{workCheckTime}}</div>
@@ -25,18 +26,32 @@
                     <div>专业：{{workMajor}}</div>
                     <div>作业点：{{workPoint}}</div>
                 </template>
-                <span class='item-ctrl-gt'></span>
+                <template v-if="itemType===baseListTypes.veLogs">
+                    <div>记录：{{workName}}</div>
+                    <div>车辆信息：{{veInfo}}</div>
+                    <div>使用时间：{{veStartTime}}至{{veEndTime}}</div>
+                    <div>行驶总路程：{{vePath}}公里</div>
+                    <div>总费用：￥{{veTotal}}</div>
+                </template>
+                <template v-if="itemType===baseListTypes.dyLogs">
+                    <div>记录：{{workName}}</div>
+                    <div>发电机编号：{{dyCode}}</div>
+                    <div>操作：{{dyHandle}}</div>
+                    <div>使用时间：{{dyStartTime}} 至{{dyEndTime}}</div>
+                    <div>发电时长：{{dyTime}}</div>
+                </template>
+                <span v-if="hasDetail" class='item-ctrl-gt'></span>
             </div>
             <div class='item-action' v-if="showAction">
                 <template v-if="itemType===baseListTypes.workOrder">
                     <div>
-                        <base-icon label="作废" iconName='void'></base-icon>
+                        <base-icon @click="workOrderDel" label="作废" iconName='void'></base-icon>
                     </div>
                     <div>
-                        <base-icon label="编辑" iconName='edit'></base-icon>
+                        <base-icon @click="workOrderEdit" label="编辑" iconName='edit'></base-icon>
                     </div>
                     <div>
-                        <base-icon label="提交审核" iconName='check'></base-icon>
+                        <base-icon @click="workOrderApply" label="提交审核" iconName='check'></base-icon>
                     </div>
                 </template>
                 <template v-if="itemType===baseListTypes.sysOrder">
@@ -59,21 +74,37 @@
 
   export default {
     props: {
+      hasDetail: {
+        type: Boolean,
+        default: true
+      },
       showAction: {
         type: Boolean,
         default: false
       },
       workId: {},
-      workName: String,
-      workNo: String,
-      workClient: String,
-      workMajor: String,
-      workPoint: String,
-      workCreateTime: String,
-      workCheckTime: String,
-      workPassTime: String,
-      questionCount: String,
-      questionLevel: String
+      workName: {},
+      workNo: {},
+      workClient: {},
+      workMajor: {},
+      workPoint: {},
+      workSort: {},
+      workCreateTime: {},
+      workCheckTime: {},
+      workPassTime: {},
+      questionCount: {},
+      questionLevel: {},
+
+      veInfo: {},
+      veStartTime: {},
+      veEndTime: {},
+      vePath: {},
+      veTotal: {},
+      dyCode: {},
+      dyHandle: {},
+      dyStartTime: {},
+      dyEndTime: {},
+      dyTime: {}
     },
     name: '',
     data () {
@@ -92,6 +123,15 @@
       },
       handleApply (value) {
         value ? this.$emit('apply:pass') : this.$emit('apply:noPass')
+      },
+      workOrderApply () {
+        this.$emit('workOrder:apply')
+      },
+      workOrderDel () {
+        this.$emit('workOrder:del')
+      },
+      workOrderEdit () {
+        this.$emit('workOrder:edit')
       }
     }
   }

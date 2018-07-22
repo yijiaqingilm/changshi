@@ -14,6 +14,8 @@ const globalConst = {
   doWorkNumber: 'doWorkNumber',
   doWorkNumberDetail: 'doWorkNumberDetail',
   doWorkNumberUpdate: 'doWorkNumberUpdate',
+  doWorkNumberCancel: 'doWorkNumberCancel',
+  doWorkNumberApprove: 'doWorkNumberApprove',
   doLeaveQuestion: 'doLeaveQuestion',
   doLeaveQuestionDetail: 'doLeaveQuestionDetail',
   doLeaveQuestionUpdate: 'doLeaveQuestionUpdate',
@@ -33,7 +35,13 @@ for (let actionName in globalConst) {
 }
 
 const pageSize = 10
-
+const arr2obj = (arr) => {
+  let obj = {}
+  arr.forEach((row) => {
+    obj[row.key] = {value: row.value}
+  })
+  return obj
+}
 const client = {
   // 移动
   mobile: 1,
@@ -44,12 +52,15 @@ const client = {
   // 铁塔
   ironTower: 4
 }
+
 const clientValue = [
   {key: client.mobile, value: '移动', checked: true},
   {key: client.unicorn, value: '联通', checked: false},
   {key: client.telecom, value: '电信', checked: false},
   {key: client.ironTower, value: '铁塔', checked: false},
 ]
+const clientObj = arr2obj(clientValue)
+console.log('clientObj', clientObj)
 const major = {
   // 线路
   xianlu: 1,
@@ -72,6 +83,7 @@ const majorValue = [
   {value: major.wlan, label: 'wlan'},
   {value: major.jf, label: '机房'}
 ]
+const majorObj = arr2obj(majorValue)
 const workType = {
   // 按年
   year: 1,
@@ -98,7 +110,9 @@ const workOrderTypes = [
 const baseListTypes = {
   workOrder: 0,
   questionOrder: 1,
-  sysOrder: 2
+  sysOrder: 2,
+  dyLogs: 3,
+  veLogs: 4
 }
 // 1紧急，2一般，3非紧急’
 const leave = {
@@ -123,8 +137,10 @@ export {
   mutationNames,
   client,
   clientValue,
+  clientObj,
   major,
   majorValue,
+  majorObj,
   leaveValue,
   workType,
   workTypeValue,

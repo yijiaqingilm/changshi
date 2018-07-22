@@ -1,7 +1,7 @@
 <template>
     <f7-page class='work-order'>
         <f7-navbar>
-            <f7-nav-left :back-link="false" sliding></f7-nav-left>
+            <f7-nav-left back-link="返回" sliding></f7-nav-left>
             <f7-nav-center>我的工单</f7-nav-center>
         </f7-navbar>
         <h-list>
