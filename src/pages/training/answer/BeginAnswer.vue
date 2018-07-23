@@ -1,10 +1,38 @@
 <template>
-    
+    <f7-page class=''>
+        <f7-navbar>
+            <f7-nav-left back-link="返回" sliding></f7-nav-left>
+            <f7-nav-center>进入答题</f7-nav-center>
+        </f7-navbar>
+        <begin-panel title='管理培训类'
+                     level="1ji"
+                     count="50"
+                     score="fenshu"
+                     type="多选题，单选题，判断题"
+                     dateTime="60"
+                     @beginAnswer="beginAnswer">
+        </begin-panel>
+    </f7-page>
 </template>
 
 <script>
+  import { globalConst as native } from 'lib/const'
+  import BeginPanel from 'components/answerBeginPanel/AnswerBeginPanel.vue'
   export default {
-    name: ''
+    name: 'beginAnswer',
+    data () {
+      return {}
+    },
+    created () {
+    },
+    computed: {},
+    methods: {
+      beginAnswer(){
+        this.$router.loadPage('/training/answer')
+        console.log('开始 答题')
+      }
+    },
+    components: {BeginPanel}
   }
 </script>
 

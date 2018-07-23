@@ -1,6 +1,29 @@
-.label-switch input[type="checkbox"]:checked + .checkbox{
+.label-switch input[type="checkbox"]:checked + .checkbox {
   background: $theme_color;
 }
-.button.active{
+
+.button.active {
   background: $theme_color;
+}
+
+.progressbar span {
+  background: $theme_color;
+}
+
+.layout-white .content-block-title {
+  @include setFontSize($maxFontSize);
+  color: #333;
+}
+
+.content-block-title {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  white-space: normal;
+  text-overflow: clip;
+  font-size: 14px;
+  text-transform: uppercase;
+  line-height: 1;
+  color: #6d6d72;
+  margin: 35px 15px 10px;
 }

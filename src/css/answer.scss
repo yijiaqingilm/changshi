@@ -1,0 +1,34 @@
+@import "globalFunc";
+
+.answer {
+  header {
+    display: flex;
+    padding: 30px;
+    align-items: center;
+    .progress {
+      flex: auto;
+    }
+    .step {
+      margin-left: 60px;
+      color: #999;
+      .current {
+        color: $theme_color;
+      }
+    }
+  }
+  footer {
+    padding: 30px;
+  }
+}
+
+.tab-footer {
+  .f-resolve {
+    > div {
+      @include setFontSize($maxFontSize);
+      &:first-child {
+        color: #999;
+      }
+    }
+  }
+
+}

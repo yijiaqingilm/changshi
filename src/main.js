@@ -38,6 +38,10 @@ import BaseCitySelect from 'components/baseCitySelect/BaseCitySelect'
 import BaseTabs from 'components/baseTabs/BaseTabs'
 import BaseTab from 'components/baseTabs/BaseTab'
 
+/*答题组件*/
+import AnswerTabs from 'components/answerTabs/AnswerTabs.vue'
+import AnswerTab from 'components/answerTabs/AnswerTab.vue'
+
 Vue.use(VueResource)
 Vue.use(Framework7Vue)
 
@@ -54,6 +58,9 @@ Vue.component('masking', mask)
 Vue.component('errPanel', ErrPanel)
 Vue.component('base-tabs', BaseTabs)
 Vue.component('base-tab', BaseTab)
+
+Vue.component('answer-tabs', AnswerTabs)
+Vue.component('answer-tab', AnswerTab)
 
 /* let user_store = sessionStorage.getItem('user_store')
  user_store && store.replaceState(Object.assign(store.state, JSON.parse(user_store)))*/

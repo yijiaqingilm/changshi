@@ -4,25 +4,35 @@
             <f7-nav-left :back-link="false" sliding></f7-nav-left>
             <f7-nav-center>答题</f7-nav-center>
         </f7-navbar>
+        <!--{{paper}}-->
         <section v-if="paper">
             <header>
-                答题进度 {{paper}}
+                <div class='progress'>
+                    <f7-progressbar :progress="20"></f7-progressbar>
+                </div>
+                <div class='step'><span class='current'>1</span><span>/50</span></div>
             </header>
             <section>
                 <f7-tabs animated>
                     <f7-tab class="tab-0" active>
                         <section class='subject'>
-                            <header class='s-title'>1.xxx</header>
                             <section class='s-body'>
-                                <f7-list form>
-                                    <f7-list-item checkbox name="t-c-1" value="A" title="Checkbox A"></f7-list-item>
+                                <f7-block-title>1.我是国务院。1.我是国务院。1.我是国务院。1.我是国务院。1.我是国务院。1.我是国务院。1.我是国务院。
+                                </f7-block-title>
+                                <f7-list form no-hairlines no-hairlines-between>
+                                    <f7-list-item no-border checkbox name="t-c-1" value="A"
+                                                  title="Checkbox A"></f7-list-item>
                                     <f7-list-item checkbox name="t-c-1" value="B" title="Checkbox B"></f7-list-item>
                                     <f7-list-item checkbox name="t-c-1" value="C" title="Checkbox C"></f7-list-item>
                                 </f7-list>
                             </section>
-                            <footer class='s-footer'>
-                                <div>回答正确，正确答案：A</div>
-                                <div>答案解析：xxx</div>
+                            <line-10></line-10>
+                            <footer class='tab-footer'>
+                                <div>回答正确，正确答案：B</div>
+                                <div class='f-resolve'>
+                                    <div>答案解析：</div>
+                                    <div>xxx</div>
+                                </div>
                             </footer>
                         </section>
                     </f7-tab>
@@ -36,19 +46,24 @@
                                     <f7-list-item checkbox name="t-c-2" value="C2" title="Checkbox Cx"></f7-list-item>
                                 </f7-list>
                             </section>
-                            <footer class='s-footer'>
+                            <footer class='tab-footer'>
                                 <div>回答正确，正确答案：B</div>
-                                <div>答案解析：xxx</div>
+                                <div class='f-resolve'>
+                                    <div>答案解析：</div>
+                                    <div>xxx</div>
+                                </div>
                             </footer>
                         </section>
                     </f7-tab>
                 </f7-tabs>
             </section>
             <footer>
-                <f7-button v-show="showPrev()" @click="doPrev()">上一题</f7-button>
-                <f7-button v-show="showNext()" @click="doNext()">下一题</f7-button>
-                <f7-button v-show="showRes()" @click="doAnswer()">确认</f7-button>
-                <f7-button v-show="showSubmit()" @click="doAnswerSubmit()">提交</f7-button>
+                <f7-block>
+                    <f7-button v-show="showPrev()" @click="doPrev()">上一题</f7-button>
+                    <f7-button v-show="showNext()" @click="doNext()">下一题</f7-button>
+                    <f7-button active full big v-show="showRes()" @click="doAnswer()">确认</f7-button>
+                    <f7-button v-show="showSubmit()" @click="doAnswerSubmit()">提交</f7-button>
+                </f7-block>
             </footer>
         </section>
     </f7-page>
@@ -105,5 +120,5 @@
 </script>
 
 <style lang="scss" scoped type="text/css">
-
+    @import "../../../css/answer.scss";
 </style>

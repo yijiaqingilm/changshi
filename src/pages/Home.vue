@@ -37,7 +37,7 @@
             <section>
                 <base-title title="在线培训"></base-title>
                 <base-tabs>
-                    <base-tab label="在线答题" :icon="iconSrc.online"></base-tab>
+                    <base-tab label="在线答题" link="/training/answer/main" :icon="iconSrc.online"></base-tab>
                     <base-tab label="在线视频" :icon="iconSrc.video"></base-tab>
                     <base-tab label="考试" :icon="iconSrc.test"></base-tab>
                     <base-tab label="培训记录" :icon="iconSrc.train"></base-tab>

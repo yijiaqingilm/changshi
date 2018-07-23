@@ -1,0 +1,21 @@
+@import "../../css/globalFunc";
+
+.answer-tabs {
+  display: table;
+  width: 100%;
+  padding: 30px;
+}
+
+.answer-tab {
+  width: 33%;
+  height: 160px;
+  float: left;
+  margin-bottom: 30px;
+  text-align: center;
+  .tab-label {
+    width: 160px;
+    line-height: 160px;
+    margin: 0 auto;
+    background-color: #f5f5f5;
+  }
+}
