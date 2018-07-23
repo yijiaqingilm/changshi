@@ -34,7 +34,7 @@ import BaseListItem from 'components/baseList/BaseListItem'
 import BaseRadioGroup from 'components/baseRadioGroup/BaseRadioGroup.vue'
 import BaseRadio from 'components/baseRadioGroup/children/BaseRadio.vue'
 import BaseSelect from 'components/baseSelect/BaseSelect.vue'
-
+import BaseCitySelect from 'components/baseCitySelect/BaseCitySelect'
 import BaseTabs from 'components/baseTabs/BaseTabs'
 import BaseTab from 'components/baseTabs/BaseTab'
 
@@ -49,6 +49,7 @@ Vue.component('base-list-item', BaseListItem)
 Vue.component('base-radio-group', BaseRadioGroup)
 Vue.component('base-radio', BaseRadio)
 Vue.component('base-select', BaseSelect)
+Vue.component('base-city-select', BaseCitySelect)
 Vue.component('masking', mask)
 Vue.component('errPanel', ErrPanel)
 Vue.component('base-tabs', BaseTabs)

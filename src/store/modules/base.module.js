@@ -92,7 +92,6 @@ let mutations = {
     console.log(data, 'data')
   },
   [mutationNames.doAddressList_success] (state, {data}) {
-    console.log(data, 'data')
     // state.workType = data
   },
   [mutationNames.doWorkSort_success] (state, {data}) {

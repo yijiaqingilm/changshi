@@ -4,6 +4,8 @@
             <f7-nav-left :back-link="false" sliding></f7-nav-left>
             <f7-nav-center>作业填报</f7-nav-center>
         </f7-navbar>
+        <input type="text" value='test' id='picker-dependent'>
+        <base-city-select v-model='city'></base-city-select>
         <div @click="formatTest">测试</div>
         {{jobCard}}
         <section>
@@ -31,7 +33,7 @@
                     <base-select v-model='jobCard.workBase' text="请选择作业点" :data="majorValue"></base-select>
                 </div>
                 <div>
-                    <autocomplate v-model="jobPoint" :placeholder='请搜索作业点' :loadData="getJobPointList"></autocomplate>
+                    <autocomplate v-model="jobPoint" placeholder='请搜索作业点' :loadData="getJobPointList"></autocomplate>
                 </div>
             </div>
         </base-form-group>
@@ -223,15 +225,11 @@
         workSortList: [],
         iconSrc: {
           add: require('../../../assets/icon_add.png'),
-        }
+        },
+        city: ''
       }
     },
     created () {
-        /* this.$store.dispatch({
-         type: native.doAddressList,
-         s: 'city',
-         province_id: 2
-         })*/
     },
     computed: {
       showAmmeter () {
@@ -271,7 +269,7 @@
     methods: {
       getJobPointList () {
         console.log('getJobPoint')
-        let {provinceId, cityId, districtId, client, major}=this.jobCard
+        let {provinceId, cityId, districtId, client, major} = this.jobCard
         if (__DEBUG__) {
           provinceId = 1
           cityId = 1
@@ -345,7 +343,6 @@
         // console.log(moment(this.startTime).format('YYYY-MM-DD HH:mm:ss'))
       },
       addAmmeter () {
-        console.log('???')
         this.jobCard.ammeter.push(new Ammeter())
       },
       handleDelAmmeter (ammeter, index) {
@@ -353,7 +350,38 @@
       }
     },
     mounted () {
+      this.$nextTick(() => {
+        var carVendors = {
+          Japanese: ['Honda', 'Lexus', 'Mazda', 'Nissan', 'Toyota'],
+          German: ['Audi', 'BMW', 'Mercedes', 'Volkswagen', 'Volvo'],
+          American: ['Cadillac', 'Chrysler', 'Dodge', 'Ford']
+        }
+        var pickerDependent = this.$f7.picker({
+          input: '#picker-dependent',
+          rotateEffect: true,
+          formatValue: function (picker, values) {
+            return values.join('')
+          },
+          cols: [
+            {
+              textAlign: 'left',
+              values: ['Japanese', 'German', 'American'],
+              onChange: async (picker, country) => {
+                if (picker.cols[1].replaceValues) {
+                  await setTimeout(() => {
+                    picker.cols[1].replaceValues(carVendors[country])
+                  }, 1000)
 
+                }
+              }
+            },
+            {
+              values: carVendors.Japanese,
+              width: 160,
+            },
+          ]
+        })
+      })
     },
     components: {BaseRadio, BaseRadioGroup, QuestionGroup, QuestionItem, AmmeterGroup, AmmeterItem, Autocomplate}
   }
