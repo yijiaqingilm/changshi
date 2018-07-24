@@ -1,11 +1,10 @@
 <template>
     <f7-page class='fill-order'>
         <f7-navbar>
-            <f7-nav-left :back-link="false" sliding></f7-nav-left>
+            <f7-nav-left back-link="返回" sliding></f7-nav-left>
             <f7-nav-center>作业填报</f7-nav-center>
         </f7-navbar>
-        <div @click="showPopup">终极测试</div>
-        <input type="text" value='test' id='picker-dependent'>
+        {{activeAddress}}
         <div @click="formatTest">测试</div>
         {{jobCard}}
         <section>
@@ -28,12 +27,13 @@
                 <div>
                     <input class='s-input' placeholder="请从下方选择或搜索作业点" type="text" readonly v-model="jobPoint">
                 </div>
-                <div class="city"><span class='s-select'>城市</span></div>
+                <div class="city"><span class='s-select' @click="showPopup">{{currentAddress}}</span></div>
                 <div>
                     <base-select v-model='jobCard.workBase' text="请选择作业点" :data="majorValue"></base-select>
                 </div>
                 <div>
-                    <autocomplate v-model="jobPoint" placeholder='请搜索作业点' :loadData="getJobPointList"></autocomplate>
+                    <autocomplate v-model="jobPointName" placeholder='请搜索作业点'
+                                  :loadData="getJobPointList"></autocomplate>
                 </div>
             </div>
         </base-form-group>
@@ -164,7 +164,7 @@
   import Datetime from 'vue-datetime'
   import 'vue-datetime/dist/vue-datetime.css'
   import moment from 'lib/moment'
-  import { mapState } from 'vuex'
+  import { mapState, mapGetters } from 'vuex'
 
   Vue.use(Datetime)
 
@@ -213,6 +213,7 @@
         workTypeValue,
         majorValue,
         jobPoint: null,
+        jobPointName: '',
         dateTime: {
           options: {
             phrases: {
@@ -232,6 +233,15 @@
     created () {
     },
     computed: {
+      ...mapGetters(['getProvinceList']),
+      ...mapState({
+        activeAddress: ({base}) => base.activeAddress
+      }),
+      currentAddress(){
+        console.log('test===>', this.activeAddress)
+        let currentAddress = this.activeAddress.provinceName + this.activeAddress.cityName + this.activeAddress.districtName
+        return currentAddress.length > 0 ? currentAddress : '请选择地址'
+      },
       showAmmeter () {
         switch (this.jobCard.major >>> 0) {
           case major.jizhan:
@@ -272,20 +282,16 @@
       },
       getJobPointList () {
         console.log('getJobPoint')
-        let {provinceId, cityId, districtId, client, major} = this.jobCard
-        if (__DEBUG__) {
-          provinceId = 1
-          cityId = 1
-          districtId = 1
-        }
+        let {client, major} = this.jobCard
+        let {provinceName, cityName, districtName}=this.activeAddress
         return this.$store.dispatch({
           type: native.doGetWorkBase,
-          province_id: provinceId,
-          city_id: cityId,
-          district_id: districtId,
+          province: provinceName,
+          city: cityName,
+          district: districtName,
           client,
           major,
-          name: this.jobPoint
+          name: this.jobPointName
         })
       },
       // 发电机
@@ -353,38 +359,6 @@
       }
     },
     mounted () {
-      this.$nextTick(() => {
-        var carVendors = {
-          Japanese: ['Honda', 'Lexus', 'Mazda', 'Nissan', 'Toyota'],
-          German: ['Audi', 'BMW', 'Mercedes', 'Volkswagen', 'Volvo'],
-          American: ['Cadillac', 'Chrysler', 'Dodge', 'Ford']
-        }
-        var pickerDependent = this.$f7.picker({
-          input: '#picker-dependent',
-          rotateEffect: true,
-          formatValue: function (picker, values) {
-            return values.join('')
-          },
-          cols: [
-            {
-              textAlign: 'left',
-              values: ['Japanese', 'German', 'American'],
-              onChange: async (picker, country) => {
-                if (picker.cols[1].replaceValues) {
-                  await setTimeout(() => {
-                    picker.cols[1].replaceValues(carVendors[country])
-                  }, 1000)
-
-                }
-              }
-            },
-            {
-              values: carVendors.Japanese,
-              width: 160,
-            },
-          ]
-        })
-      })
     },
     components: {BaseRadio, BaseRadioGroup, QuestionGroup, QuestionItem, AmmeterGroup, AmmeterItem, Autocomplate}
   }

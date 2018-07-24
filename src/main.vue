@@ -27,8 +27,8 @@
                             <f7-list v-if="getProvinceList">
                                 <f7-list-item v-for="(row,index) in getProvinceList"
                                               :key="index"
-                                              :title="row.label"
-                                              :value="row.id"
+                                              :title="row.name"
+                                              :value="row.name"
                                               name="province"
                                               @click="selectProvince(row)"
                                               radio>
@@ -50,8 +50,8 @@
                             <f7-list v-if="getCityList">
                                 <f7-list-item v-for="(row,index) in getCityList"
                                               :key="index"
-                                              :title="row.label"
-                                              :value="row.id"
+                                              :title="row.name"
+                                              :value="row.name"
                                               name="city"
                                               @click="selectCity(row)"
                                               radio>
@@ -74,8 +74,8 @@
                             <f7-list v-if="getDistrictList">
                                 <f7-list-item v-for="(row,index) in getDistrictList"
                                               :key="index"
-                                              :title="row.label"
-                                              :value="row.id"
+                                              :title="row.name"
+                                              :value="row.name"
                                               name="district"
                                               @click="selectDistrict(row)"
                                               radio>
@@ -111,7 +111,7 @@
       selectProvince (province) {
         let {commit, dispatch} = this.$store
         commit(native.doSelectProvince, {
-          provinceId: province.id, provinceName: province.label
+          provinceId: province.name, provinceName: province.name
         })
         commit(native.resetCity)
         commit(native.resetDistrict)
@@ -123,8 +123,8 @@
       selectCity (city) {
         let {commit, dispatch} = this.$store
         commit(native.doSelectCity, {
-          cityId: city.id,
-          cityName: city.label
+          cityId: city.name,
+          cityName: city.name
         })
         this.$store.dispatch({
           type: native.doAddressDistrictList,
@@ -134,8 +134,8 @@
       selectDistrict (district) {
         let {commit} = this.$store
         commit(native.doSelectDistrict, {
-          districtName: district.label,
-          districtId: district.id
+          districtName: district.name,
+          districtId: district.name
         })
         this.closePopupCity()
       },
@@ -156,17 +156,7 @@
     },
     mounted () {
       this.$nextTick(() => {
-        AMap.plugin('AMap.DistrictSearch', () => {
-          let districtSearch = new AMap.DistrictSearch({
-            level: 'country',
-            subdistrict: 1
-          })
-          // 搜索所有省/直辖市信息
-          districtSearch.search('中国', (status, result) => {
-            // 查询成功时，result即为对应的行政区信息
-            console.log('success', status, result)
-          })
-        })
+
       })
     },
     computed: {

@@ -4,7 +4,7 @@
             {{title}}
         </div>
         <slot v-else name="title">
-            <div><span class='title'>{{title}}</span><span>单</span></div>
+            <div><span class='title'>{{title}}</span><span>{{unit}}</span></div>
         </slot>
         <div v-if="!$slots.desc">{{desc}}</div>
         <slot v-else name="desc"></slot>
@@ -15,7 +15,11 @@
   export default {
     props: {
       title: {},
-      desc: String
+      desc: String,
+      unit: {
+        type: String,
+        default: '单'
+      }
     },
     data () {
       return {}
@@ -27,5 +31,5 @@
 </script>
 
 <style lang="scss" scoped type="text/css">
-    @import "./workOrderChilren.scss";
+    @import "hlist.scss";
 </style>

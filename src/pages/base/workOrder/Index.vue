@@ -30,8 +30,6 @@
 
 <script>
   import { globalConst as native, workOrderTypes, workOrderTypeStatus } from 'lib/const'
-  import HList from './chilren/HList.vue'
-  import HListItem from './chilren/HListItem.vue'
   import TabsCtrl from 'components/baseTabsCtrl/BaseTabs.vue'
   import Tab from 'components/baseTabsCtrl/BaseTab.vue'
   import ViewDone from './chilren/WorkOrderDone'
@@ -55,8 +53,6 @@
       }
     },
     components: {
-      HList,
-      HListItem,
       TabsCtrl,
       Tab,
       [`orderTypeView_${workOrderTypeStatus.done}`]: ViewDone,

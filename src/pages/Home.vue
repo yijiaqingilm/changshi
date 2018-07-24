@@ -19,6 +19,20 @@
             </header>
             <line-10></line-10>
             <section>
+                <base-title title="操作管理"></base-title>
+                <base-tabs>
+                    <base-tab label="工单管理":icon="iconSrc.mOrder"></base-tab>
+                </base-tabs>
+            </section>
+            <section>
+                <base-title title="数据统计"></base-title>
+                <base-tabs>
+                    <base-tab label="基础维护数据" :icon="iconSrc.mWeihu"></base-tab>
+                    <base-tab label="资源管理数据"  :icon="iconSrc.mZiyuan"></base-tab>
+                    <base-tab label="在线培训数据"  :icon="iconSrc.mPeixun"></base-tab>
+                </base-tabs>
+            </section>
+            <section>
                 <base-title title="基础维护"></base-title>
                 <base-tabs>
                     <base-tab label="作业填报" link="/base/fillOrder/index" :icon="iconSrc.orderAdd"></base-tab>
@@ -40,7 +54,7 @@
                     <base-tab label="在线答题" link="/training/answer/main" :icon="iconSrc.online"></base-tab>
                     <base-tab label="在线视频" :icon="iconSrc.video"></base-tab>
                     <base-tab label="考试" :icon="iconSrc.test"></base-tab>
-                    <base-tab label="培训记录" :icon="iconSrc.train"></base-tab>
+                    <base-tab label="培训记录" link="/training/logs" :icon="iconSrc.train"></base-tab>
                 </base-tabs>
             </section>
         </section>
@@ -68,7 +82,12 @@
           online: require('../assets/icon_online.png'),
           video: require('../assets/icon_video.png'),
           train: require('../assets/icon_train.png'),
-          test: require('../assets/icon_test.png')
+          test: require('../assets/icon_test.png'),
+
+          mOrder: require('../assets/icon_m_order.png'),
+          mPeixun: require('../assets/icon_m_peixun.png'),
+          mWeihu: require('../assets/icon_m_weihu.png'),
+          mZiyuan: require('../assets/icon_m_ziyuan.png')
         }
       }
     },

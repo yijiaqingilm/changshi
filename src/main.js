@@ -37,7 +37,8 @@ import BaseSelect from 'components/baseSelect/BaseSelect.vue'
 import BaseCitySelect from 'components/baseCitySelect/BaseCitySelect'
 import BaseTabs from 'components/baseTabs/BaseTabs'
 import BaseTab from 'components/baseTabs/BaseTab'
-
+import HList from 'components/hlist/HList.vue'
+import HlistItem from 'components/hlist/HListItem.vue'
 /* 答题组件*/
 import AnswerTabs from 'components/answerTabs/AnswerTabs.vue'
 import AnswerTab from 'components/answerTabs/AnswerTab.vue'
@@ -58,6 +59,8 @@ Vue.component('masking', mask)
 Vue.component('errPanel', ErrPanel)
 Vue.component('base-tabs', BaseTabs)
 Vue.component('base-tab', BaseTab)
+Vue.component('h-list', HList)
+Vue.component('h-list-item', HlistItem)
 
 Vue.component('answer-tabs', AnswerTabs)
 Vue.component('answer-tab', AnswerTab)

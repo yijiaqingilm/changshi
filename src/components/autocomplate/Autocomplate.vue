@@ -1,6 +1,6 @@
 <template>
     <div>
-        <input type="text" class='s-input autocomplate' :placeholder='placeholder'>
+        <input type="text" v-model="model" class='s-input autocomplate' :placeholder='placeholder'>
     </div>
 </template>
 
@@ -17,6 +17,16 @@
     data () {
       return {
         autocomplate: null
+      }
+    },
+    computed: {
+      model: {
+        get () {
+          return this.value
+        },
+        set (value) {
+          this.$emit('input', value)
+        }
       }
     },
     mounted () {
@@ -55,25 +65,6 @@
               render(results);
 
             }
-              /* $$.ajax({
-               url: 'autocomplete-languages.json',
-               method: 'GET',
-               dataType: 'json',
-               //send "query" to server. Useful in case you generate response dynamically
-               data: {
-               query: query
-               },
-               success: function (data) {
-               // Find matched items
-               for (var i = 0; i < data.length; i++) {
-               if (data[i].name.toLowerCase().indexOf(query.toLowerCase()) >= 0) results.push(data[i]);
-               }
-               // Hide Preoloader
-               autocomplete.hidePreloader();
-               // Render items by passing array with result items
-               render(results);
-               }
-               });*/
           }
         });
       })

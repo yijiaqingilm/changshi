@@ -4,7 +4,7 @@ import { isEmptyObject, margeMutations } from 'lib/utils'
 import { globalConst as native, mutationNames, formatData } from 'lib/const'
 import Vue from 'vue'
 import { applyClientMiddleware } from 'src/main'
-
+import AMap from 'AMap'
 const state = {
   workSortList: [],
   workOrder: {},
@@ -23,13 +23,13 @@ const state = {
 }
 const getters = {
   getProvinceList (state) {
-    return formatData(state.addressForProvince)
+    return state.addressForProvince
   },
   getCityList (state) {
-    return formatData(state.addressForCity[state.activeAddress.provinceId])
+    return state.addressForCity[state.activeAddress.provinceId]
   },
   getDistrictList (state) {
-    return formatData(state.addressForDistrict[state.activeAddress.cityId])
+    return state.addressForDistrict[state.activeAddress.cityId]
   }
 }
 const actions = {
@@ -71,19 +71,61 @@ const actions = {
   },
   [native.doAddressProvinceList] ({state}, refs) {
     if (isEmptyObject(state.addressForProvince)) {
-      return applyClientMiddleware(api.doAddressProvinceList)(refs)
+      AMap.plugin('AMap.DistrictSearch', () => {
+        let districtSearch = new AMap.DistrictSearch({
+          level: 'country',
+          subdistrict: 1
+        })
+        // 搜索所有省/直辖市信息
+        districtSearch.search('中国', (status, result) => {
+          // 查询成功时，result即为对应的行政区信息
+          if (status === 'complete') {
+            state.addressForProvince = result.districtList[0].districtList
+          }
+
+        })
+      })
+      // return applyClientMiddleware(api.doAddressProvinceList)(refs)
     }
   },
   [native.doAddressCityList] ({state}, refs) {
     let provinceId = state.activeAddress.provinceId
-    if (isEmptyObject(state.addressForProvince[provinceId])) {
-      return applyClientMiddleware(api.doAddressCityList)(refs)
+    if (isEmptyObject(state.addressForCity[provinceId])) {
+      AMap.plugin('AMap.DistrictSearch', () => {
+        let districtSearch = new AMap.DistrictSearch({
+          level: 'province',
+          subdistrict: 1
+        })
+        // 搜索所有省/直辖市信息
+        districtSearch.search(provinceId, (status, result) => {
+          // 查询成功时，result即为对应的行政区信息
+          if (status === 'complete') {
+            // state.addressForCity[provinceId] = result.districtList[0].districtList
+            Vue.set(state.addressForCity, provinceId, result.districtList[0].districtList)
+          }
+
+        })
+      })
     }
   },
   [native.doAddressDistrictList] ({state}, refs) {
     let cityId = state.activeAddress.cityId
     if (isEmptyObject(state.addressForDistrict[cityId])) {
-      return applyClientMiddleware(api.doAddressDistrictList)(refs)
+      AMap.plugin('AMap.DistrictSearch', () => {
+        let districtSearch = new AMap.DistrictSearch({
+          level: 'city',
+          subdistrict: 1
+        })
+        // 搜索所有省/直辖市信息
+        districtSearch.search(cityId, (status, result) => {
+          // 查询成功时，result即为对应的行政区信息
+          if (status === 'complete') {
+            // state.addressForCity[provinceId] = result.districtList[0].districtList
+            Vue.set(state.addressForDistrict, cityId, result.districtList[0].districtList)
+          }
+
+        })
+      })
     }
   },
   [native.doWorkSort] ({state}, refs) {
