@@ -1,16 +1,37 @@
 import { setToken } from 'lib/common'
 import api from 'api/api'
 import { isEmptyObject, margeMutations } from 'lib/utils'
-import { globalConst as native, mutationNames } from 'lib/const'
+import { globalConst as native, mutationNames, formatData } from 'lib/const'
 import Vue from 'vue'
 import { applyClientMiddleware } from 'src/main'
 
 const state = {
   workSortList: [],
   workOrder: {},
-  questionOrder: {}
+  questionOrder: {},
+  addressForCity: {},
+  addressForProvince: {},
+  addressForDistrict: {},
+  activeAddress: {
+    provinceId: -1,
+    provinceName: '',
+    cityId: -1,
+    cityName: '',
+    districtId: -1,
+    districtName: ''
+  }
 }
-const getters = {}
+const getters = {
+  getProvinceList (state) {
+    return formatData(state.addressForProvince)
+  },
+  getCityList (state) {
+    return formatData(state.addressForCity[state.activeAddress.provinceId])
+  },
+  getDistrictList (state) {
+    return formatData(state.addressForDistrict[state.activeAddress.cityId])
+  }
+}
 const actions = {
   [native.doLeaveQuestionDetail] ({state}, refs) {
     let quesitonOrderId = refs.work_id
@@ -48,15 +69,51 @@ const actions = {
   [native.doGetAmmeter] ({state}, refs) {
     return applyClientMiddleware(api.doGetAmmeter)(refs)
   },
-  [native.doAddressList] ({state}, refs) {
-    console.log('refs', refs)
-    return applyClientMiddleware(api.doAddressList)(refs)
+  [native.doAddressProvinceList] ({state}, refs) {
+    if (isEmptyObject(state.addressForProvince)) {
+      return applyClientMiddleware(api.doAddressProvinceList)(refs)
+    }
+  },
+  [native.doAddressCityList] ({state}, refs) {
+    let provinceId = state.activeAddress.provinceId
+    if (isEmptyObject(state.addressForProvince[provinceId])) {
+      return applyClientMiddleware(api.doAddressCityList)(refs)
+    }
+  },
+  [native.doAddressDistrictList] ({state}, refs) {
+    let cityId = state.activeAddress.cityId
+    if (isEmptyObject(state.addressForDistrict[cityId])) {
+      return applyClientMiddleware(api.doAddressDistrictList)(refs)
+    }
   },
   [native.doWorkSort] ({state}, refs) {
     return applyClientMiddleware(api.doWorkSort)(refs)
   }
 }
 let mutations = {
+  [native.doSelectDistrict] (state, district) {
+    let {districtName, districtId} = district
+    state.activeAddress.districtName = districtName
+    state.activeAddress.districtId = districtId
+  },
+  [native.doSelectCity] (state, city) {
+    let {cityId, cityName} = city
+    state.activeAddress.cityId = cityId
+    state.activeAddress.cityName = cityName
+  },
+  [native.resetCity] (state) {
+    state.activeAddress.cityId = -1
+    state.activeAddress.cityName = ''
+  },
+  [native.resetDistrict] (state) {
+    state.activeAddress.districtId = -1
+    state.activeAddress.districtName = ''
+  },
+  [native.doSelectProvince] (state, province) {
+    let {provinceId, provinceName} = province
+    state.activeAddress.provinceId = provinceId
+    state.activeAddress.provinceName = provinceName
+  },
   [mutationNames.doLeaveQuestionDetail_success] (state, {data, refs}) {
     let questionOrderId = refs.work_id
     Vue.set(state.questionOrder, questionOrderId, data)
@@ -91,8 +148,13 @@ let mutations = {
   [mutationNames.doGetAmmeter_success] (state, {data}) {
     console.log(data, 'data')
   },
-  [mutationNames.doAddressList_success] (state, {data}) {
-    // state.workType = data
+  [mutationNames.doAddressProvinceList_success] (state, {data}) {
+  },
+  [mutationNames.doAddressCityList_success] (state, {data, refs}) {
+    Vue.set(state.addressForCity, state.activeAddress.provinceId, data)
+  },
+  [mutationNames.doAddressDistrictList_success] (state, {data, refs}) {
+    Vue.set(state.addressForDistrict, state.activeAddress.cityId, data)
   },
   [mutationNames.doWorkSort_success] (state, {data}) {
     state.workSortList = data

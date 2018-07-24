@@ -4,8 +4,8 @@
             <f7-nav-left :back-link="false" sliding></f7-nav-left>
             <f7-nav-center>作业填报</f7-nav-center>
         </f7-navbar>
+        <div @click="showPopup">终极测试</div>
         <input type="text" value='test' id='picker-dependent'>
-        <base-city-select v-model='city'></base-city-select>
         <div @click="formatTest">测试</div>
         {{jobCard}}
         <section>
@@ -267,6 +267,9 @@
       }
     },
     methods: {
+      showPopup () {
+        this.$f7.popup('.popup-province')
+      },
       getJobPointList () {
         console.log('getJobPoint')
         let {provinceId, cityId, districtId, client, major} = this.jobCard

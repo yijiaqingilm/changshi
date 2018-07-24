@@ -38,7 +38,7 @@ import BaseCitySelect from 'components/baseCitySelect/BaseCitySelect'
 import BaseTabs from 'components/baseTabs/BaseTabs'
 import BaseTab from 'components/baseTabs/BaseTab'
 
-/*答题组件*/
+/* 答题组件*/
 import AnswerTabs from 'components/answerTabs/AnswerTabs.vue'
 import AnswerTab from 'components/answerTabs/AnswerTab.vue'
 

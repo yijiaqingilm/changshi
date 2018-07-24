@@ -55,7 +55,6 @@
           closeByOutsideClick: false,
           updateValuesOnTouchmove: false,
           formatValue: (picker, values, displayValues) => {
-            console.log('但是我蛮了。', picker)
             console.log('val=============', displayValues)
             return displayValues.join('')
           },
@@ -70,7 +69,7 @@
               onChange: async (picker, province) => {
                 if (picker.cols[1].replaceValues) {
                   let result = await this.$store.dispatch({
-                    type: native.doAddressList,
+                    type: native.doAddressCityList,
                     s: 'city',
                     province_id: province
                   })
@@ -92,7 +91,7 @@
                 console.log('触发改变')
                 if (picker.cols[2].replaceValues) {
                   let result = await this.$store.dispatch({
-                    type: native.doAddressList,
+                    type: native.doAddressDistrictList,
                     s: 'district',
                     city_id: city
                   })
@@ -130,18 +129,18 @@
         let cityData = []
         let districtData = []
         this.$store.dispatch({
-          type: native.doAddressList,
+          type: native.addressForProvince,
           s: 'province',
         }).then(({data}) => {
           data = this.formatData(data)
           this.$store.dispatch({
-            type: native.doAddressList,
+            type: native.addressForCity,
             s: 'city',
             province_id: data[0] && data[0][this.nodeKey]
           }).then((result) => {
             cityData = this.formatData(result.data)
             this.$store.dispatch({
-              type: native.doAddressList,
+              type: native.addressForDistrict,
               s: 'district',
               city_id: cityData[0] && cityData[0][this.nodeKey]
             }).then((result) => {

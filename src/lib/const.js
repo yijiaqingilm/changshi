@@ -7,7 +7,9 @@ const globalConst = {
   doAnswer: 'doAnswer',
   doWorkSender: 'doWorkSender',
   doGetWorkBase: 'doGetWorkBase',
-  doAddressList: 'doAddressList',
+  doAddressCityList: 'doAddressCityList',
+  doAddressProvinceList: 'doAddressProvinceList',
+  doAddressDistrictList: 'doAddressDistictList',
   doGetAmmeter: 'doGetAmmeter',
   doGetDynamotor: 'doGetDynamotor',
   doDynamotorCreate: 'doDynamotorCreate',
@@ -20,7 +22,12 @@ const globalConst = {
   doLeaveQuestionDetail: 'doLeaveQuestionDetail',
   doLeaveQuestionUpdate: 'doLeaveQuestionUpdate',
   doWorkSort: 'doWorkSort',
-  doLogin: 'doLogin'
+  doLogin: 'doLogin',
+  doSelectProvince: 'doSelectProvince',
+  resetCity: 'resetCity',
+  resetDistrict: 'resetDistrict',
+  doSelectCity: 'doSelectCity',
+  doSelectDistrict: 'doSelectDistrict'
 }
 let methods = [SUCCESS.toLowerCase(), FAILURE.toLowerCase(), REQUEST.toLowerCase()]
 const mutationNames = {}
@@ -126,6 +133,21 @@ const leaveValue = [
   {value: leave.one, label: '非紧急'},
 ]
 const generatorIds = [15, 55]
+
+/**
+ * 格式化地址对象 变成base select 所需的数据格式
+ * @param dataObj
+ * @returns {Array}
+ */
+const formatData = (dataObj = {}, nodeKey = 'id', nodeLabel = 'label') => {
+  let data = []
+  for (let key in dataObj) {
+    if (dataObj.toString.call(key)) {
+      data.push({[nodeKey]: key, [nodeLabel]: dataObj[key]})
+    }
+  }
+  return data
+}
 export {
   globalConst,
   modalTitle,
@@ -148,5 +170,6 @@ export {
   workOrderTypeStatus,
   baseListTypes,
   leave,
-  generatorIds
+  generatorIds,
+  formatData
 }

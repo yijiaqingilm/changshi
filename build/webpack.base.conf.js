@@ -25,6 +25,7 @@ module.exports = {
   externals: {
     'f7': 'Framework7',
     'wx': 'jWeixin',
+    'AMap': 'window.AMap',
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],

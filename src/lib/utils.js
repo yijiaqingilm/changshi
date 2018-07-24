@@ -4,6 +4,7 @@ import Vue from 'vue'
 import { FAILURE, REQUEST, SUCCESS } from 'lib/const'
 import moment from './moment'
 import md5 from 'js-md5'
+import AMap from 'AMap'
 // Cache processor
 const Cache = {
   get: (key) => {
