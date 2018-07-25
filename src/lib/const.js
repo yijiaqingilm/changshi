@@ -62,10 +62,10 @@ const client = {
 }
 
 const clientValue = [
-  {key: client.mobile, value: '移动', checked: true},
-  {key: client.unicorn, value: '联通', checked: false},
-  {key: client.telecom, value: '电信', checked: false},
-  {key: client.ironTower, value: '铁塔', checked: false},
+  {value: client.mobile, label: '移动', checked: true},
+  {value: client.unicorn, label: '联通', checked: false},
+  {value: client.telecom, label: '电信', checked: false},
+  {value: client.ironTower, label: '铁塔', checked: false},
 ]
 const clientObj = arr2obj(clientValue)
 console.log('clientObj', clientObj)

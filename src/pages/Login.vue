@@ -1,13 +1,18 @@
 <template>
-    <f7-page>
+    <f7-page class='login'>
         <f7-navbar>
             <f7-nav-center>登陆</f7-nav-center>
         </f7-navbar>
-        <f7-block class="text-center">
-            <input type="text" v-model='user.username'>
-            <input type="text" v-model='user.password'>
-            <f7-button @click="login">提交</f7-button>
-        </f7-block>
+        <header class=''>
+            <img src="../assets/logo.jpg" class='logo' alt="">
+        </header>
+        <section class='content'>
+            <div><input class='login-user' placeholder='请输入账号' type="text" v-model='user.username'></div>
+            <div><input class='login-pwd' placeholder='请输入密码' type="text" v-model='user.password'></div>
+        </section>
+        <footer>
+            <f7-button big full active @click="login" class='login-submit'>登陆</f7-button>
+        </footer>
     </f7-page>
 </template>
 

@@ -11,10 +11,10 @@
             <header class='header'><span class='mark'>*</span>客户选择</header>
             <base-radio-group v-model="jobCard.client" class="radio-group">
                 <base-radio v-for="(client,index) in clientValue"
-                            :label="client.key"
+                            :label="client.value"
                             name="client"
                             :key="index">
-                    {{client.value}}
+                    {{client.label}}
                 </base-radio>
             </base-radio-group>
         </section>
@@ -161,14 +161,11 @@
   import AmmeterItem from 'components/baseAmmeter/BaseAmmeterItem'
   import Autocomplate from 'components/autocomplate/Autocomplate.vue'
   import Vue from 'vue'
-  import Datetime from 'vue-datetime'
-  import 'vue-datetime/dist/vue-datetime.css'
   import moment from 'lib/moment'
   import { mapState, mapGetters } from 'vuex'
   import emitter from 'mixins/emitter'
   import { aMapUtil } from 'lib/utils'
 
-  Vue.use(Datetime)
 
   class Ammeter {
     constructor (code, date, currentNum, useNum, img, prevNum) {

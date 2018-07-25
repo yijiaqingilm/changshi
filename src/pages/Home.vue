@@ -27,7 +27,7 @@
             <section>
                 <base-title title="数据统计"></base-title>
                 <base-tabs>
-                    <base-tab label="基础维护数据" :icon="iconSrc.mWeihu"></base-tab>
+                    <base-tab label="基础维护数据" link="/bsc/base" :icon="iconSrc.mWeihu"></base-tab>
                     <base-tab label="资源管理数据"  :icon="iconSrc.mZiyuan"></base-tab>
                     <base-tab label="在线培训数据"  :icon="iconSrc.mPeixun"></base-tab>
                 </base-tabs>
