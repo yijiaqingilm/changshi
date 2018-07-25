@@ -39,7 +39,6 @@
           type: native.doWorkNumber,
           page: this.page,
           approve: workOrderTypeStatus.review
-
         }).then(({data}) => {
           console.log('data', data)
           if (Array.isArray(data) && data.length > 0) {

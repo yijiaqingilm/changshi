@@ -1,10 +1,11 @@
 import { setToken } from 'lib/common'
 import api from 'api/api'
-import { isEmptyObject, margeMutations } from 'lib/utils'
+import { isEmptyObject, margeMutations, aMapUtil } from 'lib/utils'
 import { globalConst as native, mutationNames, formatData } from 'lib/const'
 import Vue from 'vue'
 import { applyClientMiddleware } from 'src/main'
 import AMap from 'AMap'
+
 const state = {
   workSortList: [],
   workOrder: {},
@@ -33,6 +34,17 @@ const getters = {
   }
 }
 const actions = {
+  [native.initActiveAddress] ({state, commit}, refs) {
+    aMapUtil.geolocation().then((data) => {
+      console.log('测试定位信息', data)
+      let {province, city, district} = data.addressComponent
+      commit(native.initActiveAddress, {
+        province,
+        city,
+        district
+      })
+    })
+  },
   [native.doLeaveQuestionDetail] ({state}, refs) {
     let quesitonOrderId = refs.work_id
     if (isEmptyObject(state.questionOrder[quesitonOrderId])) {
@@ -71,61 +83,43 @@ const actions = {
   },
   [native.doAddressProvinceList] ({state}, refs) {
     if (isEmptyObject(state.addressForProvince)) {
-      AMap.plugin('AMap.DistrictSearch', () => {
-        let districtSearch = new AMap.DistrictSearch({
-          level: 'country',
-          subdistrict: 1
-        })
-        // 搜索所有省/直辖市信息
-        districtSearch.search('中国', (status, result) => {
-          // 查询成功时，result即为对应的行政区信息
-          if (status === 'complete') {
-            state.addressForProvince = result.districtList[0].districtList
-          }
-
-        })
+      return aMapUtil.destrictSearch('country', '中国', function (error, result) {
+        if (error) {
+          return
+        } else {
+          state.addressForProvince = result
+        }
       })
-      // return applyClientMiddleware(api.doAddressProvinceList)(refs)
+    } else {
+      return Promise.resolve(state.addressForProvince)
     }
   },
   [native.doAddressCityList] ({state}, refs) {
     let provinceId = state.activeAddress.provinceId
     if (isEmptyObject(state.addressForCity[provinceId])) {
-      AMap.plugin('AMap.DistrictSearch', () => {
-        let districtSearch = new AMap.DistrictSearch({
-          level: 'province',
-          subdistrict: 1
-        })
-        // 搜索所有省/直辖市信息
-        districtSearch.search(provinceId, (status, result) => {
-          // 查询成功时，result即为对应的行政区信息
-          if (status === 'complete') {
-            // state.addressForCity[provinceId] = result.districtList[0].districtList
-            Vue.set(state.addressForCity, provinceId, result.districtList[0].districtList)
-          }
-
-        })
+      return aMapUtil.destrictSearch('province', provinceId, function (error, result) {
+        if (error) {
+          return
+        } else {
+          Vue.set(state.addressForCity, provinceId, result)
+        }
       })
+    } else {
+      return Promise.resolve(state.addressForCity[provinceId])
     }
   },
   [native.doAddressDistrictList] ({state}, refs) {
     let cityId = state.activeAddress.cityId
     if (isEmptyObject(state.addressForDistrict[cityId])) {
-      AMap.plugin('AMap.DistrictSearch', () => {
-        let districtSearch = new AMap.DistrictSearch({
-          level: 'city',
-          subdistrict: 1
-        })
-        // 搜索所有省/直辖市信息
-        districtSearch.search(cityId, (status, result) => {
-          // 查询成功时，result即为对应的行政区信息
-          if (status === 'complete') {
-            // state.addressForCity[provinceId] = result.districtList[0].districtList
-            Vue.set(state.addressForDistrict, cityId, result.districtList[0].districtList)
-          }
-
-        })
+      return aMapUtil.destrictSearch('city', cityId, function (error, result) {
+        if (error) {
+          return
+        } else {
+          Vue.set(state.addressForDistrict, cityId, result)
+        }
       })
+    } else {
+      return Promise.resolve(state.addressForDistrict[cityId])
     }
   },
   [native.doWorkSort] ({state}, refs) {
@@ -133,6 +127,15 @@ const actions = {
   }
 }
 let mutations = {
+  [native.initActiveAddress] (state, address) {
+    let {province, city, district} = address
+    state.activeAddress.provinceId = province
+    state.activeAddress.provinceName = province
+    state.activeAddress.cityId = city
+    state.activeAddress.cityName = city
+    state.activeAddress.districtId = district
+    state.activeAddress.districtName = district
+  },
   [native.doSelectDistrict] (state, district) {
     let {districtName, districtId} = district
     state.activeAddress.districtName = districtName

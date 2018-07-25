@@ -165,6 +165,8 @@
   import 'vue-datetime/dist/vue-datetime.css'
   import moment from 'lib/moment'
   import { mapState, mapGetters } from 'vuex'
+  import emitter from 'mixins/emitter'
+  import { aMapUtil } from 'lib/utils'
 
   Vue.use(Datetime)
 
@@ -188,6 +190,7 @@
 
   export default {
     name: 'fillorder',
+    mixins: [emitter],
     data () {
       return {
         jobCard: {
@@ -237,8 +240,7 @@
       ...mapState({
         activeAddress: ({base}) => base.activeAddress
       }),
-      currentAddress(){
-        console.log('test===>', this.activeAddress)
+      currentAddress () {
         let currentAddress = this.activeAddress.provinceName + this.activeAddress.cityName + this.activeAddress.districtName
         return currentAddress.length > 0 ? currentAddress : '请选择地址'
       },
@@ -278,12 +280,12 @@
     },
     methods: {
       showPopup () {
-        this.$f7.popup('.popup-province')
+        this.$f7.popup('.popup-province', false)
       },
       getJobPointList () {
         console.log('getJobPoint')
         let {client, major} = this.jobCard
-        let {provinceName, cityName, districtName}=this.activeAddress
+        let {provinceName, cityName, districtName} = this.activeAddress
         return this.$store.dispatch({
           type: native.doGetWorkBase,
           province: provinceName,
@@ -357,8 +359,6 @@
       handleDelAmmeter (ammeter, index) {
         this.jobCard.ammeter.splice(index, 1)
       }
-    },
-    mounted () {
     },
     components: {BaseRadio, BaseRadioGroup, QuestionGroup, QuestionItem, AmmeterGroup, AmmeterItem, Autocomplate}
   }

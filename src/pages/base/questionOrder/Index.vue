@@ -4,14 +4,14 @@
             <f7-nav-left back-link="返回" sliding></f7-nav-left>
             <f7-nav-center>遗留问题工单</f7-nav-center>
         </f7-navbar>
-        <header class='detail-header'>
-            <div>
-                <div class="s-select">选择区域</div>
+        <div class='detail-header'>
+            <div class="city">
+                <div><span class='s-select' @click="showPopup">{{currentAddress}}</span></div>
             </div>
-            <div>
+            <div class='point'>
                 <div class="s-select">作业点</div>
             </div>
-        </header>
+        </div>
         <base-list :type="listType">
             <base-list-item @click="goDetail()" questionCount="5" questionLevel="嘻嘻嘻"></base-list-item>
             <base-list-item questionCount="5" questionLevel="嘻嘻嘻"></base-list-item>
@@ -24,8 +24,10 @@
 </template>
 
 <script>
-  import { baseListTypes, globalConst as native } from 'lib/const'
+  import { baseListTypes, globalConst as native, pageSize } from 'lib/const'
   import InfiniteLoading from 'vue-infinite-loading'
+  import { mapState } from 'vuex'
+
   export default {
     name: '',
     data () {
@@ -36,16 +38,28 @@
       }
     },
     methods: {
-      goDetail(order = {}){
+      showPopup () {
+        this.$f7.popup('.popup-province', false)
+      },
+      goDetail (order = {}) {
         if (__DEBUG__) {
           order.id = 1
         }
         this.$router.loadPage(`/base/questionOrder/detail/${order.id}`)
       },
+      resetData () {
+        console.log('nowAddress')
+        this.page = 1
+        this.questionList = []
+      },
       loadData ($state) {
         this.$store.dispatch({
           type: native.doLeaveQuestion,
           page: this.page,
+          work_id: 1,
+          province: this.activeAddress.provinceName,
+          city: this.activeAddress.cityName,
+          district: this.activeAddress.districtName
         }).then(({data}) => {
           console.log('data', data)
           if (Array.isArray(data) && data.length > 0) {
@@ -60,6 +74,23 @@
           }
         })
       },
+    },
+    computed: {
+      ...mapState({
+        activeAddress: ({base}) => base.activeAddress
+      }),
+      currentAddress () {
+        let currentAddress = this.activeAddress.provinceName + this.activeAddress.cityName + this.activeAddress.districtName
+        return currentAddress.length > 0 ? currentAddress : '请选择地址'
+      }
+    },
+    watch: {
+      'activeAddress': {
+        handler: function (nowAddress, oldAddress) {
+          this.resetData()
+        },
+        deep: true
+      }
     },
     components: {InfiniteLoading}
   }

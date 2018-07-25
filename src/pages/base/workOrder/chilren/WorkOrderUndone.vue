@@ -25,8 +25,9 @@
     </div>
 </template>
 <script>
-  import { globalConst as native, pageSize, workOrderTypeStatus} from 'lib/const'
+  import { globalConst as native, pageSize, workOrderTypeStatus } from 'lib/const'
   import InfiniteLoading from 'vue-infinite-loading'
+
   export default {
     name: '',
     data () {

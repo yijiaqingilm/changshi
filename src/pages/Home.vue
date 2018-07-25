@@ -21,7 +21,7 @@
             <section>
                 <base-title title="操作管理"></base-title>
                 <base-tabs>
-                    <base-tab label="工单管理":icon="iconSrc.mOrder"></base-tab>
+                    <base-tab link="/sys/index" label="工单管理":icon="iconSrc.mOrder"></base-tab>
                 </base-tabs>
             </section>
             <section>

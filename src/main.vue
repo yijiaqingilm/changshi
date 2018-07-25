@@ -30,6 +30,7 @@
                                               :title="row.name"
                                               :value="row.name"
                                               name="province"
+                                              :checked="activeAddress.provinceId==row.name"
                                               @click="selectProvince(row)"
                                               radio>
                                 </f7-list-item>
@@ -53,6 +54,7 @@
                                               :title="row.name"
                                               :value="row.name"
                                               name="city"
+                                              :checked="activeAddress.cityId==row.name"
                                               @click="selectCity(row)"
                                               radio>
                                 </f7-list-item>
@@ -77,6 +79,7 @@
                                               :title="row.name"
                                               :value="row.name"
                                               name="district"
+                                              :checked="activeAddress.districtId==row.name"
                                               @click="selectDistrict(row)"
                                               radio>
                                 </f7-list-item>
@@ -98,14 +101,8 @@
     data () {
       return {}
     },
+    componentName: 'main',
     created: function () {
-      let {dispatch} = this.$store
-      setTimeout(() => {
-        dispatch({
-          type: native.doAddressProvinceList
-        })
-      }, 1000)
-
     },
     methods: {
       selectProvince (province) {
@@ -113,12 +110,14 @@
         commit(native.doSelectProvince, {
           provinceId: province.name, provinceName: province.name
         })
-        commit(native.resetCity)
-        commit(native.resetDistrict)
+        if (province.name !== this.activeAddress.provinceId) {
+          commit(native.resetCity)
+          commit(native.resetDistrict)
+        }
         dispatch({
           type: native.doAddressCityList
         })
-        this.$f7.popup('.popup-city')
+        this.$f7.popup('.popup-city', false)
       },
       selectCity (city) {
         let {commit, dispatch} = this.$store
@@ -126,10 +125,13 @@
           cityId: city.name,
           cityName: city.name
         })
+        if (city.name !== this.activeAddress.cityId) {
+          commit(native.resetDistrict)
+        }
         this.$store.dispatch({
           type: native.doAddressDistrictList,
         })
-        this.$f7.popup('.popup-district')
+        this.$f7.popup('.popup-district', false)
       },
       selectDistrict (district) {
         let {commit} = this.$store
@@ -156,7 +158,15 @@
     },
     mounted () {
       this.$nextTick(() => {
-
+        this.$store.dispatch({
+          type: native.initActiveAddress,
+        })
+        this.$$('.popup-province').on('opened', () => {
+          let {dispatch} = this.$store
+          dispatch({
+            type: native.doAddressProvinceList
+          })
+        })
       })
     },
     computed: {
@@ -165,7 +175,9 @@
         'getCityList',
         'getDistrictList',
       ]),
-
+      ...mapState({
+        activeAddress: ({base}) => base.activeAddress
+      })
     },
     components: {Loading}
   }

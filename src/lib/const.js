@@ -27,7 +27,8 @@ const globalConst = {
   resetCity: 'resetCity',
   resetDistrict: 'resetDistrict',
   doSelectCity: 'doSelectCity',
-  doSelectDistrict: 'doSelectDistrict'
+  doSelectDistrict: 'doSelectDistrict',
+  initActiveAddress: 'initActiveAddress'
 }
 let methods = [SUCCESS.toLowerCase(), FAILURE.toLowerCase(), REQUEST.toLowerCase()]
 const mutationNames = {}
