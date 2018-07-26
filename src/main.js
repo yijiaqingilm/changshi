@@ -16,8 +16,13 @@ import './directives/commonDirective.js'
 import './filters/commonFilter'
 import './lib/vueExends'
 import 'vue-datetime/dist/vue-datetime.css'
-import Datetime from 'vue-datetime'
-Vue.use(Datetime)
+import Datetime from 'components/datetime/Datetime'
+import { DateTime, Settings } from 'luxon'
+
+Settings.defaultLocale = 'zh-cn'
+DateTime.local().setLocale('zh-cn')
+Vue.component('datetime', Datetime)
+// Vue.use(Datetime)
 /* 引入 echart*/
 import ECharts from 'vue-echarts/components/ECharts.vue'
 import 'echarts/lib/chart/bar'

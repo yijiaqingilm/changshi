@@ -56,15 +56,12 @@
         <div class='time-group'>
             <span class='time-slash'></span>
             <div>
-                <datetime class="time-input" placeholder="请选择开始时间" v-model='jobCard.startDate'
-                          :format="dateTime.options.format"
-                          type="datetime"
-                          :phrases="dateTime.options.phrases"></datetime>
+                <input type="text" @click="openStartTime" placeholder="请选择开始时间" class='time-input' readonly
+                       v-model="jobCard.displayStartDate">
             </div>
             <div>
-                <datetime placeholder="请选择结束时间" v-model='jobCard.endDate' :format="dateTime.options.format"
-                          type="datetime"
-                          :phrases="dateTime.options.phrases"></datetime>
+                <input type="text" @click="openEndTime" placeholder="请选择结束时间" class='time-input' readonly
+                       v-model="jobCard.displayEndDate">
             </div>
         </div>
         <section class='mt-40'>
@@ -138,6 +135,17 @@
         <f7-block>
             <f7-button full active big>提交</f7-button>
         </f7-block>
+        <div slot="fixed">
+            <datetime ref="startDate" :displayValue.sync="jobCard.displayStartDate" class="time-input"
+                      placeholder="请选择开始时间" v-model='jobCard.startDate'
+                      :format="dateTime.options.format"
+                      type="datetime"
+                      :phrases="dateTime.options.phrases"></datetime>
+            <datetime ref="endDate" :displayValue.sync="jobCard.displayEndDate" placeholder="请选择结束时间"
+                      v-model='jobCard.endDate' :format="dateTime.options.format"
+                      type="datetime"
+                      :phrases="dateTime.options.phrases"></datetime>
+        </div>
     </f7-page>
 </template>
 
@@ -165,7 +173,6 @@
   import { mapState, mapGetters } from 'vuex'
   import emitter from 'mixins/emitter'
   import { aMapUtil } from 'lib/utils'
-
 
   class Ammeter {
     constructor (code, date, currentNum, useNum, img, prevNum) {
@@ -198,6 +205,8 @@
           workSort: '',
           content: '',
           startDate: new Date().toISOString(),
+          displayStartDate: '',
+          displayEndDate: '',
           endDate: '',
           fee: '',
           refWorkNumber: '',
@@ -276,6 +285,12 @@
       }
     },
     methods: {
+      openEndTime (event) {
+        this.$refs.endDate.open(event)
+      },
+      openStartTime (event) {
+        this.$refs.startDate.open(event)
+      },
       showPopup () {
         this.$f7.popup('.popup-province', false)
       },

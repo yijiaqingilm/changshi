@@ -20,7 +20,16 @@ const state = {
     cityName: '',
     districtId: -1,
     districtName: ''
-  }
+  },
+  dateTimeConfig: {
+    options: {
+      phrases: {
+        ok: '确定',
+        cancel: '关闭'
+      },
+      format: 'yyyy-MM-dd HH:mm:ss'
+    }
+  },
 }
 const getters = {
   getProvinceList (state) {

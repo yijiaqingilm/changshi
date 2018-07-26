@@ -12,6 +12,10 @@ export default class ApiClient {
         }
         const sessionKey = app.$store.state.auth.sessionKey
         console.log(serverUrl, 'xx', url)
+        Vue.http.options.emulateJSON = true
+        Vue.http.options.headers = {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        }
         Vue.http({
           method: method,
           url: serverUrl + url + (sessionKey && '?sessionkey=' + sessionKey),

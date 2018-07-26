@@ -1,4 +1,5 @@
 @import "../../css/globalFunc";
+
 .work-order-tabs {
   display: flex;
   width: 100%;
@@ -21,6 +22,8 @@
     &:after {
       position: absolute;
       bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
       display: block;
       content: '';
       width: 30%;

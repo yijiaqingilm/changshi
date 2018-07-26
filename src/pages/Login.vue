@@ -18,17 +18,18 @@
 
 <script type="text/ecmascript-6">
   import { globalConst as native, modalTitle } from 'lib/const'
+
   export default {
     data () {
       return {
         user: {
-          username: 'dfasdafd',
+          username: 'hjjgj',
           password: '123456'
         }
       }
     },
     methods: {
-      login(){
+      login () {
         this.$store.dispatch({
           type: native.doLogin,
           ...this.user

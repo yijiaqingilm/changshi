@@ -1,3 +1,5 @@
 build/*.js
 config/*.js
 src/components/mydatepicker/*.vue
+src/components/datetime/*.vue
+src/components/datetime/*.js

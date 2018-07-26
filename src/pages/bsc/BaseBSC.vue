@@ -1,7 +1,7 @@
 <template>
     <f7-page class='base-bsc'>
         <f7-navbar>
-            <f7-nav-left :back-link="false" sliding></f7-nav-left>
+            <f7-nav-left back-link="返回" sliding></f7-nav-left>
             <f7-nav-center>基础维护数据</f7-nav-center>
         </f7-navbar>
         <tabs-ctrl v-model="currentType" @change="showTab">
@@ -17,6 +17,26 @@
                 </keep-alive>
             </f7-tab>
         </f7-tabs>
+        <div slot="fixed">
+            <datetime ref="startDate" :displayValue.sync="orderStat.displayStartDate" class="time-input"
+                      placeholder="请选择开始时间" v-model='orderStat.startDate'
+                      :format="dateTimeFormat"
+                      type="date"
+                      :phrases="dateTimePhrases"></datetime>
+            <datetime ref="endDate" :displayValue.sync="orderStat.displayEndDate" placeholder="请选择结束时间"
+                      v-model='orderStat.endDate' :format="dateTimeFormat"
+                      type="date"
+                      :phrases="dateTimePhrases"></datetime>
+            <datetime ref="startAnchorDate" :displayValue.sync="anchorStat.displayStartDate" class="time-input"
+                      placeholder="请选择开始时间" v-model='anchorStat.startDate'
+                      :format="dateTimeFormat"
+                      type="date"
+                      :phrases="dateTimePhrases"></datetime>
+            <datetime ref="endAnchorDate" :displayValue.sync="anchorStat.displayEndDate" placeholder="请选择结束时间"
+                      v-model='anchorStat.endDate' :format="dateTimeFormat"
+                      type="date"
+                      :phrases="dateTimePhrases"></datetime>
+        </div>
     </f7-page>
 </template>
 
@@ -28,6 +48,7 @@
   import Tab from 'components/baseTabsCtrl/BaseTab.vue'
   import AnchorStat from './baseChildren/AnchorStat.vue'
   import OrderStat from './baseChildren/OrderStat.vue'
+
   const typeStatus = {
     order: 0,
     anchor: 1,
@@ -37,6 +58,7 @@
     {value: typeStatus.anchor, label: '维护点运行状态'},
   ]
   export default {
+    componentName: 'base-bsc',
     data () {
       return {
         currentType: typeStatus.order,
@@ -84,11 +106,31 @@
     created () {
     },
     methods: {
+      openStartTime (event) {
+        console.log('触发')
+        this.$refs.startDate.open(event)
+      },
+      openEndTime (event) {
+        this.$refs.endDate.open(event)
+      },
+      openAnchorStartTime (event) {
+        this.$refs.startAnchorDate.open(event)
+      },
+      openAnchorEndTime (event) {
+        this.$refs.endAnchorDate.open(event)
+      },
       showTab (value) {
         this.$f7.showTab(`.tab-${value}`)
       }
     },
-    computed: {},
+    computed: {
+      ...mapState({
+        dateTimePhrases: ({base}) => base.dateTimeConfig.options.phrases,
+        dateTimeFormat: ({base}) => base.dateTimeConfig.format,
+        orderStat: ({bsc}) => bsc.orderStat,
+        anchorStat: ({bsc}) => bsc.anchorStat
+      })
+    },
     components: {
       TabsCtrl,
       Tab,

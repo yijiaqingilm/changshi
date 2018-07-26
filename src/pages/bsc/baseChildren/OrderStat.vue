@@ -4,60 +4,45 @@
         <div class='time-group'>
             <span class='time-slash'></span>
             <div>
-                <datetime class="time-input" placeholder="请选择开始时间" v-model='combo.startDate'
-                          :format="dateTime.options.format"
-                          type="datetime"
-                          :phrases="dateTime.options.phrases"></datetime>
+                <input type="text" readonly class='time-input' placeholder="请选择开始时间" :value="startTime"
+                       @click="openStartTime">
             </div>
             <div>
-                <datetime placeholder="请选择结束时间" v-model='combo.endDate' :format="dateTime.options.format"
-                          type="datetime"
-                          :phrases="dateTime.options.phrases"></datetime>
+                <input type="text" readonly class='time-input' placeholder="请选择结束时间" :value="endTime"
+                       @click="openEndTime">
             </div>
         </div>
         <div class='combo'>
-            <base-form-group class="mt-15" label="地址选择：" >
+            <base-form-group class="mt-15" label="地址选择：">
                 <span class='s-select' @click="showPopup">{{currentAddress}}</span>
             </base-form-group>
-            <base-form-group class="mt-15" label="客户选择：" >
-                <base-select v-model="combo.client" text="请选择客户" :data="clientValue"></base-select>
+            <base-form-group class="mt-15" label="客户选择：">
+                <base-select v-model="orderStat.client" text="请选择客户" :data="clientValue"></base-select>
             </base-form-group>
-            <base-form-group class="mt-15" label="专业选择:" >
-                <base-select v-model="combo.major" text="请选择专业" :data="majorValue"></base-select>
+            <base-form-group class="mt-15" label="专业选择:">
+                <base-select v-model="orderStat.major" text="请选择专业" :data="majorValue"></base-select>
             </base-form-group>
-            <base-form-group class="mt-15" label="站点选择:" >
-                <base-select v-model="combo.client" text="请选择站点" :data="clientValue"></base-select>
+            <base-form-group class="mt-15" label="站点选择:">
+                <base-select v-model="orderStat.client" text="请选择站点" :data="clientValue"></base-select>
             </base-form-group>
         </div>
         <line-10></line-10>
-        <chart :options="polar" ></chart>
+        <chart :options="polar"></chart>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex'
   import { majorValue, clientValue } from 'lib/const'
+  import emitter from 'mixins/emitter'
+  import moment from 'lib/moment'
+
   export default {
+    mixins: [emitter],
     data () {
       return {
         clientValue,
         majorValue,
-        combo: {
-          client: '',
-          major: '',
-          point: '',
-          startDate: '',
-          endDate: ''
-        },
-        dateTime: {
-          options: {
-            phrases: {
-              ok: '确定',
-              cancel: '关闭'
-            },
-            format: 'yyyy-MM-dd HH:mm:ss'
-          }
-        },
         polar: {
           title: {
             text: '工单统计',
@@ -97,14 +82,27 @@
       }
     },
     methods: {
+      openStartTime (event) {
+        this.dispatchMethod('base-bsc', 'openStartTime', event)
+      },
+      openEndTime (event) {
+        this.dispatchMethod('base-bsc', 'openEndTime', event)
+      },
       showPopup () {
         this.$f7.popup('.popup-province', false)
       },
     },
     computed: {
       ...mapState({
-        activeAddress: ({base}) => base.activeAddress
+        activeAddress: ({base}) => base.activeAddress,
+        orderStat: ({bsc}) => bsc.orderStat,
       }),
+      startTime () {
+        return this.orderStat.startDate && moment(this.orderStat.startDate).format('YYYY-MM-DD')
+      },
+      endTime () {
+        return this.orderStat.endDate && moment(this.orderStat.endDate).format('YYYY-MM-DD')
+      },
       currentAddress () {
         let currentAddress = this.activeAddress.provinceName + this.activeAddress.cityName + this.activeAddress.districtName
         return currentAddress.length > 0 ? currentAddress : '请选择地址'
