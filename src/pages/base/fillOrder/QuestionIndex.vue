@@ -4,9 +4,6 @@
             <f7-nav-left back-link="返回" sliding></f7-nav-left>
             <f7-nav-center>作业填报</f7-nav-center>
         </f7-navbar>
-        {{activeAddress}}
-        <div @click="formatTest">测试</div>
-        {{jobCard}}
         <section>
             <header class='header'><span class='mark'>*</span>客户选择</header>
             <base-radio-group v-model="jobCard.client" class="radio-group">
@@ -104,34 +101,31 @@
                               :img.sync="ammeter.img"
                               @del="handleDelAmmeter(ammeter,index)"
                               @scanAmmeter="scanAmmeter(ammeter,index)"
-                              @uploadAmmeterImg="uploadAmmeterImg(ammeter)"
                               :key="index">
                 </ammeter-item>
             </ammeter-group>
         </div>
         <div v-if="showDynamotor">
-            <line-10></line-10>
-            <base-form-group class="m-40" label="发电机记录" isTitle></base-form-group>
-            <base-form-group class="m-40" label="电表编号">
+            <base-form-group label="电表编号">
                 <input type="text" class='s-scan' @click="scanDynamotor" placeholder='请扫描或输入电表编号'>
             </base-form-group>
-            <base-form-group class="m-40" label="发电时间">
-                <div class='dy-date'>
+            <base-form-group label="发电时间">
+                <div>
                     <div>2018:08dfaf</div>
                     <div>
-                        <f7-button active full @click="startDy">开始发电</f7-button>
+                        <f7-button active full>开始发电</f7-button>
                     </div>
                 </div>
             </base-form-group>
-            <base-form-group class="m-40" label="结束时间">
-                <div class='dy-date'>
+            <base-form-group label="结束时间">
+                <div>
                     <div>2018:08dfaf</div>
                     <div>
-                        <f7-button active full @click="endDy">结束发电</f7-button>
+                        <f7-button active full>结束发电</f7-button>
                     </div>
                 </div>
             </base-form-group>
-            <base-form-group class="m-40" label="发电时长">
+            <base-form-group label="发电时长">
                 8个小时
             </base-form-group>
         </div>
@@ -288,12 +282,6 @@
       }
     },
     methods: {
-      startDy () {
-
-      },
-      endDy () {
-
-      },
       openEndTime (event) {
         this.$refs.endDate.open(event)
       },
@@ -349,29 +337,6 @@
         })
         if (__DEBUG__) {
           ammeter.code = 'xxxx'
-        }
-      },
-      uploadAmmeterImg (ammeter) {
-        if (!__DEBUG__) {
-          wx.chooseImage({
-            count: 1, // 默认9
-            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-            sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
-            success: (res) => {
-              let localIds = res.localIds[0] // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-              let step = 100
-              setTimeout(() => {
-                wx.uploadImage({
-                  localId: localIds, // 需要上传的图片的本地ID，由chooseImage接口获得
-                  isShowProgressTips: 1, // 默认为1，显示进度提示
-                  success: function (res) {
-                    ammeter.img = res.serverId
-                  }
-                })
-              }, step)
-
-            }
-          })
         }
       },
       changeSortTypeList () {

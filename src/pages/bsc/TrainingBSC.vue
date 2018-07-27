@@ -2,7 +2,7 @@
     <f7-page class='base-bsc'>
         <f7-navbar>
             <f7-nav-left back-link="返回" sliding></f7-nav-left>
-            <f7-nav-center>资源管理数据</f7-nav-center>
+            <f7-nav-center>在线培训数据</f7-nav-center>
         </f7-navbar>
         <tabs-ctrl v-model="currentType" @change="showTab">
             <tab v-for="(type,index) in types" :key="index" :title="type.label" :label="type.value"></tab>
@@ -18,13 +18,13 @@
             </f7-tab>
         </f7-tabs>
         <div slot="fixed">
-            <datetime ref="dyDate" :displayValue.sync="dyStat.displayStartDate" class="time-input"
-                      placeholder="请选择时间" v-model='dyStat.date'
+            <datetime ref="dayDate" :displayValue.sync="trainDayStat.displayStartDate" class="time-input"
+                      placeholder="请选择时间" v-model='trainDayStat.date'
                       :format="dateTimeFormat"
                       type="date"
                       :phrases="dateTimePhrases"></datetime>
-            <datetime ref="veDate" :displayValue.sync="veStat.displayEndDate" placeholder="请选择时间"
-                      v-model='veStat.date' :format="dateTimeFormat"
+            <datetime ref="monthDate" :displayValue.sync="trainMonthStat.displayEndDate" placeholder="请选择时间"
+                      v-model='trainMonthStat.date' :format="dateTimeFormat"
                       type="date"
                       :phrases="dateTimePhrases"></datetime>
         </div>
@@ -37,22 +37,22 @@
   import Vue from 'vue'
   import TabsCtrl from 'components/baseTabsCtrl/BaseTabs.vue'
   import Tab from 'components/baseTabsCtrl/BaseTab.vue'
-  import DynamotorStat from './manageChildren/DynamotorStat.vue'
-  import VehicleStat from './manageChildren/VehicleStat.vue'
+  import DayStat from './trainingChildren/DayStat.vue'
+  import MonthStat from './trainingChildren/MonthStat.vue'
 
   const typeStatus = {
-    dy: 0,
-    ve: 1,
+    day: 0,
+    month: 1,
   }
   const types = [
-    {value: typeStatus.dy, label: '发电机'},
-    {value: typeStatus.ve, label: '车辆'},
+    {value: typeStatus.day, label: '日统计'},
+    {value: typeStatus.month, label: '月统计'},
   ]
   export default {
-    componentName: 'manage-bsc',
+    componentName: 'training-bsc',
     data () {
       return {
-        currentType: typeStatus.dy,
+        currentType: typeStatus.day,
         types,
         polar: {
           title: {
@@ -97,12 +97,12 @@
     created () {
     },
     methods: {
-      openDyDatePicker (event) {
+      openDayDatePicker (event) {
         console.log('触发')
-        this.$refs.dyDate.open(event)
+        this.$refs.dayDate.open(event)
       },
-      openVeDatePicker (event) {
-        this.$refs.veDate.open(event)
+      openMonthDatePicker (event) {
+        this.$refs.monthDate.open(event)
       },
       showTab (value) {
         this.$f7.showTab(`.tab-${value}`)
@@ -112,15 +112,15 @@
       ...mapState({
         dateTimePhrases: ({base}) => base.dateTimeConfig.options.phrases,
         dateTimeFormat: ({base}) => base.dateTimeConfig.format,
-        dyStat: ({bsc}) => bsc.dyStat,
-        veStat: ({bsc}) => bsc.veStat
+        trainDayStat: ({bsc}) => bsc.trainDayStat,
+        trainMonthStat: ({bsc}) => bsc.trainMonthStat
       })
     },
     components: {
       TabsCtrl,
       Tab,
-      [`typeView_${typeStatus.dy}`]: DynamotorStat,
-      [`typeView_${typeStatus.ve}`]: VehicleStat,
+      [`typeView_${typeStatus.day}`]: DayStat,
+      [`typeView_${typeStatus.month}`]: MonthStat,
     }
 
   }

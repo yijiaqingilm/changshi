@@ -22,6 +22,21 @@ const state = {
     displayStartDate: '',
     displayEndDate: '',
     endDate: ''
+  },
+  dyStat: {
+    date: '',
+    client: ''
+  },
+  veStat: {
+    date: '',
+    client: ''
+  },
+  trainDayStat: {
+    client: '',
+    major: ''
+  }, trainMonthStat: {
+    client: '',
+    major: '',
   }
 }
 const getters = {}

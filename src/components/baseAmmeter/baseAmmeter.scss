@@ -1,2 +1,30 @@
 @import "../../css/globalFunc";
 
+.ammeter-list-item-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 35px;
+  .header-left {
+    flex: 1;
+    @include setFontSize($middleFontSize);
+  }
+  .header-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    > div {
+      margin-left: 60px;
+    }
+
+  }
+}
+
+.item-group {
+  padding: 0 35px;
+  margin-top: 30px;
+}
+
+.item-img {
+  width: 184px;
+  height: 138px;
+}

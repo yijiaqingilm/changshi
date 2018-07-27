@@ -4,6 +4,10 @@
             <f7-nav-left :back-link="false" sliding></f7-nav-left>
             <f7-nav-center>发电机管理</f7-nav-center>
         </f7-navbar>
+        <base-form-group class="title" label="发电机编码" isTitle>
+            <input type="text" readonly @click="scanDynamotor" placeholder='请扫描' class='s-scan'>
+        </base-form-group>
+        <line-10></line-10>
         <tabs-ctrl v-model="ammeterType" @change="showTab">
             <tab v-for="(type,index) in ammeterTypes" :key="index" :title="type.value" :label="type.key"></tab>
         </tabs-ctrl>
@@ -15,14 +19,20 @@
                 <component :is="'ammeterView_'+ type.key"></component>
             </f7-tab>
         </f7-tabs>
+        <div slot="fixed">
+            <city-select @cityInfo="cityInfo" ref="citySelect"></city-select>
+        </div>
     </f7-page>
 </template>
 
 <script type="text/ecmascript-6">
+  import { mapState } from 'vuex'
   import TabsCtrl from 'components/baseTabsCtrl/BaseTabs.vue'
   import Tab from 'components/baseTabsCtrl/BaseTab.vue'
   import UpdateAddress from './chilren/UpdateAddress.vue'
   import UpdateStatus from './chilren/UpdateStatus.vue'
+  import CitySelect from 'components/baseCitySelect/CitySelect'
+
   const ammeterTypesStatus = {
     updateAddress: 0,
     updateStatus: 1
@@ -32,18 +42,59 @@
     {key: ammeterTypesStatus.updateStatus, value: '变更状态'},
   ]
   export default {
+    componentName: 'dynamotor',
     data () {
       return {
         ammeterTypes,
-        ammeterType: ammeterTypesStatus.updateAddress
+        ammeterType: ammeterTypesStatus.updateAddress,
+        isOri: true
       }
     },
     methods: {
-      showTab(value){
+      scanDynamotor () {
+        let code = ''
+        if (__DEBUG__) {
+          code = '123'
+          this.getDy(code)
+        } else {
+          // 扫一扫功能
+          wx.scanQRCode({
+            needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+            scanType: ['qrCode', 'barCode'], // 可以指定扫二维码还是一维码，默认二者都有
+            success: (res) => {
+              var result = res.resultStr // 当needResult 为 1 时，扫码返回的结果
+              // 扫完 回调 得到二维码
+              this.getDy(result)
+            }
+          })
+        }
+      },
+      cityInfo (cityInfo) {
+        if (this.isOri) {
+          this.dyInfo.oriAddress = cityInfo
+        } else {
+          this.dyInfo.nowAddress = cityInfo
+        }
+      },
+      openNowCityPicker () {
+        this.isOri = false
+        this.$refs.citySelect.open()
+      },
+      openOriCityPicker () {
+        this.isOri = true
+        this.$refs.citySelect.open()
+      },
+      showTab (value) {
         this.$f7.showTab(`.tab-${value}`)
       }
     },
+    computed: {
+      ...mapState({
+        dyInfo: ({rm}) => rm.dyInfo
+      })
+    },
     components: {
+      CitySelect,
       TabsCtrl,
       Tab,
       [`ammeterView_${ammeterTypesStatus.updateAddress}`]: UpdateAddress,
@@ -53,4 +104,15 @@
 </script>
 
 <style lang="scss" scoped type="text/css">
+    .title {
+        margin: 40px 30px;
+    }
+
+    .update-address-wrap {
+        padding: 0 30px;
+    }
+
+    .base-radio-group {
+        padding: 0 30px;
+    }
 </style>

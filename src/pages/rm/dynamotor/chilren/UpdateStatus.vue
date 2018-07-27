@@ -1,9 +1,5 @@
 <template>
     <div>
-        <base-form-group class="title" label="发电机编码" isTitle>
-            <input type="text" placeholder='请扫描'>
-        </base-form-group>
-        <line-10></line-10>
         <base-form-group class='title' label="发电机存放点" isTitle></base-form-group>
         <base-radio-group v-model="status">
             <base-radio v-for="(info,index) in dyInfo"
@@ -13,7 +9,9 @@
                 {{info.value}}
             </base-radio>
         </base-radio-group>
-        <line-10></line-10>
+        <f7-block>
+            <f7-button full active big @click="submit">提交</f7-button>
+        </f7-block>
     </div>
 </template>
 
@@ -21,8 +19,8 @@
   let dyStatus = {
     right: 0,
     waitMaintenace: 1,
-    lose:2,
-    junk:3
+    lose: 2,
+    junk: 3
   }
   let dyInfo = [
     {key: dyStatus.right, value: '正常'},
@@ -36,6 +34,11 @@
         dyStatus,
         dyInfo,
         status: dyStatus.right
+      }
+    },
+    methods: {
+      submit () {
+
       }
     }
   }

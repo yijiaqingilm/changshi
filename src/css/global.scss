@@ -336,7 +336,6 @@ textarea {
   background-color: #f5f5f5;
   .s-select {
     width: 100%;
-    padding: 0;
   }
   .city {
     flex: 0 0 60%;
@@ -402,4 +401,18 @@ textarea {
 
 .echarts {
   width: 100% !important;
+}
+.icon_expand{
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  background-image: url("~assets/icon_expand.png");
+  background-size: 35px;
+}
+.icon_collapse{
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  background-image: url("~assets/icon_collapse.png");
+  background-size: 35px;
 }

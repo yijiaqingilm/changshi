@@ -1,39 +1,48 @@
 <template>
     <div class='ammeter-list-item'>
         <header class='ammeter-list-item-header'>
-            <div>电表{{index}}</div>
-            <div>
-                <div><base-icon @click="handleDel" iconName="del" label="删除"></base-icon></div>
-                <div></div>
+            <div class='header-left'>电表{{index}}</div>
+            <div class='header-right'>
+                <div>
+                    <base-icon @click="handleDel" iconName="del" label="删除"></base-icon>
+                </div>
+                <div>
+                    <span class="icon_expand" :class="[isExpand ? 'icon_expand' : 'icon_collapse']"
+                          @click="changeFolding"></span>
+                </div>
             </div>
         </header>
-        <section>
-            <base-form-group label="电表编号">
+        <section v-show="isExpand">
+            <base-form-group class='item-group' label="电表编号">
                 <input class='s-scan' readonly @click="scanAmmeter" type="text" v-model='_code'
                        placeholder="请扫描或输入电表编号">
             </base-form-group>
-            <base-form-group label="抄表时间">
-                {{_date}}
+            <base-form-group class='item-group' label="抄表时间">
+                {{_date | dateFormat}}
             </base-form-group>
-            <base-form-group label="上一周期抄电表度数">
+            <base-form-group class='item-group' label="上一周期抄电表度数">
                 <input type="text" class='s-input' readonly :value='prevNum'>
             </base-form-group>
-            <base-form-group label="本周期抄电表度数">
+            <base-form-group class='item-group' label="本周期抄电表度数">
                 <input type="text" class='s-input' v-model='_currentNum'>
             </base-form-group>
-            <base-form-group label="使用度数">
+            <base-form-group class='item-group' label="使用度数">
                 <input type="text" class='s-input' v-model='_useNum'>
             </base-form-group>
-            <base-form-group label="上传电表照">
-                <input type="text" class='s-input' v-model='_img'>
+            <base-form-group class='item-group' label="上传电表照">
+
             </base-form-group>
+            <div class='item-group' @click="uploadAmmeterImg">
+                <img :src="img" class='item-img' alt="">
+            </div>
         </section>
     </div>
 </template>
 
 <script>
-  import { leave, leaveValue } from 'lib/const'
+  import { leave, leaveValue, modalTitle } from 'lib/const'
 
+  let defaultImg = require('../../assets/icon_upload.png')
   export default {
     props: {
       index: {},
@@ -42,20 +51,42 @@
       prevNum: String,
       currentNum: String,
       useNum: String,
-      img: {}
+      img: {
+        type: [Object, String],
+        default: function () {
+          return defaultImg
+        }
+      },
+      expand: {
+        type: Boolean,
+        default: true
+      }
     },
     name: '',
     data () {
       return {
         leaveValue,
+        isExpand: true,
       }
+    },
+    created () {
+      this.isExpand = this.expand
     },
     methods: {
       handleDel () {
-        this.$emit('del')
+        this.$f7.confirm('确定删除？', modalTitle, () => {
+          this.$emit('del')
+        })
+
       },
       scanAmmeter () {
         this.$emit('scanAmmeter')
+      },
+      uploadAmmeterImg () {
+        this.$emit('uploadAmmeterImg')
+      },
+      changeFolding () {
+        this.isExpand = !this.isExpand
       }
     },
     computed: {
