@@ -16,7 +16,7 @@
             </base-form-group>
         </div>
         <line-10></line-10>
-        <chart :options="polar"></chart>
+        <chart :options="options"></chart>
     </div>
 </template>
 
@@ -31,39 +31,59 @@
     data () {
       return {
         clientValue,
-        polar: {
+        options: {
           title: {
-            text: '工单统计',
-            subtext: '',
-            x: 'center'
+            text: '堆叠区域图'
           },
           tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/>{b} : {c}个 ({d}%)'
+            trigger: 'axis',
+            axisPointer: {
+              type: 'cross',
+              label: {
+                backgroundColor: '#6a7985'
+              }
+            }
           },
           legend: {
-            orient: 'vertical',
-            left: 'left',
-            data: ['已归档工单', '未归档工单', '待审核工单']
+            data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
           },
-          series: [
+          toolbox: {
+            feature: {
+              saveAsImage: {}
+            }
+          },
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+          xAxis: [
             {
-              name: '工单统计',
-              type: 'pie',
-              radius: '55%',
-              center: ['50%', '60%'],
-              data: [
-                {value: 335, name: '已归档工单'},
-                {value: 310, name: '未归档工单'},
-                {value: 234, name: '待审核工单'},
-              ],
-              itemStyle: {
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+              type: 'category',
+              boundaryGap: false,
+              data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+            }
+          ],
+          yAxis: [
+            {
+              type: 'value'
+            }
+          ],
+          series: [
+
+            {
+              name: '搜索引擎',
+              type: 'line',
+              stack: '总量',
+              label: {
+                normal: {
+                  show: true,
+                  position: 'top'
                 }
-              }
+              },
+
+              data: [820, 932, 901, 934, 1290, 1330, 1320]
             }
           ]
         }

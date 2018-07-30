@@ -27,7 +27,7 @@
             </base-form-group>
         </div>
         <line-10></line-10>
-        <chart :options="polar"></chart>
+        <chart :options="options"></chart>
     </div>
 </template>
 
@@ -43,32 +43,42 @@
       return {
         clientValue,
         majorValue,
-        polar: {
+        options: {
           title: {
-            text: '工单统计',
-            subtext: '',
+            text: '某站点用户访问来源',
+            subtext: '纯属虚构',
             x: 'center'
           },
           tooltip: {
             trigger: 'item',
-            formatter: '{a} <br/>{b} : {c}个 ({d}%)'
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
           },
           legend: {
+            show: true,
             orient: 'vertical',
-            left: 'left',
-            data: ['已归档工单', '未归档工单', '待审核工单']
+            left: 10,
+            top: 20,
+            bottom: 20,
+            data: ['直接访问1', '邮件营销2', '联盟广告2', '视频广告', '搜索引擎']
           },
           series: [
             {
-              name: '工单统计',
+              name: '访问来源',
               type: 'pie',
               radius: '55%',
               center: ['50%', '60%'],
               data: [
-                {value: 335, name: '已归档工单'},
-                {value: 310, name: '未归档工单'},
-                {value: 234, name: '待审核工单'},
+                {value: 335, name: '直接访问1'},
+                {value: 310, name: '邮件营销1'},
+                {value: 234, name: '联盟广告2'},
+                {value: 135, name: '视频广告2'},
+                {value: 1548, name: '搜索引擎'}
               ],
+              /* label: {
+                normal: {
+                  position: 'inner'
+                }
+              },*/
               itemStyle: {
                 emphasis: {
                   shadowBlur: 10,

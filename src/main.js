@@ -27,7 +27,9 @@ Vue.component('datetime', Datetime)
 import ECharts from 'vue-echarts/components/ECharts.vue'
 import 'echarts/lib/chart/bar'
 import 'echarts/lib/component/tooltip'
+import 'echarts/lib/component/legend'
 import 'echarts/lib/chart/pie'
+import 'echarts/lib/chart/line'
 
 Vue.component('chart', ECharts)
 
