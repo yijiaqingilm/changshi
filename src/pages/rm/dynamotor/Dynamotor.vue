@@ -32,6 +32,7 @@
   import UpdateAddress from './chilren/UpdateAddress.vue'
   import UpdateStatus from './chilren/UpdateStatus.vue'
   import CitySelect from 'components/baseCitySelect/CitySelect'
+  import { modalTitle, globalConst as native } from 'lib/const'
 
   const ammeterTypesStatus = {
     updateAddress: 0,
@@ -51,6 +52,16 @@
       }
     },
     methods: {
+      getDy (code) {
+        this.$store.dispatch({
+          type: native.doGetDynamotor,
+          code
+        }).then(({data}) => {
+          console.log('data', data)
+        }).catch((err) => {
+          this.$f7.alert(err, modalTitle)
+        })
+      },
       scanDynamotor () {
         let code = ''
         if (__DEBUG__) {

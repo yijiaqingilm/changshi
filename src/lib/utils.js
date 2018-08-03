@@ -272,6 +272,9 @@ let margeMutations = (actions) => {
     mutations[`${actionName}_${failure}`] = function (state, {error}) {
 
     }
+    mutations[`${actionName}_${success}`] = function (state, {error}) {
+
+    }
   })
   return mutations
 }

@@ -3,9 +3,9 @@ import { globalConst as native } from 'lib/const'
 import { isEmptyObject } from 'lib/utils'
 
 const globalMixin = {
-  async created () {
-    await this.$store.dispatch({
-      type: native.doLoadConfig
+  created () {
+    this.$store.dispatch({
+      type: native.doWxLogin
     })
   },
   computed: mapState({}),

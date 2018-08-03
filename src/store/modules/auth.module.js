@@ -9,12 +9,19 @@ import Vue from 'vue'
 import { applyClientMiddleware } from 'src/main'
 
 const state = {
-  sessionKey: 'GfJ9pNWwMjFyZDyPwVGqwWVa2zQZWN'
+  sessionKey: 'LeDDj83XvLV6tHUlvOim',
+  wxConfig: {}
 }
 const getters = {}
 const actions = {
   [native.doLogin] ({state}, refs) {
     return applyClientMiddleware(api.doLogin)(refs)
+  },
+  [native.doWxLogin] ({state}, refs) {
+    if (isEmptyObject(state.wxConfig)) {
+      return applyClientMiddleware(api.doWxLogin)(refs)
+    }
+
   }
 }
 let mutations = {

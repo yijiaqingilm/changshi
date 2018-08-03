@@ -2,89 +2,210 @@
     <f7-page class='vehicle'>
         <f7-navbar>
             <f7-nav-left back-link="返回" sliding></f7-nav-left>
-            <f7-nav-center>发电机管理</f7-nav-center>
+            <f7-nav-center>车辆管理</f7-nav-center>
         </f7-navbar>
         <header>
             <hint>提示：出车及收车信息根据触发‘出车’及‘收车’按键时自动生成</hint>
-            <base-form-group class="title" label="发电机编码" isTitle>
-                <input type="text" readonly @click="scanCode" placeholder='请扫描' class='s-scan'>
+            <base-form-group class="title" label="车牌号" isTitle>
+                <input type="text" v-model='carnumber' readonly @click="scanCode" placeholder='请扫描' class='s-scan'>
             </base-form-group>
         </header>
         <section class='info-panel'>
             <header>出车信息</header>
             <section class='panel-context'>
                 <base-form-group label="出车时间">
-                    xxxxxx
+                    {{vehicleInfo.out.date && vehicleInfo.out.date}}
                 </base-form-group>
                 <base-form-group label="出车位置">
-                    xxxxx
+                    {{vehicleInfo.out.position && vehicleInfo.out.position}}
                 </base-form-group>
             </section>
         </section>
-        <section class='info-panel'>
-            <header>出车信息</header>
+        <section class='info-panel' v-if='vehicleInfo.retract.date'>
+            <header>收车信息</header>
             <section class='panel-context'>
                 <base-form-group label="出车时间">
-                    xxxxxx
+                    {{vehicleInfo.retract.date && vehicleInfo.retract.date}}
                 </base-form-group>
                 <base-form-group label="出车位置">
-                    xxxxx
+                    {{vehicleInfo.retract.position && vehicleInfo.retract.position}}
                 </base-form-group>
             </section>
         </section>
         <section class='context'>
             <base-form-group label="出车里程数" isTitle>
-                <input type="text" class='s-input' placeholder='请输入里程数'>
+                <input type="number" v-model="info.outMileage" class='s-input' placeholder='请输入里程数'>
             </base-form-group>
             <base-form-group label="加油费用" isTitle>
-                <input type="text" class='s-input' placeholder='请输入加油费用，无填0'>
+                <input type="number" v-model="info.oilfee" class='s-input' placeholder='请输入加油费用，无填0'>
             </base-form-group>
             <base-form-group label="路桥费用" isTitle>
-                <input type="text" class='s-input' placeholder='请输入路桥费用，无填0'>
+                <input type="number" v-model="info.bridgefee" class='s-input' placeholder='请输入路桥费用，无填0'>
             </base-form-group>
             <base-form-group label="维修费用" isTitle>
-                <input type="text" class='s-input' placeholder='请输入维修费用，无填0'>
+                <input type="number" v-model="info.servicefee" class='s-input' placeholder='请输入维修费用，无填0'>
             </base-form-group>
             <base-form-group label="其他费用" isTitle>
-                <input type="text" class='s-input' placeholder='请输入其他费用，无填0'>
+                <input type="number" v-model='info.otherfee' class='s-input' placeholder='请输入其他费用，无填0'>
             </base-form-group>
-            <base-form-group label="收车里程数" isTitle>
-                <input type="text" class='s-input' placeholder='请输入里程数'>
+            <base-form-group label="收车里程数" isTitle v-if="vehicleInfo.out.date">
+                <input type="number" v-model='info.retractMileage' class='s-input' placeholder='请输入里程数'>
             </base-form-group>
-            <base-form-group label="行驶总路程" isTitle>
-                xxxx 公里
+            <base-form-group label="行驶总路程" isTitle v-if="vehicleInfo.out.date">
+                {{totalMileage}} 公里
             </base-form-group>
-            <base-form-group label="总费用" isTitle>
-                ￥ xxxx
+            <base-form-group label="总费用" isTitle v-if="vehicleInfo.out.date">
+                ￥ {{totalFee}}
             </base-form-group>
         </section>
         <section class='footer'>
-            <f7-button big full active>出车</f7-button>
-            <f7-button big full active>收车</f7-button>
+            <f7-button big full active @click='startOff' v-if="!vehicleInfo.out.date">出车</f7-button>
+            <f7-button big full active @click="getTo" v-else>收车</f7-button>
         </section>
     </f7-page>
 </template>
 
 <script type="text/ecmascript-6">
   import Hint from 'components/hint/Hint.vue'
+  import { modalTitle, globalConst as native } from '../../../lib/const'
+  import { Validator } from 'lib/custom_validator'
+
   export default {
     data () {
-      return {}
+      return {
+        vehicleInfo: {
+          out: {},
+          retract: {},
+          mileage: 0
+        },
+        error: null,
+        validator: null,
+        info: {
+          outMileage: '',
+          oilfee: '',
+          outAdd: '',
+          outLng: '',
+          outLat: '',
+          bridgefee: '',
+          servicefee: '',
+          otherfee: '',
+          totalfee: '',
+          retractMileage: '',
+          mileage: 0,
+          retractAdd: '',
+          retractLng: '',
+          retractLat: '',
+          remark: ''
+        },
+        carnumber: ''
+      }
+    },
+    created () {
+      this.validator = new Validator({
+        workBase: 'required',
+        workSort: 'required',
+        content: 'required',
+        startDate: 'required',
+        endDate: 'required',
+        fee: 'required',
+      })
+      this.$set(this, 'errors', this.validator.errorBag)
     },
     methods: {
-      scanCode(){
-        let code = ''
+      startOff () {
+        if (!this.carnumber) {
+          this.$f7.alert('请扫描车牌号', modalTitle)
+          return
+        }
+        if (!this.info.outMileage) {
+          this.$f7.alert('请输入出车里程数', modalTitle)
+          return
+        }
+        this.$f7.confirm('是否确认出车', modalTitle, () => {
+          if (this.info.outMileage < this.vehicleInfo.mileage) {
+            this.$f7.alert('出车里程数必须大于或等于上一次收车里程数', modalTitle)
+            return
+          }
+          this.$store.dispatch({
+            type: native.startOff,
+            license_plate: this.carnumber,
+            out_mileage: this.info.outMileage,
+          })
+        })
+      },
+      getTo () {
+        let {bridgefee, servicefee, otherfee, oilfee, outMileage, remark} = this.info
+        /* this.validator.validateAll({
+          workBase,
+          workSort,
+          content,
+          startDate: displayStartDate,
+          endDate: displayEndDate,
+          fee
+        })*/
+        //  校验信息
+        /* if (this.errors.errors.length > 0) {
+          this.$f7.addNotification({
+            media: ('<span className=\'iconfont icon-error\'></span>'),
+            title: '提示',
+            message: this.errors.errors[0].msg
+          })
+          setTimeout(() => {
+            this.$f7.closeNotification('.notifications')
+          }, 2000)
+          return
+        }*/
+        this.$store.dispatch({
+          type: native.getTo,
+          license_plate: this.carnumber,
+          out_mileage: this.info.outMileage,
+          oilfee,
+          bridgefee,
+          servicefee,
+          otherfee,
+          totalfee: this.totalFee,
+          retract_mileage: outMileage,
+          mileage: this.totalMileage,
+          remark
+        })
+      },
+      scanCode () {
         if (__DEBUG__) {
-          code = '123'
+          this.carnumber = '432424'
         }
         this.$store.dispatch({
-          type: native.doGetDynamotor,
-          code
+          type: native.doCarDetail,
+          carnumber: this.carnumber
         }).then(({data}) => {
           console.log('data', data)
+          this.vehicleInfo.out = data.out
+          this.vehicleInfo.mileage = data.mileage
         }).catch((err) => {
           this.$f7.alert(err, modalTitle)
         })
+      }
+    },
+    computed: {
+      totalMileage () {
+        let total = this.info.retractMileage - this.info.outMileage
+        return isNaN(parseFloat(total)) ? 0 : parseFloat(total)
+      },
+      totalFee () {
+        let {bridgefee, servicefee, otherfee, oilfee} = this.info
+        if (!bridgefee) {
+          bridgefee = 0
+        }
+        if (!servicefee) {
+          servicefee = 0
+        }
+        if (!otherfee) {
+          otherfee = 0
+        }
+        if (!oilfee) {
+          oilfee = 0
+        }
+        let totalFee = parseFloat(bridgefee) + parseFloat(servicefee) + parseFloat(otherfee) + parseFloat(oilfee)
+        return isNaN(parseFloat(totalFee)) ? 0 : parseFloat(totalFee)
       }
     },
     components: {Hint}

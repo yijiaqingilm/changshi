@@ -7,24 +7,23 @@ const dictionary = {
       email: () => '您输入的邮件有误',
     },
     custom: {
-      email: {
-        required: '邮件必填'
+      workBase: {
+        required: '作业点必填'
       },
-      contact: {
-        required: '联系人必填',
-        contact: '联系人名字为1至30个字符'
+      workSort: {
+        required: '作业类别必填',
       },
-      detail: {
-        required: '请输入收货详细地址',
-        detail: '收货详细地址为3至200个字符'
+      content: {
+        required: '作业内容必填',
       },
-      mobile: {
-        required: '联系电话必填',
-        mobile: '手机号码格式不正确'
+      startDate: {
+        required: '开始时间必选',
       },
-      district: {
-        required: '所属区域必填',
-        district: '区域信息含义非法字符‘|’'
+      endDate: {
+        required: '结束时间必选',
+      },
+      fee: {
+        required: '劳务费必填',
       }
     }
   }

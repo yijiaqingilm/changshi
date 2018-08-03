@@ -26,6 +26,7 @@ let apiConfig = [
   new ApiConfig(native.doAddressDistrictList, '/address/index', {global: false}, 'get'),
   new ApiConfig(native.doGetAmmeter, '/ammeter/index', 'get'),
   new ApiConfig(native.doGetDynamotor, '/dynamotor/index', 'get'),
+  new ApiConfig(native.doDynamotorUpdateStatus, '/dynamotor/update-status'),
   new ApiConfig(native.doDynamotorCreate, '/dynamotor/create'),
   new ApiConfig(native.doWorkNumber, '/work-number/index', 'get'),
   new ApiConfig(native.doWorkNumberApprove, '/work-number/approve'),
@@ -36,6 +37,10 @@ let apiConfig = [
   new ApiConfig(native.doLeaveQuestionDetail, '/leave-question/detail'),
   new ApiConfig(native.doLeaveQuestionUpdate, '/leave-question/update'),
   new ApiConfig(native.doWorkSort, '/work-sort/index', 'get'),
-  new ApiConfig(native.doLogin, '/user/login')
+  new ApiConfig(native.doLogin, '/user/login'),
+  new ApiConfig(native.doWxLogin, '/user/wx-login', 'get'),
+  new ApiConfig(native.doCarDetail, '/car/detail', 'get'),
+  new ApiConfig(native.startOff, '/car/create'),
+  new ApiConfig(native.getTo, '/car/update')
 ]
 export default apiConfig

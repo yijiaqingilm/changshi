@@ -75,16 +75,6 @@
       openNowCityPicker () {
         this.dispatchMethod('dynamotor', 'openNowCityPicker')
       },
-      getDy (code) {
-        this.$store.dispatch({
-          type: native.doGetDynamotor,
-          code
-        }).then(({data}) => {
-          console.log('data', data)
-        }).catch((err) => {
-          this.$f7.alert(err, modalTitle)
-        })
-      }
     },
     computed: {
       ...mapState({

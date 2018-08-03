@@ -23,12 +23,17 @@ const globalConst = {
   doLeaveQuestionUpdate: 'doLeaveQuestionUpdate',
   doWorkSort: 'doWorkSort',
   doLogin: 'doLogin',
+  doWxLogin: 'doWxLogin',
   doSelectProvince: 'doSelectProvince',
   resetCity: 'resetCity',
   resetDistrict: 'resetDistrict',
   doSelectCity: 'doSelectCity',
   doSelectDistrict: 'doSelectDistrict',
-  initActiveAddress: 'initActiveAddress'
+  initActiveAddress: 'initActiveAddress',
+  doDynamotorUpdateStatus: 'doDynamotorUpdateStatus',
+  doCarDetail: 'doCarDetail',
+  startOff: 'startOff',
+  getTo: 'getTo'
 }
 let methods = [SUCCESS.toLowerCase(), FAILURE.toLowerCase(), REQUEST.toLowerCase()]
 const mutationNames = {}

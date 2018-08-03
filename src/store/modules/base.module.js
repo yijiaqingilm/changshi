@@ -30,6 +30,7 @@ const state = {
       format: 'yyyy-MM-dd HH:mm:ss'
     }
   },
+  dy: {}
 }
 const getters = {
   getProvinceList (state) {
@@ -43,6 +44,9 @@ const getters = {
   }
 }
 const actions = {
+  [native.doWorkSender] ({state}, refs) {
+    return applyClientMiddleware(api.doWorkSender)(refs)
+  },
   [native.initActiveAddress] ({state, commit}, refs) {
     aMapUtil.geolocation().then((data) => {
       console.log('测试定位信息', data)
@@ -198,6 +202,7 @@ let mutations = {
   },
   [mutationNames.doGetDynamotor_success] (state, {data}) {
     console.log(data, 'data')
+    state.dy = data
   },
   [mutationNames.doGetAmmeter_success] (state, {data}) {
     console.log(data, 'data')

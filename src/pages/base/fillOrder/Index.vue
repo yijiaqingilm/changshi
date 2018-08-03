@@ -136,7 +136,7 @@
             </base-form-group>
         </div>
         <f7-block>
-            <f7-button full active big>提交</f7-button>
+            <f7-button full active big @click="submit">提交</f7-button>
         </f7-block>
         <div slot="fixed">
             <datetime ref="startDate" :displayValue.sync="jobCard.displayStartDate" class="time-input"
@@ -176,6 +176,7 @@
   import { mapState, mapGetters } from 'vuex'
   import emitter from 'mixins/emitter'
   import { aMapUtil } from 'lib/utils'
+  import { Validator } from 'lib/custom_validator'
 
   class Ammeter {
     constructor (code, date, currentNum, useNum, img, prevNum) {
@@ -239,10 +240,20 @@
         iconSrc: {
           add: require('../../../assets/icon_add.png'),
         },
-        city: ''
+        validator: null,
+        errors: null,
       }
     },
     created () {
+      this.validator = new Validator({
+        workBase: 'required',
+        workSort: 'required',
+        content: 'required',
+        startDate: 'required',
+        endDate: 'required',
+        fee: 'required',
+      })
+      this.$set(this, 'errors', this.validator.errorBag)
     },
     computed: {
       ...mapGetters(['getProvinceList']),
@@ -293,6 +304,47 @@
       },
       endDy () {
 
+      },
+      submit () {
+        let {client, major, workType, workBase, workSort, content, displayStartDate, displayEndDate, fee, refWorkNumber, isLeaveQuestion, leave, ammeter, dynamotor} = this.jobCard
+        console.log('cart', this.jobCard)
+        this.validator.validateAll({
+          workBase,
+          workSort,
+          content,
+          startDate: displayStartDate,
+          endDate: displayEndDate,
+          fee
+        })
+        //  校验信息
+        if (this.errors.errors.length > 0) {
+          this.$f7.addNotification({
+            media: ('<span className=\'iconfont icon-error\'></span>'),
+            title: '提示',
+            message: this.errors.errors[0].msg
+          })
+          setTimeout(() => {
+            this.$f7.closeNotification('.notifications')
+          }, 2000)
+          return
+        }
+        this.$store.dispatch({
+          type: native.doWorkSender,
+          client,
+          major,
+          work_base: workBase,
+          work_type: workType,
+          work_sort: workSort,
+          content,
+          start_date: displayStartDate,
+          end_date: displayEndDate,
+          fee,
+          ref_work_number: refWorkNumber,
+          is_leave_question: isLeaveQuestion,
+          leave: JSON.stringify(leave),
+          ammeter: JSON.stringify(ammeter),
+          power: JSON.stringify(dynamotor)
+        })
       },
       openEndTime (event) {
         this.$refs.endDate.open(event)

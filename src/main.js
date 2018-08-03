@@ -77,6 +77,9 @@ Vue.component('answer-tab', AnswerTab)
 /* let user_store = sessionStorage.getItem('user_store')
  user_store && store.replaceState(Object.assign(store.state, JSON.parse(user_store)))*/
 // Init App
+let client = new ApiClient()
+let applyClientMiddleware = clientMiddleware(client)(store.commit)
+
 let app = new Vue({
   template: '<app/>',
   // Init Framework7 by passing parameters here
@@ -112,8 +115,6 @@ let app = new Vue({
   },
   store
 }).$mount('#app')
-let client = new ApiClient()
-let applyClientMiddleware = clientMiddleware(client)(store.commit)
 /**
  * 添加 ajax 全局拦截器
  */

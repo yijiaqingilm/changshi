@@ -21,7 +21,7 @@
             <section>
                 <base-title title="操作管理"></base-title>
                 <base-tabs>
-                    <base-tab link="/sys/index" label="工单管理":icon="iconSrc.mOrder"></base-tab>
+                    <base-tab link="/sys/index" label="工单管理" :icon="iconSrc.mOrder"></base-tab>
                 </base-tabs>
             </section>
             <section>
@@ -29,7 +29,7 @@
                 <base-tabs>
                     <base-tab label="基础维护数据" link="/bsc/base" :icon="iconSrc.mWeihu"></base-tab>
                     <base-tab label="资源管理数据" link="/bsc/manage" :icon="iconSrc.mZiyuan"></base-tab>
-                    <base-tab label="在线培训数据" link="/bsc/train"  :icon="iconSrc.mPeixun"></base-tab>
+                    <base-tab label="在线培训数据" link="/bsc/train" :icon="iconSrc.mPeixun"></base-tab>
                 </base-tabs>
             </section>
             <section>
@@ -68,8 +68,10 @@
   import BaseTitle from 'components/baseTitle/BaseTitle'
   import BaseTabs from 'components/baseTabs/BaseTabs'
   import BaseTab from 'components/baseTabs/BaseTab'
+  import globalMixin from 'mixins/globalMixin'
 
   export default {
+    mixins: [globalMixin],
     data () {
       return {
         iconSrc: {
