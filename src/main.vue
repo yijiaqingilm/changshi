@@ -107,13 +107,13 @@
     methods: {
       selectProvince (province) {
         let {commit, dispatch} = this.$store
-        commit(native.doSelectProvince, {
-          provinceId: province.name, provinceName: province.name
-        })
         if (province.name !== this.activeAddress.provinceId) {
           commit(native.resetCity)
           commit(native.resetDistrict)
         }
+        commit(native.doSelectProvince, {
+          provinceId: province.name, provinceName: province.name
+        })
         dispatch({
           type: native.doAddressCityList
         })
@@ -121,13 +121,13 @@
       },
       selectCity (city) {
         let {commit, dispatch} = this.$store
+        if (city.name !== this.activeAddress.cityId) {
+          commit(native.resetDistrict)
+        }
         commit(native.doSelectCity, {
           cityId: city.name,
           cityName: city.name
         })
-        if (city.name !== this.activeAddress.cityId) {
-          commit(native.resetDistrict)
-        }
         this.$store.dispatch({
           type: native.doAddressDistrictList,
         })

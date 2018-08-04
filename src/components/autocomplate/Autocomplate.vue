@@ -1,6 +1,7 @@
 <template>
     <div>
-        <input type="text" v-model="model" class='s-input autocomplate' :placeholder='placeholder'>
+        <!--v-model="model"-->
+        <input type="text" class='s-input autocomplate' :placeholder='placeholder'>
     </div>
 </template>
 
@@ -35,38 +36,42 @@
           input: '.autocomplate',
           openIn: 'dropdown',
           preloader: true, // enable preloader
-          valueProperty: 'id', // object's "value" property name
-          textProperty: 'name', // object's "text" property name
+          valueProperty: 'work_base', // object's "value" property name
+          textProperty: 'work_base', // object's "text" property name
           limit: 20, // limit to 20 results
           dropdownPlaceholderText: 'Try "JavaScript"',
           expandInput: true, // expand input
           source: (autocomplete, query, render) => {
-            var results = [];
+            var results = []
             if (query.length === 0) {
-              render(results);
-              return;
+              render(results)
+              return
             }
             // Show Preloader
-            autocomplete.showPreloader();
+            autocomplete.showPreloader()
             // Do Ajax request to Autocomplete data
             if (this.loadData && Object.prototype.toString.call(this.loadData) === '[object Function]') {
               this.loadData().then((data) => {
                 console.log('data ===', data)
                 // render(data);
-                autocomplete.hidePreloader();
-                render(results);
+                autocomplete.hidePreloader()
+                render(data.data.work_base)
 
               }).catch(() => {
-                autocomplete.hidePreloader();
-                render(results);
+                autocomplete.hidePreloader()
+                render(results)
               })
             } else {
-              autocomplete.hidePreloader();
-              render(results);
+              autocomplete.hidePreloader()
+              render(results)
 
             }
+          },
+          onChange: (autocomplate, value) => {
+            this.$emit('change', value)
+            console.log('change=======', value)
           }
-        });
+        })
       })
     }
   }

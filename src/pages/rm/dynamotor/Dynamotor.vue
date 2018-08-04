@@ -65,7 +65,7 @@
       scanDynamotor () {
         let code = ''
         if (__DEBUG__) {
-          code = '123'
+          code = 'rewrwrwr'
           this.getDy(code)
         } else {
           // 扫一扫功能

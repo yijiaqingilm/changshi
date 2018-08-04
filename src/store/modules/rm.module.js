@@ -14,6 +14,12 @@ const state = {
 }
 const getters = {}
 const actions = {
+  [native.doCarHistory] ({state}, refs) {
+    return applyClientMiddleware(api.doCarHistory)(refs)
+  },
+  [native.doDynamotorHistory] ({state}, refs) {
+    return applyClientMiddleware(api.doDynamotorHistory)(refs)
+  },
   [native.doDynamotorUpdateStatus] ({state}, refs) {
     return applyClientMiddleware(api.doDynamotorUpdateStatus)(refs)
   },

@@ -51,6 +51,7 @@
           onClose: ({cols, value, displayValue}) => {
             this.displayValue = displayValue[0]
             this.$emit('input', value[0] >>> 0)
+            this.$emit('change', {value: parseFloat(value[0]), displayValue: displayValue[0]})
           },
           onOpen: (picker) => {
           }

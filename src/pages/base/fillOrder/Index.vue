@@ -4,9 +4,7 @@
             <f7-nav-left back-link="返回" sliding></f7-nav-left>
             <f7-nav-center>作业填报</f7-nav-center>
         </f7-navbar>
-        {{activeAddress}}
-        <div @click="formatTest">测试</div>
-        {{jobCard}}
+       <!-- {{jobCard}}-->
         <section>
             <header class='header'><span class='mark'>*</span>客户选择</header>
             <base-radio-group v-model="jobCard.client" class="radio-group">
@@ -28,12 +26,23 @@
                     <input class='s-input' placeholder="请从下方选择或搜索作业点" type="text" readonly v-model="jobPoint">
                 </div>
                 <div class="city"><span class='s-select' @click="showPopup">{{currentAddress}}</span></div>
-                <div>
-                    <base-select v-model='jobCard.workBase' text="请选择作业点" :data="majorValue"></base-select>
+                <div v-if='workBaseList && workBaseList.length>0'>
+                    <div>
+                        <base-select v-model='jobCard.workBase'
+                                     text="请选择作业点"
+                                     :data="workBaseList"
+                                     nodeKey="id"
+                                     @change="changeJobPoint2"
+                                     nodeLabel="work_base"></base-select>
+                    </div>
+                    <div>
+                        <autocomplate placeholder='请搜索作业点'
+                                      @change="changeJobPoint"
+                                      :loadData="getJobPointList"></autocomplate>
+                    </div>
                 </div>
-                <div>
-                    <autocomplate v-model="jobPointName" placeholder='请搜索作业点'
-                                  :loadData="getJobPointList"></autocomplate>
+                <div v-else class='hint'>
+                    当前区域没有可选择的作业点
                 </div>
             </div>
         </base-form-group>
@@ -112,27 +121,42 @@
         <div v-if="showDynamotor">
             <line-10></line-10>
             <base-form-group class="m-40" label="发电机记录" isTitle></base-form-group>
-            <base-form-group class="m-40" label="电表编号">
-                <input type="text" class='s-scan' @click="scanDynamotor" placeholder='请扫描或输入电表编号'>
+            <base-form-group class="m-40" label="发电机编号">
+                <input type="text" v-model="jobCard.dynamotor.code" readonly class='s-scan' @click="scanDynamotor"
+                       placeholder='请扫描或输入电表编号'>
             </base-form-group>
             <base-form-group class="m-40" label="发电时间">
                 <div class='dy-date'>
-                    <div>2018:08dfaf</div>
                     <div>
-                        <f7-button active full @click="startDy">开始发电</f7-button>
+                        <template v-if="jobCard.dynamotor.startTime">{{jobCard.dynamotor.startTime| dateFormat}}
+                        </template>
+                    </div>
+                    <div>
+                        <f7-button active :color="btnDyStartTimeDisable? 'gray' :''" full @click="startDy">开始发电
+                        </f7-button>
                     </div>
                 </div>
             </base-form-group>
             <base-form-group class="m-40" label="结束时间">
                 <div class='dy-date'>
-                    <div>2018:08dfaf</div>
                     <div>
-                        <f7-button active full @click="endDy">结束发电</f7-button>
+                        <template v-if="jobCard.dynamotor.endTime">{{jobCard.dynamotor.endTime | dateFormat}}</template>
+                    </div>
+                    <div>
+                        <f7-button active :color="btnDyEndTimeDisable? 'gray' :''" full @click="endDy">结束发电</f7-button>
                     </div>
                 </div>
             </base-form-group>
             <base-form-group class="m-40" label="发电时长">
-                8个小时
+                <template v-if="jobCard.dynamotor.duration">
+                    {{getTimer(jobCard.dynamotor.duration)}}
+                </template>
+            </base-form-group>
+            <base-form-group class="m-40" label="发电费用">
+                <input type="number" placeholder="请填写发电费用" class='s-input' v-model='jobCard.dynamotor.oilfee'>
+            </base-form-group>
+            <base-form-group class="m-40" label="备注">
+                <input type="text" placeholder="请输入备注" class='s-input' v-model='jobCard.dynamotor.remark'>
             </base-form-group>
         </div>
         <f7-block>
@@ -162,7 +186,8 @@
     majorValue,
     workType,
     workTypeValue,
-    generatorIds
+    generatorIds,
+    modalTitle
   } from 'lib/const'
   import BaseRadioGroup from 'components/baseRadioGroup/BaseRadioGroup'
   import BaseRadio from 'components/baseRadioGroup/children/BaseRadio'
@@ -171,11 +196,12 @@
   import AmmeterGroup from 'components/baseAmmeter/BaseAmmeter'
   import AmmeterItem from 'components/baseAmmeter/BaseAmmeterItem'
   import Autocomplate from 'components/autocomplate/Autocomplate.vue'
+  import Hint from 'components/hint/Hint'
   import Vue from 'vue'
   import moment from 'lib/moment'
   import { mapState, mapGetters } from 'vuex'
   import emitter from 'mixins/emitter'
-  import { aMapUtil } from 'lib/utils'
+  import { aMapUtil, getTimer } from 'lib/utils'
   import { Validator } from 'lib/custom_validator'
 
   class Ammeter {
@@ -201,6 +227,7 @@
     mixins: [emitter],
     data () {
       return {
+        getTimer,
         jobCard: {
           client: client.mobile,
           major: major.jizhan,
@@ -218,8 +245,13 @@
           leave: [],
           ammeter: [],
           dynamotor: {
+            id: '',
             code: '',
-            lastNum: ''
+            startTime: '',
+            endTime: '',
+            duration: '',
+            oilfee: '',
+            remark: ''
           }
         },
         clientValue,
@@ -237,11 +269,14 @@
           }
         },
         workSortList: [],
+        workBaseList: [],
         iconSrc: {
           add: require('../../../assets/icon_add.png'),
         },
         validator: null,
         errors: null,
+        btnDyStartTimeDisable: false,
+        btnDyEndTimeDisable: true
       }
     },
     created () {
@@ -261,7 +296,11 @@
         activeAddress: ({base}) => base.activeAddress
       }),
       currentAddress () {
-        let currentAddress = this.activeAddress.provinceName + this.activeAddress.cityName + this.activeAddress.districtName
+        let {provinceName, cityName, districtName} = this.activeAddress
+        let currentAddress = provinceName + cityName + districtName
+        if (provinceName && cityName && districtName) {
+          this.changePointList()
+        }
         return currentAddress.length > 0 ? currentAddress : '请选择地址'
       },
       showAmmeter () {
@@ -276,12 +315,13 @@
       },
       showDynamotor () {
         return generatorIds.indexOf(this.jobCard.workSort >>> 0) !== -1
-      }
+      },
     },
     watch: {
       'jobCard.client': {
         handler: function (nowClient, oldClient) {
           this.changeSortTypeList()
+          this.changePointList()
         },
         immediate: true
       },
@@ -294,16 +334,45 @@
       'jobCard.major': {
         handler: function (nowMajor, oldMajor) {
           this.changeSortTypeList()
+          this.changePointList()
         },
         immediate: true
       }
     },
     methods: {
       startDy () {
+        if (this.btnDyStartTimeDisable) {
+          return
+        }
+        let code = this.jobCard.dynamotor.code
+        if (!code) {
+          this.$f7.alert('请先获取发电机信息', modalTitle)
+          return
+        }
+        this.$f7.confirm('是否确认开始发电?', modalTitle, () => {
+          this.jobCard.dynamotor.startTime = new Date().getTime()
+          this.btnDyStartTimeDisable = true
+          this.btnDyEndTimeDisable = false
+        })
 
       },
       endDy () {
-
+        if (this.btnDyEndTimeDisable) {
+          return
+        }
+        this.$f7.confirm('是否确认结束发电?', modalTitle, () => {
+          this.btnDyEndTimeDisable = true
+          this.jobCard.dynamotor.endTime = new Date().getTime()
+          let {startTime, endTime} = this.jobCard.dynamotor
+          this.jobCard.dynamotor.duration = endTime - startTime
+        })
+      },
+      changeJobPoint (value) {
+        this.jobCard.workBase = value.id
+        this.jobPoint = value.work_base
+      },
+      changeJobPoint2 (value) {
+        this.jobPoint = value.displayValue
       },
       submit () {
         let {client, major, workType, workBase, workSort, content, displayStartDate, displayEndDate, fee, refWorkNumber, isLeaveQuestion, leave, ammeter, dynamotor} = this.jobCard
@@ -328,6 +397,12 @@
           }, 2000)
           return
         }
+
+        if (this.showDynamotor && (!this.btnDyStartTimeDisable || !this.btnDyEndTimeDisable)) {
+          this.$f7.alert('未结束发电不能提交工单', modalTitle)
+          return
+        }
+
         this.$store.dispatch({
           type: native.doWorkSender,
           client,
@@ -373,17 +448,16 @@
       scanDynamotor () {
         let code = ''
         if (__DEBUG__) {
-          code = '1'
+          code = 'rewrwrwr'
         }
         this.$store.dispatch({
           type: native.doGetDynamotor,
           code
         }).then((data) => {
-          this.jobCard.dynamotor = 'xxxx编号'
+          console.log(data, '======================')
+          this.jobCard.dynamotor.id = data.data.id
+          this.jobCard.dynamotor.code = code
         })
-        if (__DEBUG__) {
-          this.jobCard.dynamotor = 'xxxx编号'
-        }
       },
       // 电表
       scanAmmeter (ammeter, index) {
@@ -436,7 +510,26 @@
         }).then((data) => {
           this.workSortList = data.data
         })
-        console.log('cest', this.jobCard.client)
+      },
+      changePointList () {
+        let {client, major} = this.jobCard
+        let {provinceName, cityName, districtName} = this.activeAddress
+        if (!provinceName || !cityName || !districtName) {
+          return
+        }
+        this.$store.dispatch({
+          type: native.doGetWorkBase,
+          province: provinceName,
+          city: cityName,
+          district: districtName,
+          client,
+          major,
+        }).then((data) => {
+          let workBase = data.data.work_base
+          if (workBase && Array.isArray(workBase)) {
+            this.workBaseList = workBase
+          }
+        })
       },
       handleDelQuestion (question, index) {
         console.log('del 问题')

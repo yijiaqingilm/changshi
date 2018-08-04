@@ -9,8 +9,15 @@ import Vue from 'vue'
 import { applyClientMiddleware } from 'src/main'
 
 const state = {
-  sessionKey: 'LeDDj83XvLV6tHUlvOim',
-  wxConfig: {}
+  sessionKey: '',
+  isManage: false,
+  userInfo: {
+    is_manage: '',
+    id: '',
+    empcode: '',
+    realname: '',
+  },
+  wxConfig: {},
 }
 const getters = {}
 const actions = {
@@ -25,8 +32,17 @@ const actions = {
   }
 }
 let mutations = {
-  [mutationNames.doLogin] (state, {data}) {
-    console.log('data', data)
+  [native.logout] (state) {
+    state.userInfo = {}
+    state.isManage = false
+    state.sessionKey = ''
+  },
+  [mutationNames.doLogin_success] (state, {data}) {
+    console.log('data======', data)
+    state.userInfo = data
+    state.sessionKey = data.sessionkey
+    state.isManage = data.is_manage === 1
+    console.log(state.sessionKey, data.sessionkey, '=====')
   }
 }
 mutations = Object.assign(margeMutations(actions), mutations)

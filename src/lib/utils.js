@@ -361,6 +361,24 @@ const aMapUtil = {
     })
   }),
 }
+
+const isNumber = (number) => !isNaN(parseFloat(number)) && Object.prototype.toString.apply(parseFloat(number, 10)) === '[object Number]'
+let getTimer = function (time) {
+  time = Math.round(time / 1000)
+  let hour = Math.floor(time / 60 / 60)
+  let minute = Math.floor(time / 60 % 60)
+  let second = time % 60 % 60
+  if (hour < 10) {
+    hour = '0' + hour
+  }
+  if (minute < 10) {
+    minute = '0' + minute
+  }
+  if (second < 10) {
+    second = '0' + second
+  }
+  return hour + '时' + minute + '分钟' + second + '秒'
+}
 export {
   Cache,
   LocalCache,
@@ -373,5 +391,7 @@ export {
   margeMutations,
   dataFormat,
   getSignature,
-  aMapUtil
+  aMapUtil,
+  isNumber,
+  getTimer
 }

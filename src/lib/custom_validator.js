@@ -8,7 +8,7 @@ const dictionary = {
     },
     custom: {
       workBase: {
-        required: '作业点必填'
+        required: '作业点必填',
       },
       workSort: {
         required: '作业类别必填',
@@ -24,7 +24,22 @@ const dictionary = {
       },
       fee: {
         required: '劳务费必填',
-      }
+      },
+      oilfee: {
+        required: '加油费必填',
+      },
+      bridgefee: {
+        required: '路桥费必填'
+      },
+      servicefee: {
+        required: '维修费必填',
+      },
+      otherfee: {
+        required: '其他费用必填'
+      },
+      retractMileage: {
+        required: '收车里程数必填',
+      },
     }
   }
 }

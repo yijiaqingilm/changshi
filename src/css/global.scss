@@ -402,17 +402,23 @@ textarea {
 .echarts {
   width: 100% !important;
 }
-.icon_expand{
+
+.icon_expand {
   display: inline-block;
   width: 35px;
   height: 35px;
   background-image: url("~assets/icon_expand.png");
   background-size: 35px;
 }
-.icon_collapse{
+
+.icon_collapse {
   display: inline-block;
   width: 35px;
   height: 35px;
   background-image: url("~assets/icon_collapse.png");
   background-size: 35px;
+}
+
+.hint {
+  color: #b91212;
 }

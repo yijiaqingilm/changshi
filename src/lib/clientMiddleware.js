@@ -11,7 +11,6 @@ export default function clientMiddleware (client) {
     }
     const actionName = type
     const [mutation_success, mutation_fail, mutation_request] = [`${actionName}_${SUCCESS.toLowerCase()}`, `${actionName}_${FAILURE.toLowerCase()}`, `${actionName}_${REQUEST.toLowerCase()}`]
-    console.log('action', action)
     if (typeof action !== 'function') {
       alert('action 必须是一个函数!!!')
       return

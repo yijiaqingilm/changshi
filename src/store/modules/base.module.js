@@ -30,7 +30,8 @@ const state = {
       format: 'yyyy-MM-dd HH:mm:ss'
     }
   },
-  dy: {}
+  dy: {},
+  workNumberStatics: {}
 }
 const getters = {
   getProvinceList (state) {
@@ -44,6 +45,9 @@ const getters = {
   }
 }
 const actions = {
+  [native.doWorkNumberStatics] ({state}, refs) {
+    return applyClientMiddleware(api.doWorkNumberStatics)(refs)
+  },
   [native.doWorkSender] ({state}, refs) {
     return applyClientMiddleware(api.doWorkSender)(refs)
   },
@@ -140,6 +144,9 @@ const actions = {
   }
 }
 let mutations = {
+  [native.doWorkNumberStatics_success] (state, {data}) {
+    state.workNumberStatics = data
+  },
   [native.initActiveAddress] (state, address) {
     let {province, city, district} = address
     state.activeAddress.provinceId = province

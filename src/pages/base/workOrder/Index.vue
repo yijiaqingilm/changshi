@@ -5,10 +5,10 @@
             <f7-nav-center>我的工单</f7-nav-center>
         </f7-navbar>
         <h-list>
-            <h-list-item desc="工单总数" title="263"></h-list-item>
-            <h-list-item desc="未归档工单" title="263"></h-list-item>
-            <h-list-item desc="待审核工单" title="263"></h-list-item>
-            <h-list-item desc="已归档工单" title="263"></h-list-item>
+            <h-list-item desc="工单总数" :title="statics.total"></h-list-item>
+            <h-list-item desc="未归档工单" :title="statics.unariched"></h-list-item>
+            <h-list-item desc="待审核工单" :title="statics.approve"></h-list-item>
+            <h-list-item desc="已归档工单" :title="statics.ariched"></h-list-item>
         </h-list>
         <section>
             <tabs-ctrl v-model="workOrderType" @change="showTab">
@@ -35,6 +35,7 @@
   import ViewDone from './chilren/WorkOrderDone'
   import ViewReview from './chilren/WorkOrderReview'
   import ViewUndone from './chilren/WorkOrderUndone'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'workOrder',
@@ -45,8 +46,15 @@
       }
     },
     created () {
+      this.$store.dispatch({
+        type: native.doWorkNumberStatics
+      })
     },
-    computed: {},
+    computed: {
+      ...mapState({
+        statics: ({base}) => base.workNumberStatics
+      })
+    },
     methods: {
       showTab (value) {
         this.$f7.showTab(`.tab-${value}`)
@@ -58,7 +66,7 @@
       [`orderTypeView_${workOrderTypeStatus.done}`]: ViewDone,
       [`orderTypeView_${workOrderTypeStatus.review}`]: ViewReview,
       [`orderTypeView_${workOrderTypeStatus.undone}`]: ViewUndone,
-    }
+    },
   }
 </script>
 

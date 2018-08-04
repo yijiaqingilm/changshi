@@ -41,6 +41,9 @@ let apiConfig = [
   new ApiConfig(native.doWxLogin, '/user/wx-login', 'get'),
   new ApiConfig(native.doCarDetail, '/car/detail', 'get'),
   new ApiConfig(native.startOff, '/car/create'),
-  new ApiConfig(native.getTo, '/car/update')
+  new ApiConfig(native.getTo, '/car/update'),
+  new ApiConfig(native.doDynamotorHistory, '/dynamotor/history', 'get'),
+  new ApiConfig(native.doCarHistory, '/car/history', 'get'),
+  new ApiConfig(native.doWorkNumberStatics, '/work-number/statics', 'get')
 ]
 export default apiConfig

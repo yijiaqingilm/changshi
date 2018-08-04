@@ -5,33 +5,46 @@
             <f7-nav-center>长实智能维护</f7-nav-center>
         </f7-navbar>
         <section>
-            <header class='h-header'>
+            <header class='h-header' v-if="sessionKey">
                 <div class='h-avatar'>
                     <img src="../assets/icon_avatar.png" class='avatar' alt="">
                 </div>
                 <div class='h-title'>
-                    <div>1235</div>
-                    <div>作业员</div>
+                    <div>{{userInfo.empcode}}</div>
+                    <div>{{userInfo.realname}}</div>
                 </div>
-                <div class='h-exit'>
+                <div class='h-exit' @click="logout">
                     退出<span class='gt'></span>
                 </div>
             </header>
+            <header class='h-header' v-else>
+                <div class='h-avatar'>
+                    <img src="../assets/icon_avatar.png" class='avatar' alt="">
+                </div>
+                <div class='h-title'>
+                    未登录
+                </div>
+                <div class='h-exit' @click="login">
+                    登录<span class='gt'></span>
+                </div>
+            </header>
             <line-10></line-10>
-            <section>
-                <base-title title="操作管理"></base-title>
-                <base-tabs>
-                    <base-tab link="/sys/index" label="工单管理" :icon="iconSrc.mOrder"></base-tab>
-                </base-tabs>
-            </section>
-            <section>
-                <base-title title="数据统计"></base-title>
-                <base-tabs>
-                    <base-tab label="基础维护数据" link="/bsc/base" :icon="iconSrc.mWeihu"></base-tab>
-                    <base-tab label="资源管理数据" link="/bsc/manage" :icon="iconSrc.mZiyuan"></base-tab>
-                    <base-tab label="在线培训数据" link="/bsc/train" :icon="iconSrc.mPeixun"></base-tab>
-                </base-tabs>
-            </section>
+            <template v-if="isManage">
+                <section>
+                    <base-title title="操作管理"></base-title>
+                    <base-tabs>
+                        <base-tab link="/sys/index" label="工单管理" :icon="iconSrc.mOrder"></base-tab>
+                    </base-tabs>
+                </section>
+                <section>
+                    <base-title title="数据统计"></base-title>
+                    <base-tabs>
+                        <base-tab label="基础维护数据" link="/bsc/base" :icon="iconSrc.mWeihu"></base-tab>
+                        <base-tab label="资源管理数据" link="/bsc/manage" :icon="iconSrc.mZiyuan"></base-tab>
+                        <base-tab label="在线培训数据" link="/bsc/train" :icon="iconSrc.mPeixun"></base-tab>
+                    </base-tabs>
+                </section>
+            </template>
             <section>
                 <base-title title="基础维护"></base-title>
                 <base-tabs>
@@ -63,7 +76,7 @@
 
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex'
-  import { globalConst as native } from 'lib/const'
+  import { globalConst as native, modalTitle } from 'lib/const'
   import Vue from 'vue'
   import BaseTitle from 'components/baseTitle/BaseTitle'
   import BaseTabs from 'components/baseTabs/BaseTabs'
@@ -95,8 +108,23 @@
     },
     created () {
     },
-    methods: {},
-    computed: {},
+    methods: {
+      login () {
+        this.$router.reloadPage('/login')
+      },
+      logout () {
+        this.$f7.confirm('确定退出登录？', modalTitle, () => {
+          this.$store.commit(native.logout)
+        })
+      }
+    },
+    computed: {
+      ...mapState({
+        userInfo: ({auth}) => auth.userInfo,
+        isManage: ({auth}) => auth.isManage,
+        sessionKey: ({auth}) => auth.sessionKey
+      })
+    },
     components: {BaseTitle, BaseTabs, BaseTab}
 
   }

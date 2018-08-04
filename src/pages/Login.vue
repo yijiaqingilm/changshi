@@ -23,8 +23,8 @@
     data () {
       return {
         user: {
-          username: 'hjjgj',
-          password: '123456'
+          username: 'dfasdafd',
+          password: 'ikG3rs'
         }
       }
     },
@@ -34,7 +34,7 @@
           type: native.doLogin,
           ...this.user
         }).then(() => {
-          this.$router.loadPage('/home')
+          this.$router.reloadPage('/home')
         }).catch((error) => {
           this.$f7.alert(error, modalTitle)
         })

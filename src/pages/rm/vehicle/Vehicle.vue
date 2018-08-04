@@ -21,7 +21,7 @@
                 </base-form-group>
             </section>
         </section>
-        <section class='info-panel' v-if='vehicleInfo.retract.date'>
+        <section class='info-panel' v-if='vehicleInfo.retract.address'>
             <header>收车信息</header>
             <section class='panel-context'>
                 <base-form-group label="出车时间">
@@ -59,7 +59,8 @@
             </base-form-group>
         </section>
         <section class='footer'>
-            <f7-button big full active @click='startOff' v-if="!vehicleInfo.out.date">出车</f7-button>
+            <f7-button big full active :color="btnDisable ? 'gray':''" @click='startOff' v-if="!vehicleInfo.out.date">出车
+            </f7-button>
             <f7-button big full active @click="getTo" v-else>收车</f7-button>
         </section>
     </f7-page>
@@ -67,8 +68,9 @@
 
 <script type="text/ecmascript-6">
   import Hint from 'components/hint/Hint.vue'
-  import { modalTitle, globalConst as native } from '../../../lib/const'
+  import { modalTitle, globalConst as native } from 'lib/const'
   import { Validator } from 'lib/custom_validator'
+  import { aMapUtil, isNumber } from 'lib/utils'
 
   export default {
     data () {
@@ -78,7 +80,7 @@
           retract: {},
           mileage: 0
         },
-        error: null,
+        errors: null,
         validator: null,
         info: {
           outMileage: '',
@@ -102,12 +104,11 @@
     },
     created () {
       this.validator = new Validator({
-        workBase: 'required',
-        workSort: 'required',
-        content: 'required',
-        startDate: 'required',
-        endDate: 'required',
-        fee: 'required',
+        oilfee: 'required',
+        bridgefee: 'required',
+        servicefee: 'required',
+        otherfee: 'required',
+        retractMileage: 'required',
       })
       this.$set(this, 'errors', this.validator.errorBag)
     },
@@ -134,17 +135,16 @@
         })
       },
       getTo () {
-        let {bridgefee, servicefee, otherfee, oilfee, outMileage, remark} = this.info
-        /* this.validator.validateAll({
-          workBase,
-          workSort,
-          content,
-          startDate: displayStartDate,
-          endDate: displayEndDate,
-          fee
-        })*/
+        let {bridgefee, servicefee, otherfee, oilfee, outMileage, remark, retractMileage} = this.info
+        this.validator.validateAll({
+          oilfee,
+          bridgefee,
+          servicefee,
+          otherfee,
+          retractMileage
+        })
         //  校验信息
-        /* if (this.errors.errors.length > 0) {
+        if (this.errors.errors.length > 0) {
           this.$f7.addNotification({
             media: ('<span className=\'iconfont icon-error\'></span>'),
             title: '提示',
@@ -154,19 +154,27 @@
             this.$f7.closeNotification('.notifications')
           }, 2000)
           return
-        }*/
-        this.$store.dispatch({
-          type: native.getTo,
-          license_plate: this.carnumber,
-          out_mileage: this.info.outMileage,
-          oilfee,
-          bridgefee,
-          servicefee,
-          otherfee,
-          totalfee: this.totalFee,
-          retract_mileage: outMileage,
-          mileage: this.totalMileage,
-          remark
+        }
+        aMapUtil.geolocation().then((data) => {
+          let formattedAddress = data.formattedAddress
+          let {lat, lng} = data.position
+          this.$set(this.vehicleInfo.date, 'date', new Date())
+          this.$set(this.vehicleInfo.retract, 'address', formattedAddress)
+          this.$f7.confirm('是否确认收车？', modalTitle, () => {
+            this.$store.dispatch({
+              type: native.getTo,
+              license_plate: this.carnumber,
+              out_mileage: outMileage,
+              oilfee,
+              bridgefee,
+              servicefee,
+              otherfee,
+              totalfee: this.totalFee,
+              retract_mileage: retractMileage,
+              mileage: this.totalMileage,
+              remark
+            })
+          })
         })
       },
       scanCode () {
@@ -186,6 +194,14 @@
       }
     },
     computed: {
+      btnDisable () {
+        let {bridgefee, servicefee, otherfee, oilfee, retractMileage} = this.info
+        if (!isNumber(bridgefee) && isNumber(servicefee) && isNumber(otherfee) && isNumber(oilfee) && isNumber(retractMileage)) {
+          return true
+        } else {
+          return false
+        }
+      },
       totalMileage () {
         let total = this.info.retractMileage - this.info.outMileage
         return isNaN(parseFloat(total)) ? 0 : parseFloat(total)
