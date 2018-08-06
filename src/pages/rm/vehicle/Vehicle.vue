@@ -24,11 +24,11 @@
         <section class='info-panel' v-if='vehicleInfo.retract.address'>
             <header>收车信息</header>
             <section class='panel-context'>
-                <base-form-group label="出车时间">
+                <base-form-group label="收车时间">
                     {{vehicleInfo.retract.date && vehicleInfo.retract.date}}
                 </base-form-group>
-                <base-form-group label="出车位置">
-                    {{vehicleInfo.retract.position && vehicleInfo.retract.position}}
+                <base-form-group label="收车位置">
+                    {{vehicleInfo.retract.address && vehicleInfo.retract.address}}
                 </base-form-group>
             </section>
         </section>
@@ -155,23 +155,24 @@
           }, 2000)
           return
         }
+        let that = this
         aMapUtil.geolocation().then((data) => {
           let formattedAddress = data.formattedAddress
           let {lat, lng} = data.position
-          this.$set(this.vehicleInfo.date, 'date', new Date())
-          this.$set(this.vehicleInfo.retract, 'address', formattedAddress)
-          this.$f7.confirm('是否确认收车？', modalTitle, () => {
-            this.$store.dispatch({
+          that.$set(that.vehicleInfo.retract, 'date', new Date())
+          that.$set(that.vehicleInfo.retract, 'address', formattedAddress)
+          that.$f7.confirm('是否确认收车？', modalTitle, () => {
+            that.$store.dispatch({
               type: native.getTo,
-              license_plate: this.carnumber,
+              license_plate: that.carnumber,
               out_mileage: outMileage,
               oilfee,
               bridgefee,
               servicefee,
               otherfee,
-              totalfee: this.totalFee,
+              totalfee: that.totalFee,
               retract_mileage: retractMileage,
-              mileage: this.totalMileage,
+              mileage: that.totalMileage,
               remark
             })
           })

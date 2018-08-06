@@ -1,7 +1,16 @@
 <template>
     <div>
         <base-list :type="type">
-            <base-list-item :hasDetail="false"></base-list-item>
+            <base-list-item :hasDetail="false"
+                            :key="index"
+                            :workName="car.id"
+                            :veInfo="car.carnumber"
+                            :veStartTime="car.out"
+                            :veStartEnd="car.retract"
+                            :vePath="car.mileage"
+                            :veTotal="car.totalfee"
+                            v-for="(car,index) in carList">
+            </base-list-item>
             <infinite-loading @infinite="loadData">
                 <div slot="no-results">没有数据</div>
                 <div slot="no-more">没有更多数据</div>
@@ -18,7 +27,8 @@
     data () {
       return {
         type: baseListTypes.veLogs,
-        carList: []
+        carList: [],
+        page: 1
       }
     },
     methods: {

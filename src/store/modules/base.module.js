@@ -144,7 +144,8 @@ const actions = {
   }
 }
 let mutations = {
-  [native.doWorkNumberStatics_success] (state, {data}) {
+  [mutationNames.doWorkNumberStatics_success] (state, {data}) {
+    console.log('???', data)
     state.workNumberStatics = data
   },
   [native.initActiveAddress] (state, address) {

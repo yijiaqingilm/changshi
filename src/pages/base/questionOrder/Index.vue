@@ -9,7 +9,17 @@
                 <div><span class='s-select' @click="showPopup">{{currentAddress}}</span></div>
             </div>
             <div class='point'>
-                <div class="s-select">作业点</div>
+                <div v-if='workBaseList && workBaseList.length>0'>
+                    <base-select v-model='workBase'
+                                 text="请选择作业点"
+                                 :data="workBaseList"
+                                 nodeKey="id"
+                                 @change="changePoint"
+                                 nodeLabel="work_base"></base-select>
+                </div>
+                <div v-else class='hint'>
+                    没有可选择的作业点
+                </div>
             </div>
         </div>
         <base-list :type="listType">
@@ -34,10 +44,15 @@
       return {
         listType: baseListTypes.questionOrder,
         quesitonList: [],
-        page: 1
+        page: 1,
+        workBaseList: []
       }
     },
     methods: {
+      changePoint () {
+        this.page = 1
+        this.quesitonList = []
+      },
       showPopup () {
         this.$f7.popup('.popup-province', false)
       },
@@ -74,15 +89,36 @@
           }
         })
       },
+      changePointList () {
+        let {provinceName, cityName, districtName} = this.activeAddress
+        if (!provinceName || !cityName || !districtName) {
+          return
+        }
+        this.$store.dispatch({
+          type: native.doGetWorkBase,
+          province: provinceName,
+          city: cityName,
+          district: districtName,
+        }).then((data) => {
+          let workBase = data.data.work_base
+          if (workBase && Array.isArray(workBase)) {
+            this.workBaseList = workBase
+          }
+        })
+      },
     },
     computed: {
       ...mapState({
         activeAddress: ({base}) => base.activeAddress
       }),
       currentAddress () {
-        let currentAddress = this.activeAddress.provinceName + this.activeAddress.cityName + this.activeAddress.districtName
+        let {provinceName, cityName, districtName} = this.activeAddress
+        let currentAddress = provinceName + cityName + districtName
+        if (provinceName && cityName && districtName) {
+          this.changePointList()
+        }
         return currentAddress.length > 0 ? currentAddress : '请选择地址'
-      }
+      },
     },
     watch: {
       'activeAddress': {

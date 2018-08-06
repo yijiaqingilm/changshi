@@ -11,7 +11,6 @@ export default class ApiClient {
           reject({_error: '错误的请求地址'})
         }
         const sessionKey = app.$store.state.auth.sessionKey
-        console.log(serverUrl, 'xx', url)
         Vue.http.options.emulateJSON = true
         Vue.http.options.headers = {
           'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
