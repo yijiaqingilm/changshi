@@ -1,13 +1,13 @@
 <template>
     <div>
         <base-list :type="type">
-            <!--:dyCode=""
-                           :dyHandle=""
-                           :dyStartTime=""
-                           :dyEndTime=""
-                           :dyTime=""-->
             <base-list-item v-for="(dy,index) in dynamotorList"
-                            :workName="index"
+                            :workName="dy.id"
+                            :dyCode="dy.powercode"
+                            :dyHandle="dy.action"
+                            :dyStartTime="dy.start_time"
+                            :dyEndTime="dy.end_time"
+                            :dyTime="dy.end_time"
                             :key="index" :hasDetail="false">
             </base-list-item>
             <infinite-loading @infinite="loadData">
@@ -21,7 +21,7 @@
 <script type="text/ecmascript-6">
   import { baseListTypes, globalConst as native, pageSize } from 'lib/const'
   import InfiniteLoading from 'vue-infinite-loading'
-
+    // 状态：1使用，2修订地址，3变更状态
   export default {
     data () {
       return {

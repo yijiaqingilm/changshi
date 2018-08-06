@@ -24,7 +24,7 @@
       return {
         user: {
           username: 'dfasdafd',
-          password: 'ikG3rs'
+          password: '890675'
         }
       }
     },

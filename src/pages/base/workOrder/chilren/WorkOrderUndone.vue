@@ -9,7 +9,7 @@
                     @workOrder:edit="handleEdit(order,index)"
                     @workOrder:apply="handleApply(order,index)"
                     showAction
-                    :workName="index+1"
+                    :workName="order.id"
                     :workNo="order.number"
                     :workClient="order.client"
                     :workMajor="order.major"
@@ -27,6 +27,8 @@
 <script>
   import { globalConst as native, pageSize, workOrderTypeStatus } from 'lib/const'
   import InfiniteLoading from 'vue-infinite-loading'
+  import { mapState } from 'vuex'
+  import { bus } from 'src/main'
 
   export default {
     name: '',
@@ -41,10 +43,6 @@
         this.$router.loadPage(`/base/workOrder/detail/${order.id}`)
       },
       hanleDel (order = {}, index) {
-        console.log('handle del')
-        if (__DEBUG__) {
-          order.id = 1
-        }
         this.$f7.confirm('是否确定该工单作废？', '', () => {
           this.$store.dispatch({
             type: native.doWorkNumberCancel,
@@ -55,22 +53,16 @@
         })
       },
       handleEdit (order = {}, index) {
-        if (__DEBUG__) {
-          order.id = 1
-        }
-        console.log('handle edit')
         this.$router.loadPage(`/base/workOrder/edit/${order.id}`)
       },
       handleApply (order = {}, index) {
-        if (__DEBUG__) {
-          order.id = 1
-        }
         this.$f7.confirm('是否提交审核？', '', () => {
           this.$store.dispatch({
             type: native.doWorkNumberApprove,
             work_id: order.id
           }).then((data) => {
             this.workList.splice(index, 1)
+            bus.$emit(native.clearReviewOrder)
           })
         })
       },
@@ -93,6 +85,12 @@
           }
         })
       },
+    },
+    computed: {
+      ...mapState({
+        workOrderPage: ({base}) => base.workOrderPage,
+        workOrderReviewList: ({base}) => base.workOrderReviewList
+      })
     },
     components: {InfiniteLoading}
   }

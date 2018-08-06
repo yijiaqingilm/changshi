@@ -114,7 +114,6 @@
       }
     },
     created () {
-      console.log('获取父元素对象', this.$parent, this.$parent.$props.type)
       this.itemType = this.$parent.$props.type
     },
     methods: {

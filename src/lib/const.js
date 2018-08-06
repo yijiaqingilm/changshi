@@ -37,7 +37,8 @@ const globalConst = {
   doDynamotorHistory: 'doDynamotorHistory',
   doCarHistory: 'doCarHistory',
   doWorkNumberStatics: 'doWorkNumberStatics',
-  logout: 'logout'
+  logout: 'logout',
+  clearReviewOrder: 'clearReviewOrder'
 }
 let methods = [SUCCESS.toLowerCase(), FAILURE.toLowerCase(), REQUEST.toLowerCase()]
 const mutationNames = {}

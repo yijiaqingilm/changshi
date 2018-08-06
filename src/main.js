@@ -74,8 +74,8 @@ Vue.component('h-list-item', HlistItem)
 Vue.component('answer-tabs', AnswerTabs)
 Vue.component('answer-tab', AnswerTab)
 
-/* let user_store = sessionStorage.getItem('user_store')
- user_store && store.replaceState(Object.assign(store.state, JSON.parse(user_store)))*/
+let user_store = sessionStorage.getItem('changshi_store')
+user_store && store.replaceState(Object.assign(store.state, JSON.parse(user_store)))
 // Init App
 let client = new ApiClient()
 let applyClientMiddleware = clientMiddleware(client)(store.commit)
@@ -109,7 +109,7 @@ let app = new Vue({
     app: App
   },
   created () {
-    let user_store = sessionStorage.getItem('maimeng_user_store')
+    let user_store = sessionStorage.getItem('changshi_store')
     user_store && this.$store.replaceState(Object.assign(this.$store.state, JSON.parse(user_store)))
 
   },
@@ -152,6 +152,7 @@ if (/Android/gi.test(navigator.userAgent)) {
     }
   })
 }
-export { app, applyClientMiddleware }
+const bus = new Vue()
+export { app, applyClientMiddleware, bus }
 
 

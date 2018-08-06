@@ -4,12 +4,13 @@
             <base-list-item
                     v-for="(order,index) in workList"
                     :key="index"
-                    @click="goDetail"
-                    workName="工单1"
-                    workNo="工单号"
-                    workClient="客户"
-                    workMajor="专业"
-                    workPoint="作业点">
+                    @click="goDetail(order)"
+                    :workName="order.id"
+                    :workNo="order.number"
+                    :workSort="order.work_sort"
+                    :workClient="order.client"
+                    :workMajor="order.major"
+                    :workPoint="order.work_base_name">
             </base-list-item>
             <infinite-loading @infinite="loadData">
                 <div slot="no-results">没有数据</div>
@@ -31,8 +32,8 @@
       }
     },
     methods: {
-      goDetail () {
-        this.$router.loadPage('/base/workOrder/detail/1')
+      goDetail (order) {
+        this.$router.loadPage(`/base/workOrder/detail/${order.id}`)
       },
       loadData ($state) {
         this.$store.dispatch({

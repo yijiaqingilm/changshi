@@ -4,14 +4,14 @@
             <base-list-item
                     v-for="(order,index) in workList"
                     :key="index"
-                    @click="goDetail"
-                    workName="工单1"
-                    workNo="工单号"
-                    workClient="客户"
-                    workMajor="专业"
-                    workPoint="作业点">
+                    @click="goDetail(order)"
+                    :workName="order.id"
+                    :workNo="order.number"
+                    :workClient="order.client"
+                    :workMajor="order.major"
+                    :workPoint="order.work_base">
             </base-list-item>
-            <infinite-loading @infinite="loadData">
+            <infinite-loading ref="loadComponent" @infinite="loadData">
                 <div slot="no-results">没有数据</div>
                 <div slot="no-more">没有更多数据</div>
             </infinite-loading>
@@ -21,18 +21,30 @@
 <script>
   import { globalConst as native, pageSize, workOrderTypeStatus } from 'lib/const'
   import InfiniteLoading from 'vue-infinite-loading'
+  import { mapState } from 'vuex'
+  import { bus } from 'src/main'
 
   export default {
     name: '',
     data () {
       return {
-        page: 1,
-        workList: []
+        workList: [],
+        page: 1
       }
     },
+    created () {
+      bus.$on([native.clearReviewOrder], () => {
+        this.resetData()
+      })
+    },
     methods: {
-      goDetail () {
-        this.$router.loadPage('/base/workOrder/detail/1')
+      goDetail (order) {
+        this.$router.loadPage(`/base/workOrder/detail/${order.id}`)
+      },
+      resetData () {
+        this.$refs.loadComponent.$emit('$InfiniteLoading:reset')
+        this.page = 1
+        this.workList = []
       },
       loadData ($state) {
         this.$store.dispatch({
@@ -54,6 +66,7 @@
         })
       },
     },
+    computed: {},
     components: {InfiniteLoading}
   }
 </script>

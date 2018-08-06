@@ -31,7 +31,11 @@ const state = {
     }
   },
   dy: {},
-  workNumberStatics: {}
+  workNumberStatics: {},
+  workOrderPage: {
+    reviewPage: 1
+  },
+  workOrderReviewList: []
 }
 const getters = {
   getProvinceList (state) {
@@ -144,6 +148,10 @@ const actions = {
   }
 }
 let mutations = {
+  [native.clearReviewOrder] (state) {
+    state.workOrderPage.reviewPage = 1
+    state.workOrderReviewList = []
+  },
   [mutationNames.doWorkNumberStatics_success] (state, {data}) {
     console.log('???', data)
     state.workNumberStatics = data

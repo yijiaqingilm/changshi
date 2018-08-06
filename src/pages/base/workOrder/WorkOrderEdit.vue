@@ -37,9 +37,10 @@
 <script>
   import { modalTitle, globalConst as native } from 'lib/const'
   import { mapState } from 'vuex'
+
   export default {
     name: 'work-order-edit',
-    data(){
+    data () {
       return {
         order: {
           content: '',
@@ -48,7 +49,7 @@
         }
       }
     },
-    async created(){
+    async created () {
       if (this.$route.params) {
         this.order.id = this.$route.params.id
       }
@@ -60,9 +61,9 @@
       this.order.fee = this.workOrder.fee
     },
     methods: {
-      save(){
+      save () {
         console.log('save')
-        let {content, fee, id} =this.order
+        let {content, fee, id} = this.order
         this.$store.dispatch({
           type: native.doWorkNumberUpdate,
           content,
@@ -70,6 +71,9 @@
           work_id: id
         }).then(() => {
           console.log('保存成功')
+          this.$f7.alert('修改成功', modalTitle)
+          this.workOrder.content = this.order.content
+          this.workOrder.fee = this.order.fee
         }).catch((err) => {
           this.$f7.alert(err, modalTitle)
         })
@@ -77,7 +81,7 @@
     },
     computed: {
       ...mapState({
-        workOrder({base}){
+        workOrder ({base}) {
           return base.workOrder[this.order.id]
         }
       })

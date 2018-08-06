@@ -1,4 +1,5 @@
 @import "../../css/globalFunc";
+
 .fo-form-group {
   display: flex;
   .s-label {
@@ -13,9 +14,11 @@
   .s-item {
     flex: auto;
     padding-left: 15px;
+    @include ellipsis;
     .s-text {
       height: 50px;
       line-height: 50px;
+      @include ellipsis;
     }
   }
 }

@@ -25,7 +25,7 @@
             <header>收车信息</header>
             <section class='panel-context'>
                 <base-form-group label="收车时间">
-                    {{vehicleInfo.retract.date && vehicleInfo.retract.date}}
+                    {{vehicleInfo.retract.date && vehicleInfo.retract.date | dateFormat}}
                 </base-form-group>
                 <base-form-group label="收车位置">
                     {{vehicleInfo.retract.address && vehicleInfo.retract.address}}
@@ -131,6 +131,8 @@
             type: native.startOff,
             license_plate: this.carnumber,
             out_mileage: this.info.outMileage,
+          }).then(() => {
+            // 未完成
           })
         })
       },
@@ -174,6 +176,9 @@
               retract_mileage: retractMileage,
               mileage: that.totalMileage,
               remark
+            }).then(() => {
+              this.vehicleInfo.retract.date = ''
+              this.vehicleInfo.retract.address = ''
             })
           })
         })
