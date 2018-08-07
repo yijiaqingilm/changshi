@@ -4,7 +4,7 @@
             <f7-nav-left back-link="返回" sliding></f7-nav-left>
             <f7-nav-center>作业填报</f7-nav-center>
         </f7-navbar>
-       <!-- {{jobCard}}-->
+        <!-- {{jobCard}}-->
         <section>
             <header class='header'><span class='mark'>*</span>客户选择</header>
             <base-radio-group v-model="jobCard.client" class="radio-group">
@@ -230,7 +230,7 @@
         getTimer,
         jobCard: {
           client: client.mobile,
-          major: major.jizhan,
+          major: '',
           workBase: '',
           workType: workType.year,
           workSort: '',
@@ -256,7 +256,6 @@
         },
         clientValue,
         workTypeValue,
-        majorValue,
         jobPoint: null,
         jobPointName: '',
         dateTime: {
@@ -315,6 +314,21 @@
       },
       showDynamotor () {
         return generatorIds.indexOf(this.jobCard.workSort >>> 0) !== -1
+      },
+      majorValue () {
+        let {xianlu, jizhan, ironTower, jtzx, wlan, jf} = major
+        console.log('what?', this.jobCard.client, major)
+        switch (this.jobCard.client >>> 0) {
+          case client.mobile:
+          case client.unicorn:
+          case client.telecom:
+            console.log('majorValue', majorValue.filter(({value}) => value !== jizhan))
+            return majorValue.filter(({value}) => value !== jizhan)
+          case client.ironTower:
+            console.log('smgui')
+            return majorValue.filter(({value}) => value === ironTower || value === wlan || value === jf)
+        }
+        console.log('xxx')
       },
     },
     watch: {

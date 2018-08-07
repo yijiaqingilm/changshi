@@ -48,7 +48,6 @@
         this.$emit('changeWorkBase', {workBase: this.workBase})
       },
       loadBaseWork () {
-        console.log('loadBaseWork')
         let {provinceName, cityName, districtName} = this.activeAddress
         if (!provinceName || !cityName || !districtName || !this.client || !this.major) {
           return
