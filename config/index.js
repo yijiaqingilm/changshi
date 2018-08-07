@@ -22,7 +22,7 @@ module.exports = {
     bundleAnalyzerReport: process.env.npm_config_report,
     globals: {
       __DEBUG__: false,
-      serverUrl: JSON.stringify('http://127.0.0.1:5005'),
+      serverUrl: JSON.stringify('http://api.changshi.showtou.com/api'),
       VERSION: JSON.stringify('V.1.0')
     }
   },

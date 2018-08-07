@@ -18,6 +18,7 @@
 <script type="text/ecmascript-6">
   import { globalConst as native } from 'lib/const'
   import { mapState } from 'vuex'
+  import { bus } from 'src/main'
 
   let dyStatus = {
     right: 1,
@@ -40,6 +41,12 @@
         dyInfo,
         status: dyStatus.right
       }
+    },
+    created () {
+      bus.$on('changeDyStatus', (status) => {
+        console.log('changeDy', status)
+        this.status = status
+      })
     },
     methods: {
       submit () {

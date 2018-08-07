@@ -14,6 +14,7 @@ const globalConst = {
   doGetDynamotor: 'doGetDynamotor',
   doDynamotorCreate: 'doDynamotorCreate',
   doWorkNumber: 'doWorkNumber',
+  doWorkNumberManage: 'doWorkNumberManage',
   doWorkNumberDetail: 'doWorkNumberDetail',
   doWorkNumberUpdate: 'doWorkNumberUpdate',
   doWorkNumberCancel: 'doWorkNumberCancel',
@@ -38,7 +39,9 @@ const globalConst = {
   doCarHistory: 'doCarHistory',
   doWorkNumberStatics: 'doWorkNumberStatics',
   logout: 'logout',
-  clearReviewOrder: 'clearReviewOrder'
+  clearReviewOrder: 'clearReviewOrder',
+  doWorkNumberAccess: 'doWorkNumberAccess',
+  doWorkNumberDeny: 'doWorkNumberDeny'
 }
 let methods = [SUCCESS.toLowerCase(), FAILURE.toLowerCase(), REQUEST.toLowerCase()]
 const mutationNames = {}

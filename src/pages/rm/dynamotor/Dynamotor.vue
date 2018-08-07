@@ -1,11 +1,11 @@
 <template>
     <f7-page class='home'>
         <f7-navbar>
-            <f7-nav-left :back-link="false" sliding></f7-nav-left>
+            <f7-nav-left back-link="返回" sliding></f7-nav-left>
             <f7-nav-center>发电机管理</f7-nav-center>
         </f7-navbar>
         <base-form-group class="title" label="发电机编码" isTitle>
-            <input type="text" readonly @click="scanDynamotor" placeholder='请扫描' class='s-scan'>
+            <input type="text" v-model="dyCode" readonly @click="scanDynamotor" placeholder='请扫描' class='s-scan'>
         </base-form-group>
         <line-10></line-10>
         <tabs-ctrl v-model="ammeterType" @change="showTab">
@@ -33,6 +33,7 @@
   import UpdateStatus from './chilren/UpdateStatus.vue'
   import CitySelect from 'components/baseCitySelect/CitySelect'
   import { modalTitle, globalConst as native } from 'lib/const'
+  import { bus } from 'src/main'
 
   const ammeterTypesStatus = {
     updateAddress: 0,
@@ -48,7 +49,8 @@
       return {
         ammeterTypes,
         ammeterType: ammeterTypesStatus.updateAddress,
-        isOri: true
+        isOri: true,
+        dyCode: ''
       }
     },
     methods: {
@@ -58,15 +60,15 @@
           code
         }).then(({data}) => {
           console.log('data', data)
+          bus.$emit('changeDyStatus', data.status)
         }).catch((err) => {
           this.$f7.alert(err, modalTitle)
         })
       },
       scanDynamotor () {
-        let code = ''
         if (__DEBUG__) {
-          code = 'rewrwrwr'
-          this.getDy(code)
+          this.dyCode = 'rewrwrwr'
+          this.getDy(this.dyCode)
         } else {
           // 扫一扫功能
           wx.scanQRCode({
@@ -75,6 +77,7 @@
             success: (res) => {
               var result = res.resultStr // 当needResult 为 1 时，扫码返回的结果
               // 扫完 回调 得到二维码
+              this.dyCode = result
               this.getDy(result)
             }
           })

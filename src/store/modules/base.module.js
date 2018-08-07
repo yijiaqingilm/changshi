@@ -49,6 +49,15 @@ const getters = {
   }
 }
 const actions = {
+  [native.doWorkNumberAccess] ({state}, refs) {
+    return applyClientMiddleware(api.doWorkNumberAccess)(refs)
+  },
+  [native.doWorkNumberDeny] ({state}, refs) {
+    return applyClientMiddleware(api.doWorkNumberDeny)(refs)
+  },
+  [native.doWorkNumberManage] ({state}, refs) {
+    return applyClientMiddleware(api.doWorkNumberManage)(refs)
+  },
   [native.doLeaveQuestionUpdate] ({state}, refs) {
     return applyClientMiddleware(api.doLeaveQuestionUpdate)(refs)
   },

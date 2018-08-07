@@ -1,7 +1,8 @@
 <template>
     <f7-page class='login'>
         <f7-navbar>
-            <f7-nav-center>登陆</f7-nav-center>
+            <f7-nav-left back-link="返回" sliding></f7-nav-left>
+            <f7-nav-center>登录</f7-nav-center>
         </f7-navbar>
         <header class=''>
             <img src="../assets/logo.jpg" class='logo' alt="">
@@ -11,7 +12,7 @@
             <div><input class='login-pwd' placeholder='请输入密码' type="text" v-model='user.password'></div>
         </section>
         <footer>
-            <f7-button big full active @click="login" class='login-submit'>登陆</f7-button>
+            <f7-button big full active @click="login" class='login-submit'>登录</f7-button>
         </footer>
     </f7-page>
 </template>

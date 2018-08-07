@@ -356,21 +356,24 @@ textarea {
     flex-direction: column;
     justify-content: center;
     > div {
+      width: 590px;
       margin: 0 auto;
     }
   }
 }
 
 .login-user {
+  display: block;
+  box-sizing: border-box;
   background-image: url("~assets/icon_user.png");
   background-repeat: no-repeat;
   background-size: 35px;
   background-position: left 10px center;
   padding-left: 80px;
   height: 90px;
+  width: 590px;
   border: 0;
   border-bottom: 1px solid #999999; /*no*/
-  width: 590px;
 }
 
 .login-submit {
@@ -380,6 +383,8 @@ textarea {
 }
 
 .login-pwd {
+  display: block;
+  box-sizing: border-box;
   background-image: url("~assets/icon_pwd.png");
   background-repeat: no-repeat;
   background-size: 35px;

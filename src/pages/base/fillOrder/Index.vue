@@ -468,7 +468,6 @@
           type: native.doGetDynamotor,
           code
         }).then((data) => {
-          console.log(data, '======================')
           this.jobCard.dynamotor.id = data.data.id
           this.jobCard.dynamotor.code = code
         })
@@ -487,9 +486,6 @@
           ammeter.prevNum = data.last_num ? data.last_num + '' : '0'
           ammeter.date = new Date().getTime() + ''
         })
-        if (__DEBUG__) {
-          ammeter.code = 'xxxx'
-        }
       },
       uploadAmmeterImg (ammeter) {
         if (!__DEBUG__) {

@@ -29,6 +29,7 @@ let apiConfig = [
   new ApiConfig(native.doDynamotorUpdateStatus, '/dynamotor/update-status'),
   new ApiConfig(native.doDynamotorCreate, '/dynamotor/create'),
   new ApiConfig(native.doWorkNumber, '/work-number/index', 'get'),
+  new ApiConfig(native.doWorkNumberManage, '/work-number/manage', 'get'),
   new ApiConfig(native.doWorkNumberApprove, '/work-number/approve'),
   new ApiConfig(native.doWorkNumberCancel, '/work-number/cancel'),
   new ApiConfig(native.doWorkNumberDetail, '/work-number/detail', 'get'),
@@ -44,6 +45,8 @@ let apiConfig = [
   new ApiConfig(native.getTo, '/car/update'),
   new ApiConfig(native.doDynamotorHistory, '/dynamotor/history', 'get'),
   new ApiConfig(native.doCarHistory, '/car/history', 'get'),
-  new ApiConfig(native.doWorkNumberStatics, '/work-number/statics', 'get')
+  new ApiConfig(native.doWorkNumberStatics, '/work-number/statics', 'get'),
+  new ApiConfig(native.doWorkNumberAccess, '/work-number/access'),
+  new ApiConfig(native.doWorkNumberDeny, '/work-number/deny')
 ]
 export default apiConfig
