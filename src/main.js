@@ -48,6 +48,8 @@ import BaseTabs from 'components/baseTabs/BaseTabs'
 import BaseTab from 'components/baseTabs/BaseTab'
 import HList from 'components/hlist/HList.vue'
 import HlistItem from 'components/hlist/HListItem.vue'
+import BaseFormList from 'components/baseFormList/BaseFormList'
+import BaseFormListItem from 'components/baseFormList/BaseFormListItem'
 /* 答题组件*/
 import AnswerTabs from 'components/answerTabs/AnswerTabs.vue'
 import AnswerTab from 'components/answerTabs/AnswerTab.vue'
@@ -73,6 +75,8 @@ Vue.component('h-list-item', HlistItem)
 
 Vue.component('answer-tabs', AnswerTabs)
 Vue.component('answer-tab', AnswerTab)
+Vue.component('base-form-list', BaseFormList)
+Vue.component('base-form-list-item', BaseFormListItem)
 
 let user_store = sessionStorage.getItem('changshi_store')
 user_store && store.replaceState(Object.assign(store.state, JSON.parse(user_store)))

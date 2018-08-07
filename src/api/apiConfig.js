@@ -20,7 +20,7 @@ class ApiConfig {
 let apiConfig = [
   new ApiConfig(native.doAnswer, '/user/profile/main'),
   new ApiConfig(native.doWorkSender, '/work/sender'),
-  new ApiConfig(native.doGetWorkBase, '/work-base/index', {global: false}),
+  new ApiConfig(native.doGetWorkBase, '/work-base/index', {global: false}, 'get'),
   new ApiConfig(native.doAddressProvinceList, '/address/index', {global: false}, 'get'),
   new ApiConfig(native.doAddressCityList, '/address/index', {global: false}, 'get'),
   new ApiConfig(native.doAddressDistrictList, '/address/index', {global: false}, 'get'),
@@ -34,7 +34,7 @@ let apiConfig = [
   new ApiConfig(native.doWorkNumberDetail, '/work-number/detail', 'get'),
   new ApiConfig(native.doWorkNumberUpdate, '/work-number/update'),
   new ApiConfig(native.doLeaveQuestion, '/leave-question/index', 'get'),
-  new ApiConfig(native.doLeaveQuestionDetail, '/leave-question/detail'),
+  new ApiConfig(native.doLeaveQuestionDetail, '/leave-question/detail', 'get'),
   new ApiConfig(native.doLeaveQuestionUpdate, '/leave-question/update'),
   new ApiConfig(native.doWorkSort, '/work-sort/index', 'get'),
   new ApiConfig(native.doLogin, '/user/login'),

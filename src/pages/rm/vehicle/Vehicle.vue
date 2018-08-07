@@ -131,8 +131,9 @@
             type: native.startOff,
             license_plate: this.carnumber,
             out_mileage: this.info.outMileage,
-          }).then(() => {
-            // 未完成
+          }).then(({data}) => {
+            this.vehicleInfo.out.date = data.out.date
+            this.vehicleInfo.out.position = data.out.position
           })
         })
       },
@@ -177,8 +178,13 @@
               mileage: that.totalMileage,
               remark
             }).then(() => {
+              this.$f7.alert('收车成功', modalTitle)
+              this.carnumber = ''
+              this.vehicleInfo.out.date = ''
+              this.vehicleInfo.out.address = ''
               this.vehicleInfo.retract.date = ''
               this.vehicleInfo.retract.address = ''
+              this.info = {}
             })
           })
         })

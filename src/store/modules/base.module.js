@@ -49,6 +49,9 @@ const getters = {
   }
 }
 const actions = {
+  [native.doLeaveQuestionUpdate] ({state}, refs) {
+    return applyClientMiddleware(api.doLeaveQuestionUpdate)(refs)
+  },
   [native.doWorkNumberStatics] ({state}, refs) {
     return applyClientMiddleware(api.doWorkNumberStatics)(refs)
   },
@@ -148,12 +151,14 @@ const actions = {
   }
 }
 let mutations = {
+  [mutationNames.doLeaveQuestionUpdate_success] (state) {
+
+  },
   [native.clearReviewOrder] (state) {
     state.workOrderPage.reviewPage = 1
     state.workOrderReviewList = []
   },
   [mutationNames.doWorkNumberStatics_success] (state, {data}) {
-    console.log('???', data)
     state.workNumberStatics = data
   },
   [native.initActiveAddress] (state, address) {

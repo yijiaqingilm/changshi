@@ -1,0 +1,18 @@
+@import "../../css/globalFunc";
+
+.base-form-list-item {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 15px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+  &.title {
+    > div {
+      @include setFontSize($maxFontSize)
+    }
+  }
+}
