@@ -5,7 +5,6 @@
             <f7-nav-center>遗留问题工单</f7-nav-center>
         </f7-navbar>
         <div class='detail-header'>
-            <base-work-base @changeWorkBase="changeWorkBase"></base-work-base>
         </div>
         <base-list :type="listType">
             <base-list-item v-for="(question,index) in quesitonList"
@@ -16,8 +15,7 @@
                             :questionLevel="question.level"
                             :workCreateTime="question.created_at"
                             @click="goDetail(question)"></base-list-item>
-            <div v-if="!isLoadData" class='hint text-center'>请选择作业作业点查询数据</div>
-            <infinite-loading v-else ref="loadComponent" @infinite="loadData">
+            <infinite-loading ref="loadComponent" @infinite="loadData">
                 <div slot="no-results">没有数据</div>
                 <div slot="no-more">没有更多数据</div>
             </infinite-loading>
@@ -29,7 +27,6 @@
   import { baseListTypes, globalConst as native, pageSize } from 'lib/const'
   import InfiniteLoading from 'vue-infinite-loading'
   import { mapState } from 'vuex'
-  import BaseWorkBase from 'components/baseWorkBase/BaseWorkBase'
 
   export default {
     name: '',
@@ -39,43 +36,24 @@
         quesitonList: [],
         page: 1,
         workBaseList: [],
-        isLoadData: false,
-        query: {
-          workBase: '',
-        }
+        workBase: '',
+      }
+    },
+    created () {
+      if (this.$route.params) {
+        this.workBase = this.$route.params.id
       }
     },
     methods: {
-      changeWorkBase (result) {
-        let {workBase} = result
-        this.query.workBase = workBase
-        if (!this.isLoadData) {
-          this.isLoadData = true
-          this.$nextTick(() => {
-            this.$refs.loadComponent.attemptLoad()
-          })
-        } else {
-          this.page = 1
-          this.quesitonList = []
-          this.$refs.loadComponent.$emit('$InfiniteLoading:reset')
-        }
-
-      },
-      showPopup () {
-        this.$f7.popup('.popup-province', false)
-      },
       goDetail (order = {}) {
         this.$router.loadPage(`/base/questionOrder/detail/${order.id}`)
       },
       loadData ($state) {
-        let {workBase} = this.query
+        let {workBase} = this
         this.$store.dispatch({
           type: native.doLeaveQuestion,
           page: this.page,
           work_base: workBase,
-          province: this.activeAddress.provinceName,
-          city: this.activeAddress.cityName,
-          district: this.activeAddress.districtName
         }).then(({data}) => {
           console.log('data', data)
           if (Array.isArray(data) && data.length > 0) {
@@ -96,7 +74,7 @@
         activeAddress: ({base}) => base.activeAddress
       }),
     },
-    components: {InfiniteLoading, BaseWorkBase}
+    components: {InfiniteLoading}
   }
 </script>
 

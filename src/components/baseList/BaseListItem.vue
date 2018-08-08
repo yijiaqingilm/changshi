@@ -18,6 +18,7 @@
                     <div>工单号：{{workNo}}</div>
                     <div>问题数：{{questionCount}}个</div>
                     <div>问题级别：{{questionLevel}}</div>
+                    <div>创建日期：{{workCreateTime}}</div>
                 </template>
                 <template v-if="itemType===baseListTypes.sysOrder">
                     <div>待审核工单：{{workName}}</div>
@@ -25,6 +26,8 @@
                     <div>客户：{{workClient}}</div>
                     <div>专业：{{workMajor}}</div>
                     <div>作业点：{{workPoint}}</div>
+                    <div>类别：{{workSort}}</div>
+                    <div>创建时间：{{workCreateTime}}</div>
                 </template>
                 <template v-if="itemType===baseListTypes.veLogs">
                     <div>记录：{{workName}}</div>

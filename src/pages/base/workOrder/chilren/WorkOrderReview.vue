@@ -9,6 +9,7 @@
                     :workNo="order.number"
                     :workClient="order.client"
                     :workMajor="order.major"
+                    :workCheckTime="order.approve_at"
                     :workPoint="order.work_base">
             </base-list-item>
             <infinite-loading ref="loadComponent" @infinite="loadData">

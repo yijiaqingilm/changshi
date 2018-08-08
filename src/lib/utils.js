@@ -260,6 +260,18 @@ const wx_share = function (title, link, imgUrl, desc) {
     }
   })
 }
+const wxScanQRCode = () => new Promise((resolve, reject) => {
+  wx.scanQRCode({
+    needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+    scanType: ['qrCode', 'barCode'], // 可以指定扫二维码还是一维码，默认二者都有
+    success: (res) => {
+      var result = res.resultStr // 当needResult 为 1 时，扫码返回的结果
+      // 扫完 回调 得到二维码
+      resolve(result)
+    },
+    fail: (res) => reject(res)
+  })
+})
 // 此处需要重构，
 let margeMutations = (actions) => {
   let keys = Object.keys(actions)
@@ -393,5 +405,6 @@ export {
   getSignature,
   aMapUtil,
   isNumber,
-  getTimer
+  getTimer,
+  wxScanQRCode
 }

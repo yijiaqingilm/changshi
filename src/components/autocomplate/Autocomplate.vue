@@ -39,7 +39,7 @@
           valueProperty: 'work_base', // object's "value" property name
           textProperty: 'work_base', // object's "text" property name
           limit: 20, // limit to 20 results
-          dropdownPlaceholderText: 'Try "JavaScript"',
+          dropdownPlaceholderText: '"',
           expandInput: true, // expand input
           source: (autocomplete, query, render) => {
             var results = []

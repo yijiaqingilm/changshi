@@ -53,13 +53,13 @@
         this.$store.dispatch({
           type: native.doDynamotorUpdateStatus,
           status: this.status,
-          code: this.dy.code
+          code: this.dyCode
         })
       }
     },
     computed: {
       ...mapState({
-        dy: ({base}) => base.dy
+        dyCode: ({rm}) => rm.dyCode
       })
     }
   }

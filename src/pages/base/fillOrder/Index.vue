@@ -84,13 +84,13 @@
             <input class='s-input' type="number" v-model='jobCard.fee' placeholder="请填写劳务费用"><span>元</span>
         </base-form-group>
         <base-form-group class="m-40" label="关联工单号">
-            <input class='s-input' type="text" v-model="jobCard.refWorkNumber" placeholder="请填写甲方关联工单号（非必填）">
+            <input class='s-input' type="text" v-model="jobCard.refWorkNumber" placeholder="请填写甲方关联工单号">
         </base-form-group>
         <line-10></line-10>
         <base-form-group class="m-40" label="是否存在遗留问题">
             <f7-input type="switch" v-model="jobCard.isLeaveQuestion"></f7-input>
         </base-form-group>
-        {{jobCard.leave}}
+        <!--{{jobCard.leave}}-->
         <question-group @handleAdd="addQuestion" v-if="jobCard.isLeaveQuestion">
             <question-item v-for="(question,index) in jobCard.leave"
                            :key="index"
@@ -100,8 +100,9 @@
                            :question.sync="question.question">
             </question-item>
         </question-group>
-        {{showAmmeter}}
+        <!-- {{showAmmeter}}-->
         <div v-if="showAmmeter">
+            <line-10></line-10>
             <ammeter-group @addAmmeter="addAmmeter">
                 <ammeter-item v-for="(ammeter,index) in jobCard.ammeter"
                               :index="index+1"
@@ -201,7 +202,7 @@
   import moment from 'lib/moment'
   import { mapState, mapGetters } from 'vuex'
   import emitter from 'mixins/emitter'
-  import { aMapUtil, getTimer } from 'lib/utils'
+  import { aMapUtil, getTimer, wxScanQRCode } from 'lib/utils'
   import { Validator } from 'lib/custom_validator'
 
   class Ammeter {
@@ -216,7 +217,7 @@
   }
 
   class Question {
-    constructor (question = 'test', leave = leaveType.two) {
+    constructor (question = '', leave = leaveType.two) {
       this.question = question
       this.leave = leave
     }
@@ -241,7 +242,7 @@
           endDate: '',
           fee: '',
           refWorkNumber: '',
-          isLeaveQuestion: true,
+          isLeaveQuestion: false,
           leave: [],
           ammeter: [],
           dynamotor: {
@@ -317,25 +318,21 @@
       },
       majorValue () {
         let {xianlu, jizhan, ironTower, jtzx, wlan, jf} = major
-        console.log('what?', this.jobCard.client, major)
         switch (this.jobCard.client >>> 0) {
           case client.mobile:
           case client.unicorn:
           case client.telecom:
-            console.log('majorValue', majorValue.filter(({value}) => value !== jizhan))
-            return majorValue.filter(({value}) => value !== jizhan)
+            return majorValue.filter(({value}) => value !== jf)
           case client.ironTower:
-            console.log('smgui')
             return majorValue.filter(({value}) => value === ironTower || value === wlan || value === jf)
         }
-        console.log('xxx')
       },
     },
     watch: {
       'jobCard.client': {
         handler: function (nowClient, oldClient) {
           this.changeSortTypeList()
-          this.changePointList()
+          // this.changePointList()
         },
         immediate: true
       },
@@ -348,12 +345,42 @@
       'jobCard.major': {
         handler: function (nowMajor, oldMajor) {
           this.changeSortTypeList()
-          this.changePointList()
+          // this.changePointList()
         },
         immediate: true
       }
     },
     methods: {
+      resetJobCard () {
+        this.jobCard = {
+          client: client.mobile,
+          major: '',
+          workBase: '',
+          workType: workType.year,
+          workSort: '',
+          content: '',
+          startDate: new Date().toISOString(),
+          displayStartDate: '',
+          displayEndDate: '',
+          endDate: '',
+          fee: '',
+          refWorkNumber: '',
+          isLeaveQuestion: false,
+          leave: [],
+          ammeter: [],
+          dynamotor: {
+            id: '',
+            code: '',
+            startTime: '',
+            endTime: '',
+            duration: '',
+            oilfee: '',
+            remark: ''
+          }
+        }
+        this.btnDyStartTimeDisable = false
+        this.btnDyEndTimeDisable = true
+      },
       startDy () {
         if (this.btnDyStartTimeDisable) {
           return
@@ -381,12 +408,22 @@
           this.jobCard.dynamotor.duration = endTime - startTime
         })
       },
+      handleWorkBaseDetail (workBaseInfo) {
+        if (workBaseInfo.is_leave === 'Y') {
+          this.$f7.confirm('该作业点存在遗留问题工单是否跳转至遗留问题工单页面进行处理？', modalTitle, () => {
+            this.$router.loadPage(`/base/questionOrder/workBase/${workBaseInfo.id}`)
+          })
+        }
+      },
       changeJobPoint (value) {
+        console.log('chagneJobPoint', value)
         this.jobCard.workBase = value.id
         this.jobPoint = value.work_base
+        this.handleWorkBaseDetail(value)
       },
       changeJobPoint2 (value) {
-        this.jobPoint = value.displayValue
+        this.jobPoint = value.work_base
+        this.handleWorkBaseDetail(value)
       },
       submit () {
         let {client, major, workType, workBase, workSort, content, displayStartDate, displayEndDate, fee, refWorkNumber, isLeaveQuestion, leave, ammeter, dynamotor} = this.jobCard
@@ -429,10 +466,14 @@
           end_date: displayEndDate,
           fee,
           ref_work_number: refWorkNumber,
-          is_leave_question: isLeaveQuestion,
+          is_leave_question: isLeaveQuestion ? 'Y' : 'N',
           leave: JSON.stringify(leave),
           ammeter: JSON.stringify(ammeter),
           power: JSON.stringify(dynamotor)
+        }).then(() => {
+          this.$f7.alert('提交成功', modalTitle, () => {
+            this.resetJobCard()
+          })
         })
       },
       openEndTime (event) {
@@ -463,7 +504,15 @@
         let code = ''
         if (__DEBUG__) {
           code = 'rewrwrwr'
+          this.doGetDynamotor(code)
+        } else {
+          wxScanQRCode().then((result) => {
+            this.doGetDynamotor(result)
+          })
         }
+
+      },
+      doGetDynamotor (code) {
         this.$store.dispatch({
           type: native.doGetDynamotor,
           code
@@ -476,8 +525,15 @@
       scanAmmeter (ammeter, index) {
         let code = ''
         if (__DEBUG__) {
-          code = '123'
+          code = 'erqwr'
+          this.doGetAmmeter(ammeter, code)
+        } else {
+          wxScanQRCode().then((result) => {
+            this.doGetAmmeter(ammeter, result)
+          })
         }
+      },
+      doGetAmmeter (ammeter, code) {
         this.$store.dispatch({
           type: native.doGetAmmeter,
           code
@@ -512,6 +568,9 @@
       },
       changeSortTypeList () {
         let {client, workType, major} = this.jobCard
+        if (!client || !major) {
+          return
+        }
         this.$store.dispatch({
           type: native.doWorkSort,
           client,
@@ -524,7 +583,7 @@
       changePointList () {
         let {client, major} = this.jobCard
         let {provinceName, cityName, districtName} = this.activeAddress
-        if (!provinceName || !cityName || !districtName) {
+        if (!provinceName || !cityName || !districtName || !client || !major) {
           return
         }
         this.$store.dispatch({

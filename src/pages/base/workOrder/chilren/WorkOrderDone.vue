@@ -10,6 +10,7 @@
                     :workSort="order.work_sort"
                     :workClient="order.client"
                     :workMajor="order.major"
+                    :workPassTime="order.approve_at"
                     :workPoint="order.work_base_name">
             </base-list-item>
             <infinite-loading @infinite="loadData">

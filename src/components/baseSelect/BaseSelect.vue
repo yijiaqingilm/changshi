@@ -1,13 +1,17 @@
 <template>
     <div @click="openSelect">
         <input type="hidden" class='input-wrap'>
-        <span class='s-select'>{{displayValue}}</span>
+        <span class='s-select' :class="{'big':widthAuto}">{{displayValue}}</span>
     </div>
 </template>
 
 <script>
   export default {
     props: {
+      widthAuto: {
+        type: Boolean,
+        default: false
+      },
       value: {},
       data: {},
       text: {
@@ -47,7 +51,8 @@
           onClose: ({cols, value, displayValue}) => {
             this.displayValue = displayValue[0]
             this.$emit('input', value[0] >>> 0)
-            this.$emit('change', {value: parseFloat(value[0]), displayValue: displayValue[0]})
+            this.$emit('change', this.data.filter((row) => row.id === (value[0] >>> 0))[0])
+            // this.$emit('change', {value: parseFloat(value[0]), displayValue: displayValue[0]})
           },
           onOpen: (picker) => {
           }
@@ -73,7 +78,6 @@
       'data': {
         handler: function (nowData, oldData) {
           this.$nextTick(() => {
-            console.log(this.picker, 'picker', nowData, this.picker.cols, this.text)
             this.picker.open()
             this.picker.close()
             this.picker.cols[0].replaceValues(nowData.map((row) => row[this.nodeKey]), nowData.map((row) => row[this.nodeLabel]))
@@ -88,5 +92,7 @@
 </script>
 
 <style lang="scss" scoped type="text/css">
-
+    .big {
+        width: 100%;
+    }
 </style>

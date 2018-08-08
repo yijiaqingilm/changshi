@@ -47,6 +47,8 @@ let apiConfig = [
   new ApiConfig(native.doCarHistory, '/car/history', 'get'),
   new ApiConfig(native.doWorkNumberStatics, '/work-number/statics', 'get'),
   new ApiConfig(native.doWorkNumberAccess, '/work-number/access'),
-  new ApiConfig(native.doWorkNumberDeny, '/work-number/deny')
+  new ApiConfig(native.doWorkNumberDeny, '/work-number/deny'),
+  new ApiConfig(native.doDynamotorUpdate, '/dynamotor/udpate'),
+  new ApiConfig(native.doWorkBaseDynamotor, '/work-base/dynamotor', 'get')
 ]
 export default apiConfig

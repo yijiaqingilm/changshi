@@ -70,7 +70,7 @@
   import Hint from 'components/hint/Hint.vue'
   import { modalTitle, globalConst as native } from 'lib/const'
   import { Validator } from 'lib/custom_validator'
-  import { aMapUtil, isNumber } from 'lib/utils'
+  import { aMapUtil, isNumber, wxScanQRCode } from 'lib/utils'
 
   export default {
     data () {
@@ -192,7 +192,15 @@
       scanCode () {
         if (__DEBUG__) {
           this.carnumber = '432424'
+          this.doCarDetail()
+        } else {
+          wxScanQRCode().then((result) => {
+            this.carnumber = result
+            this.doCarDetail()
+          })
         }
+      },
+      doCarDetail () {
         this.$store.dispatch({
           type: native.doCarDetail,
           carnumber: this.carnumber

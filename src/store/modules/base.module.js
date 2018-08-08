@@ -69,7 +69,6 @@ const actions = {
   },
   [native.initActiveAddress] ({state, commit}, refs) {
     aMapUtil.geolocation().then((data) => {
-      console.log('测试定位信息', data)
       let {province, city, district} = data.addressComponent
       commit(native.initActiveAddress, {
         province,
@@ -128,31 +127,32 @@ const actions = {
     }
   },
   [native.doAddressCityList] ({state}, refs) {
-    let provinceId = state.activeAddress.provinceId
-    if (isEmptyObject(state.addressForCity[provinceId])) {
-      return aMapUtil.destrictSearch('province', provinceId, function (error, result) {
+    let {province} = refs
+    if (isEmptyObject(state.addressForCity[province])) {
+      return aMapUtil.destrictSearch('province', province, function (error, result) {
         if (error) {
           return
         } else {
-          Vue.set(state.addressForCity, provinceId, result)
+          Vue.set(state.addressForCity, province, result)
         }
       })
     } else {
-      return Promise.resolve(state.addressForCity[provinceId])
+      return Promise.resolve(state.addressForCity[province])
     }
   },
   [native.doAddressDistrictList] ({state}, refs) {
-    let cityId = state.activeAddress.cityId
-    if (isEmptyObject(state.addressForDistrict[cityId])) {
-      return aMapUtil.destrictSearch('city', cityId, function (error, result) {
+    let {city} = refs
+    console.log('what?', city)
+    if (isEmptyObject(state.addressForDistrict[city])) {
+      return aMapUtil.destrictSearch('city', city, function (error, result) {
         if (error) {
           return
         } else {
-          Vue.set(state.addressForDistrict, cityId, result)
+          Vue.set(state.addressForDistrict, city, result)
         }
       })
     } else {
-      return Promise.resolve(state.addressForDistrict[cityId])
+      return Promise.resolve(state.addressForDistrict[city])
     }
   },
   [native.doWorkSort] ({state}, refs) {

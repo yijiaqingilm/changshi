@@ -9,11 +9,22 @@ const state = {
   dyInfo: {
     number: '',
     oriAddress: '',
-    nowAddress: ''
-  }
+    nowAddress: {
+      province: '',
+      city: '',
+      district: ''
+    }
+  },
+  dyCode: ''
 }
 const getters = {}
 const actions = {
+  [native.doDynamotorUpdate] ({state}, refs) {
+    return applyClientMiddleware(api.doDynamotorUpdate)(refs)
+  },
+  [native.doWorkBaseDynamotor] ({state}, refs) {
+    return applyClientMiddleware(api.doWorkBaseDynamotor)(refs)
+  },
   [native.doCarHistory] ({state}, refs) {
     return applyClientMiddleware(api.doCarHistory)(refs)
   },
@@ -44,7 +55,14 @@ const actions = {
     })
   }
 }
-let mutations = {}
+let mutations = {
+  [native.changeDyAddress] (state, address) {
+    let {province, city, district} = address
+    state.dyInfo.nowAddress.province = province
+    state.dyInfo.nowAddress.city = city
+    state.dyInfo.nowAddress.district = district
+  }
+}
 mutations = Object.assign(margeMutations(actions), mutations)
 export {
   state,

@@ -9,8 +9,15 @@ body, p {
 }
 
 div {
-  @include setFontSize($baseFontSize);
   box-sizing: border-box;
+}
+
+input {
+  @include setFontSize($baseFontSize)
+}
+
+div#app {
+  @include setFontSize($baseFontSize);
 }
 
 img {
@@ -208,11 +215,14 @@ textarea {
   padding-left: 20px;
   border: 1px solid $gray_color; /*no*/
   border-radius: 14px;
-  background: url("~assets/icon_down.png") no-repeat;
+  background-image: url("~assets/icon_down.png");
+  background-repeat: no-repeat;
+  background-size: 35px 35px;
   background-position: right 20px center;
 }
 
 .s-input {
+  box-sizing: border-box;
   width: 400px;
   height: 50px;
   line-height: 50px;
@@ -271,7 +281,7 @@ textarea {
   margin-left: 20px;
 }
 
-.popup-city, .popup-province, .popup-district {
+.popup-city, .popup-province, .popup-district, .popup-city2, .popup-province2, .popup-district2 {
   background: #efeff4;
   .city-navbar {
     position: relative;

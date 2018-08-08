@@ -41,7 +41,11 @@ const globalConst = {
   logout: 'logout',
   clearReviewOrder: 'clearReviewOrder',
   doWorkNumberAccess: 'doWorkNumberAccess',
-  doWorkNumberDeny: 'doWorkNumberDeny'
+  doWorkNumberDeny: 'doWorkNumberDeny',
+  doWorkBaseDynamotor: 'doWorkBaseDynamotor',
+  changeDyAddress: 'changeDyAddress',
+  doDynamotorUpdate: 'doDyNamotorUpdate'
+
 }
 let methods = [SUCCESS.toLowerCase(), FAILURE.toLowerCase(), REQUEST.toLowerCase()]
 const mutationNames = {}

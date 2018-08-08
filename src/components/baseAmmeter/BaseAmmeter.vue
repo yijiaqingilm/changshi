@@ -1,9 +1,11 @@
 <template>
     <div class='base-question-group'>
         <slot></slot>
-        <base-tabs>
-            <base-tab label="添加电表" @click="addAmmeter" :icon="iconSrc.iconAdd"></base-tab>
-        </base-tabs>
+        <footer>
+            <base-tabs>
+                <base-tab label="添加电表" @click="addAmmeter" :icon="iconSrc.iconAdd"></base-tab>
+            </base-tabs>
+        </footer>
     </div>
 </template>
 

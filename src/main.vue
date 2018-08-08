@@ -115,7 +115,8 @@
           provinceId: province.name, provinceName: province.name
         })
         dispatch({
-          type: native.doAddressCityList
+          type: native.doAddressCityList,
+          province: province.name
         })
         this.$f7.popup('.popup-city', false)
       },
@@ -130,6 +131,7 @@
         })
         this.$store.dispatch({
           type: native.doAddressDistrictList,
+          city: city.name
         })
         this.$f7.popup('.popup-district', false)
       },

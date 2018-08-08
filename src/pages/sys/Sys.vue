@@ -9,12 +9,17 @@
         </div>
         <base-list :type="listType">
             <base-list-item showAction
-                            @apply:noPass="handleApplyNoPass('test')"
-                            @apply:pass="handleApplyPass('test2')">
-            </base-list-item>
-            <base-list-item showAction
-                            @apply:noPass="handleApplyNoPass('test')"
-                            @apply:pass="handleApplyPass('test2')">
+                            v-for="(work,index) in workList"
+                            :key="index"
+                            :workName="work.id"
+                            :workNo="work.number"
+                            :workClient="work.client"
+                            :workMajor="work.major"
+                            :workSort="work.work_sort"
+                            :workCreateTime="work.created_at"
+                            :workPoint="work.work_base"
+                            @apply:noPass="handleApplyNoPass(work,index)"
+                            @apply:pass="handleApplyPass(work,index)">
             </base-list-item>
             <div v-if="!isLoadData" class='hint text-center'>请选择作业作业点查询数据</div>
             <infinite-loading v-else ref="loadComponent" @infinite="loadData">
@@ -39,7 +44,8 @@
         listType: baseListTypes.sysOrder,
         workList: [],
         isLoadData: false,
-        workBase: ''
+        workBase: '',
+        page: 1
       }
     },
     methods: {
@@ -61,22 +67,23 @@
       showPopup () {
         this.$f7.popup('.popup-province', false)
       },
-      handleApplyNoPass (value) {
-        this.$f7.confirm('是否确认审核通过', modalTitle, () => {
-          console.log('value', value)
-          this.$store.dispatch({
-            type: native.doWorkNumberAccess,
-            work_id: 'xxx'
-          })
-        })
-
-      },
-      handleApplyPass (value) {
+      handleApplyNoPass (work, index) {
         this.$f7.confirm('是否确认审核不通过', modalTitle, () => {
-          console.log('value', value)
           this.$store.dispatch({
             type: native.doWorkNumberDeny,
-            work_id: 'xxx'
+            work_id: work.id
+          }).then(() => {
+            this.workList.splice(index, 1)
+          })
+        })
+      },
+      handleApplyPass (work, index) {
+        this.$f7.confirm('是否确认审核通过', modalTitle, () => {
+          this.$store.dispatch({
+            type: native.doWorkNumberAccess,
+            work_id: work.id
+          }).then(() => {
+            this.workList.splice(index, 1)
           })
         })
       },
@@ -86,7 +93,6 @@
           page: this.page,
           work_base: this.workBase,
         }).then(({data}) => {
-          console.log('data', data)
           if (Array.isArray(data) && data.length > 0) {
             this.workList = this.workList.concat(data)
             $state.loaded()

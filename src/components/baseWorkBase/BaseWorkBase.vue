@@ -81,7 +81,7 @@
           case clientObj.mobile:
           case clientObj.unicorn:
           case clientObj.telecom:
-            return majorValue.filter(({value}) => value !== jizhan)
+            return majorValue.filter(({value}) => value !== jf)
           case clientObj.ironTower:
             return majorValue.filter(({value}) => value === ironTower || value === wlan || value === jf)
         }

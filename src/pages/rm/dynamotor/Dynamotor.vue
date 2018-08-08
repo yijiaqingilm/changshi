@@ -20,7 +20,12 @@
             </f7-tab>
         </f7-tabs>
         <div slot="fixed">
-            <city-select @cityInfo="cityInfo" ref="citySelect"></city-select>
+            <city-select @cityInfo="cityInfo"
+                         :provinceId="provinceId"
+                         :cityId="cityId"
+                         :districtId="districtId"
+                         ref="citySelect">
+            </city-select>
         </div>
     </f7-page>
 </template>
@@ -34,6 +39,7 @@
   import CitySelect from 'components/baseCitySelect/CitySelect'
   import { modalTitle, globalConst as native } from 'lib/const'
   import { bus } from 'src/main'
+  import { wxScanQRCode } from 'lib/utils'
 
   const ammeterTypesStatus = {
     updateAddress: 0,
@@ -49,12 +55,14 @@
       return {
         ammeterTypes,
         ammeterType: ammeterTypesStatus.updateAddress,
-        isOri: true,
-        dyCode: ''
+        provinceId: '',
+        cityId: '',
+        districtId: ''
       }
     },
     methods: {
       getDy (code) {
+        this.$store.state.rm.dyCode = code
         this.$store.dispatch({
           type: native.doGetDynamotor,
           code
@@ -67,35 +75,18 @@
       },
       scanDynamotor () {
         if (__DEBUG__) {
-          this.dyCode = 'rewrwrwr'
-          this.getDy(this.dyCode)
+          this.getDy('rewrwrwr')
         } else {
-          // 扫一扫功能
-          wx.scanQRCode({
-            needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-            scanType: ['qrCode', 'barCode'], // 可以指定扫二维码还是一维码，默认二者都有
-            success: (res) => {
-              var result = res.resultStr // 当needResult 为 1 时，扫码返回的结果
-              // 扫完 回调 得到二维码
-              this.dyCode = result
-              this.getDy(result)
-            }
+          wxScanQRCode().then((result) => {
+            this.dyCode = result
+            this.getDy(result)
           })
         }
       },
       cityInfo (cityInfo) {
-        if (this.isOri) {
-          this.dyInfo.oriAddress = cityInfo
-        } else {
-          this.dyInfo.nowAddress = cityInfo
-        }
+        this.$store.commit(native.changeDyAddress, cityInfo)
       },
       openNowCityPicker () {
-        this.isOri = false
-        this.$refs.citySelect.open()
-      },
-      openOriCityPicker () {
-        this.isOri = true
         this.$refs.citySelect.open()
       },
       showTab (value) {
@@ -104,7 +95,8 @@
     },
     computed: {
       ...mapState({
-        dyInfo: ({rm}) => rm.dyInfo
+        dyInfo: ({rm}) => rm.dyInfo,
+        dyCode: ({rm}) => rm.dyCode
       })
     },
     components: {

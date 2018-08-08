@@ -1,6 +1,6 @@
 <template>
     <div>
-        <f7-popup class="popup-province">
+        <f7-popup class="popup-province2">
             <div class="city-navbar">
                 <div class="navbar-left">
                     <a href="#" class="link" @click="closePopupProvince">
@@ -18,14 +18,14 @@
                                   :title="row.name"
                                   :value="row.name"
                                   name="province"
-                                  :checked="activeAddress.provinceId==row.name"
+                                  :checked="province==row.name"
                                   @click="selectProvince(row)"
                                   radio>
                     </f7-list-item>
                 </f7-list>
             </div>
         </f7-popup>
-        <f7-popup class="popup-city">
+        <f7-popup class="popup-city2">
             <div class="city-navbar">
                 <div class="navbar-left">
                     <a href="#" class="link" @click="closePopupCity">
@@ -42,7 +42,7 @@
                                   :title="row.name"
                                   :value="row.name"
                                   name="city"
-                                  :checked="activeAddress.cityId==row.name"
+                                  :checked="city==row.name"
                                   @click="selectCity(row)"
                                   radio>
                     </f7-list-item>
@@ -50,7 +50,7 @@
                 </f7-list>
             </div>
         </f7-popup>
-        <f7-popup class="popup-district">
+        <f7-popup class="popup-district2">
             <div class="city-navbar">
                 <div class="navbar-left">
                     <a href="#" class="link" @click="closePopupDistrict">
@@ -67,7 +67,7 @@
                                   :title="row.name"
                                   :value="row.name"
                                   name="district"
-                                  :checked="activeAddress.districtId==row.name"
+                                  :checked="district==row.name"
                                   @click="selectDistrict(row)"
                                   radio>
                     </f7-list-item>
@@ -83,6 +83,11 @@
 
   export default {
     name: '',
+    props: {
+      provinceId: {},
+      cityId: {},
+      districtId: {}
+    },
     data () {
       return {
         province: '',
@@ -90,61 +95,52 @@
         district: ''
       }
     },
+    created () {
+      this.province = this.provinceId
+      this.city = this.cityId
+      this.district = this.districtId
+    },
     methods: {
       open () {
-        this.$f7.popup('.popup-province')
+        this.$f7.popup('.popup-province2')
       },
       selectProvince (province) {
         let {commit, dispatch} = this.$store
-        commit(native.doSelectProvince, {
-          provinceId: province.name, provinceName: province.name
-        })
         this.province = province.name
-        if (province.name !== this.activeAddress.provinceId) {
-          commit(native.resetCity)
-          commit(native.resetDistrict)
-        }
         dispatch({
-          type: native.doAddressCityList
+          type: native.doAddressCityList,
+          province: province.name
         })
-        this.$f7.popup('.popup-city')
+        this.$f7.popup('.popup-city2')
       },
       selectCity (city) {
         let {commit, dispatch} = this.$store
-        commit(native.doSelectCity, {
-          cityId: city.name,
-          cityName: city.name
-        })
         this.city = city.name
-        if (city.name !== this.activeAddress.cityId) {
-          commit(native.resetDistrict)
-        }
         this.$store.dispatch({
           type: native.doAddressDistrictList,
+          city: city.name
         })
-        this.$f7.popup('.popup-district')
+        this.$f7.popup('.popup-district2')
       },
-      selectDistrict (district) {
+      selectDistrict (districtObj) {
         let {commit} = this.$store
-        commit(native.doSelectDistrict, {
-          districtName: district.name,
-          districtId: district.name
-        })
-        this.district = district.name
-        this.$emit('cityInfo', this.province + this.city + this.district)
+        this.district = districtObj.name
+        let {province, city, district} = this
+        this.$emit('cityInfo', {province, city, district}
+        )
         this.closePopupCity()
       },
       closePopupDistrict () {
-        this.$f7.closeModal('.popup-district')
+        this.$f7.closeModal('.popup-district2')
         this.$f7.closeModal()
       },
       closePopupCity () {
-        this.$f7.closeModal('.popup-city')
+        this.$f7.closeModal('.popup-city2')
         // 疑似f7bug 不能同时关闭。一旦同时关闭会销毁popup对象
         this.$f7.closeModal()
       },
       closePopupProvince () {
-        this.$f7.closeModal('.popup-province')
+        this.$f7.closeModal('.popup-province2')
         // 疑似f7bug 不能同时关闭。一旦同时关闭会销毁popup对象
         this.$f7.closeModal()
       },
@@ -154,7 +150,7 @@
         this.$store.dispatch({
           type: native.initActiveAddress,
         })
-        this.$$('.popup-province').on('opened', () => {
+        this.$$('.popup-province2').on('opened', () => {
           let {dispatch} = this.$store
           dispatch({
             type: native.doAddressProvinceList
@@ -165,12 +161,16 @@
     computed: {
       ...mapGetters([
         'getProvinceList',
-        'getCityList',
-        'getDistrictList',
       ]),
       ...mapState({
         activeAddress: ({base}) => base.activeAddress
-      })
+      }),
+      getCityList () {
+        return this.$store.state.base.addressForCity[this.province]
+      },
+      getDistrictList () {
+        return this.$store.state.base.addressForDistrict[this.city]
+      }
     },
   }
 </script>
