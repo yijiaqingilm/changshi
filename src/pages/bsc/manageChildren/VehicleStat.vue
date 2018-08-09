@@ -22,7 +22,7 @@
 
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex'
-  import { clientValue } from 'lib/const'
+  import { clientValue, globalConst as native } from 'lib/const'
   import emitter from 'mixins/emitter'
   import moment from 'lib/moment'
 
@@ -91,11 +91,27 @@
     },
     methods: {
       openVeDatePicker (event) {
-        this.dispatchMethod('base-bsc', 'openVeDatePicker', event)
+        this.dispatchMethod('manage-bsc', 'openVeDatePicker', event)
       },
       showPopup () {
         this.$f7.popup('.popup-province', false)
       },
+      doStaticsCar () {
+        let {provinceName, cityName, districtName} = this.activeAddress
+        if (!provinceName || !cityName || !districtName || !this.veDate || !this.veStat.client) {
+          return
+        }
+        this.$store.dispatch({
+          type: native.doStaticsCar,
+          province: provinceName,
+          city: cityName,
+          district: districtName,
+          month: this.veDate,
+          client: this.veStat.client
+        }).then(({data}) => {
+          console.log('data=======', data)
+        })
+      }
     },
     computed: {
       ...mapState({
@@ -103,13 +119,27 @@
         veStat: ({bsc}) => bsc.veStat,
       }),
       veDate () {
-        return this.veStat.date && moment(this.veStat.date).format('YYYY-MM-DD')
+        return this.veStat.date && moment(this.veStat.date).format('YYYY-MM')
       },
       currentAddress () {
-        let currentAddress = this.activeAddress.provinceName + this.activeAddress.cityName + this.activeAddress.districtName
+        let {provinceName, cityName, districtName} = this.activeAddress
+        if (provinceName && cityName && districtName) {
+          console.log('what?')
+          this.doStaticsCar()
+        }
+        let currentAddress = provinceName + cityName + districtName
         return currentAddress.length > 0 ? currentAddress : '请选择地址'
       },
-    }
+    },
+   /* watch: {
+      'veStat': {
+        handler (nowClient, oldClient) {
+          console.log('????==>')
+          this.doStaticsCar()
+        },
+        deep: true
+      }
+    }*/
   }
 </script>
 

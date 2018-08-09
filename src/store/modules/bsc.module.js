@@ -40,7 +40,14 @@ const state = {
   }
 }
 const getters = {}
-const actions = {}
+const actions = {
+  [native.doStaticsPower] ({state}, refs) {
+    return applyClientMiddleware(api.doStaticsPower)(refs)
+  },
+  [native.doStaticsCar] ({state}, refs) {
+    return applyClientMiddleware(api.doStaticsCar)(refs)
+  }
+}
 let mutations = {}
 mutations = Object.assign(margeMutations(actions), mutations)
 export {

@@ -44,7 +44,9 @@ const globalConst = {
   doWorkNumberDeny: 'doWorkNumberDeny',
   doWorkBaseDynamotor: 'doWorkBaseDynamotor',
   changeDyAddress: 'changeDyAddress',
-  doDynamotorUpdate: 'doDyNamotorUpdate'
+  doDynamotorUpdate: 'doDyNamotorUpdate',
+  doStaticsPower: 'doStaticsPower',
+  doStaticsCar: 'doStaticsCar'
 
 }
 let methods = [SUCCESS.toLowerCase(), FAILURE.toLowerCase(), REQUEST.toLowerCase()]
@@ -85,7 +87,6 @@ const clientValue = [
   {value: client.ironTower, label: '铁塔', checked: false},
 ]
 const clientObj = arr2obj(clientValue)
-console.log('clientObj', clientObj)
 const major = {
   // 线路
   xianlu: 1,

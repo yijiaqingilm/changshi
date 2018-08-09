@@ -23,7 +23,7 @@
 
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex'
-  import { clientValue } from 'lib/const'
+  import { clientValue, globalConst as native } from 'lib/const'
   import emitter from 'mixins/emitter'
   import moment from 'lib/moment'
 
@@ -97,12 +97,26 @@
       openDyDatePicker (event) {
         this.dispatchMethod('manage-bsc', 'openDyDatePicker', event)
       },
-      openVeDatePicker (event) {
-        this.dispatchMethod('manage-bsc', 'openVeDatePicker', event)
-      },
       showPopup () {
         this.$f7.popup('.popup-province', false)
       },
+      doStaticsPower () {
+        console.log('除服dostatic')
+        let {provinceName, cityName, districtName} = this.activeAddress
+        if (!provinceName || !cityName || !districtName || !this.dyDate || !this.dyStat.client) {
+          return
+        }
+        this.$store.dispatch({
+          type: native.doStaticsPower,
+          province: provinceName,
+          city: cityName,
+          district: districtName,
+          month: this.dyDate,
+          client: this.dyStat.client
+        }).then(({data}) => {
+          console.log('data=======', data)
+        })
+      }
     },
     computed: {
       ...mapState({
@@ -113,10 +127,22 @@
         return this.dyStat.date && moment(this.dyStat.date).format('YYYY-MM')
       },
       currentAddress () {
-        let currentAddress = this.activeAddress.provinceName + this.activeAddress.cityName + this.activeAddress.districtName
+        let {provinceName, cityName, districtName} = this.activeAddress
+        if (provinceName && cityName && districtName) {
+          this.doStaticsPower()
+        }
+        let currentAddress = provinceName + cityName + districtName
         return currentAddress.length > 0 ? currentAddress : '请选择地址'
       },
-    }
+    },
+    /* watch: {
+      'dyStat': {
+        handler (nowClient, oldClient) {
+          this.doStaticsPower()
+        },
+        deep: true
+      }
+    }*/
   }
 </script>
 

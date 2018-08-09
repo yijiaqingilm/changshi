@@ -102,6 +102,7 @@
         this.$refs.dyDate.open(event)
       },
       openVeDatePicker (event) {
+        console.log('???')
         this.$refs.veDate.open(event)
       },
       showTab (value) {
