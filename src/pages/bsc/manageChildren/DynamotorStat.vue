@@ -17,7 +17,7 @@
             </base-form-group>
         </div>
         <line-10></line-10>
-        <chart :options="options"></chart>
+        <chart :options="options" v-if="dyList && dyList.length>0"></chart>
     </div>
 </template>
 
@@ -33,6 +33,7 @@
     },
     data () {
       return {
+        dyList: [],
         clientValue,
         options: {
           title: {
@@ -48,7 +49,7 @@
             }
           },
           legend: {
-            data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+            data: []
           },
           toolbox: {
             feature: {
@@ -65,7 +66,7 @@
             {
               type: 'category',
               boundaryGap: false,
-              data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+              data: []
             }
           ],
           yAxis: [
@@ -76,7 +77,7 @@
           series: [
 
             {
-              name: '搜索引擎',
+              name: '使用次数',
               type: 'line',
               stack: '总量',
               label: {
@@ -86,7 +87,7 @@
                 }
               },
 
-              data: [820, 932, 901, 934, 1290, 1330, 1320]
+              data: []
             }
           ]
         }
@@ -101,7 +102,6 @@
         this.$f7.popup('.popup-province', false)
       },
       doStaticsPower () {
-        console.log('除服dostatic')
         let {provinceName, cityName, districtName} = this.activeAddress
         if (!provinceName || !cityName || !districtName || !this.dyDate || !this.dyStat.client) {
           return
@@ -114,7 +114,15 @@
           month: this.dyDate,
           client: this.dyStat.client
         }).then(({data}) => {
-          console.log('data=======', data)
+          this.dyList = data
+          let dataX = []
+          let dataY = []
+          this.dyList.map((row) => {
+            dataX.push(row.day)
+            dataY.push(row.use_num)
+          })
+          this.options.xAxis[0].data = dataX
+          this.options.series[0].data = dataY
         })
       }
     },

@@ -30,7 +30,15 @@ const state = {
       format: 'yyyy-MM-dd HH:mm:ss'
     }
   },
-  dy: {},
+  dy: {
+    city: '',
+    code: '',
+    district: '',
+    id: '',
+    province: '',
+    status: 1,
+    work_base: ''
+  },
   workNumberStatics: {},
   workOrderPage: {
     reviewPage: 1

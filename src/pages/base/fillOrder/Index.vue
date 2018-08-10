@@ -202,17 +202,18 @@
   import moment from 'lib/moment'
   import { mapState, mapGetters } from 'vuex'
   import emitter from 'mixins/emitter'
-  import { aMapUtil, getTimer, wxScanQRCode } from 'lib/utils'
+  import { aMapUtil, getTimer, wxScanQRCode, dataFormat } from 'lib/utils'
   import { Validator } from 'lib/custom_validator'
 
   class Ammeter {
-    constructor (code, date, currentNum, useNum, img, prevNum) {
+    constructor (code, date, currentNum, useNum, img, prevNum, id) {
       this.code = code
       this.date = date
       this.currentNum = currentNum
       this.prevNum = prevNum
       this.useNum = useNum
       this.img = img
+      this.id = id
     }
   }
 
@@ -448,12 +449,54 @@
           }, 2000)
           return
         }
+        if (this.jobCard.endDate - this.jobCard.startDate < 0) {
+          this.$f7.alert('结束时间不能小于开始时间', modalTitle)
+          return
+        }
 
         if (this.showDynamotor && (!this.btnDyStartTimeDisable || !this.btnDyEndTimeDisable)) {
           this.$f7.alert('未结束发电不能提交工单', modalTitle)
           return
         }
-
+        if (this.showDynamotor && !dynamotor.oilfee) {
+          this.$f7.alert('请填写发电费用', modalTitle)
+          return
+        }
+        for (let i = 0; i < ammeter.length; i++) {
+          let ammeterExp = ammeter[i]
+          if (!ammeterExp.id) {
+            this.$f7.alert('请扫描电表编号', modalTitle)
+            break
+          }
+          if (!ammeterExp.currentNum) {
+            this.$f7.alert('请填写电表本周期抄表度数', modalTitle)
+            break
+          }
+          if (!ammeterExp.useNum) {
+            this.$f7.alert('请填写电表使用度数', modalTitle)
+            break
+          }
+          if (__DEBUG__) {
+            ammeterExp.img = 'test'
+          }
+          if (!ammeterExp.img) {
+            this.$f7.alert('请上传电表照', modalTitle)
+            break
+          }
+        }
+        let ammeterList = ammeter.map((row) => {
+          let {currentNum, useNum, ...rest} = row
+          if (__DEBUG__) {
+            return {current_num: currentNum, use_num: useNum, ...rest, img: 'test'}
+          } else {
+            return {current_num: currentNum, use_num: useNum, ...rest}
+          }
+        })
+        let dynamotorObj = Object.assign({}, dynamotor)
+        if (dynamotorObj.id) {
+          dynamotorObj.start_time = dataFormat(dynamotorObj.startTime)
+          dynamotorObj.end_time = dataFormat(dynamotorObj.endTime)
+        }
         this.$store.dispatch({
           type: native.doWorkSender,
           client,
@@ -468,8 +511,8 @@
           ref_work_number: refWorkNumber,
           is_leave_question: isLeaveQuestion ? 'Y' : 'N',
           leave: JSON.stringify(leave),
-          ammeter: JSON.stringify(ammeter),
-          power: JSON.stringify(dynamotor)
+          ammeter: JSON.stringify(ammeterList),
+          power: dynamotor.id ? JSON.stringify(dynamotorObj) : '{}'
         }).then(() => {
           this.$f7.alert('提交成功', modalTitle, () => {
             this.resetJobCard()
@@ -538,7 +581,8 @@
           type: native.doGetAmmeter,
           code
         }).then(({data}) => {
-          ammeter.code = data.id + ''
+          ammeter.code = code
+          ammeter.id = data.id
           ammeter.prevNum = data.last_num ? data.last_num + '' : '0'
           ammeter.date = new Date().getTime() + ''
         })

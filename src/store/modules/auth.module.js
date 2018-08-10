@@ -37,12 +37,18 @@ let mutations = {
     state.isManage = false
     state.sessionKey = ''
   },
+  [mutationNames.doWxLogin_success] (state, {data}) {
+    state.wxConfig = data.wx_config
+    console.log('获取wxconfig 成功', data)
+    wx.config(state.wxConfig)
+    wx.error((err) => {
+      console.error(err)
+    })
+  },
   [mutationNames.doLogin_success] (state, {data}) {
-    console.log('data======', data)
     state.userInfo = data
     state.sessionKey = data.sessionkey
     state.isManage = data.is_manage === 1
-    console.log(state.sessionKey, data.sessionkey, '=====')
   }
 }
 mutations = Object.assign(margeMutations(actions), mutations)

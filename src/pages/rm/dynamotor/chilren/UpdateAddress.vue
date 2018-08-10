@@ -1,10 +1,10 @@
 <template>
-    <div class='update-address'>
+    <div class='update-address' v-if="dy && dy.code">
         <div class='group'>
             <base-form-group class='title' label="当前发电机存放点" isTitle>
-                仓库
+                {{dy.work_base?'固定机油':'仓库'}}{{dy.work_base}}
             </base-form-group>
-            <base-form-group label="广东省xxx"></base-form-group>
+            <base-form-group :label="dy.province+dy.city+dy.district"></base-form-group>
         </div>
         <line-10></line-10>
         <div class='group'>
@@ -36,10 +36,13 @@
                 </div>
             </section>
             <f7-block class='group'>
-                <f7-button big full active @click="submit">提交</f7-button>
+                <f7-button big full active @click="submit">调整位置</f7-button>
             </f7-block>
         </div>
     </div>
+    <f7-block v-else>
+        <div class='hint text-center'>请扫描发电机编码</div>
+    </f7-block>
 </template>
 
 <script type="text/ecmascript-6">
@@ -85,8 +88,14 @@
           this.$f7.alert('请选择站点', modalTitle)
           return
         }
+        let {province, city, district} = this.nowAddress
         this.$store.dispatch({
-          type: native.doDynamotorUpdate
+          type: native.doDynamotorUpdate,
+          code: this.dy.code,
+          province,
+          city,
+          district,
+          work_base: this.workBase
         })
       },
       openNowCityPicker () {

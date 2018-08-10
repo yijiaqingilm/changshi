@@ -1,7 +1,7 @@
 <template>
-    <div class='update-status'>
+    <div class='update-status' v-if="dy && dy.code">
         <base-form-group class='title' label="发电机状态" isTitle></base-form-group>
-        <base-radio-group v-model="status">
+        <base-radio-group v-model="dy.status">
             <base-radio v-for="(info,index) in dyInfo"
                         :label="info.key"
                         name="info"
@@ -13,6 +13,9 @@
             <f7-button full active big @click="submit">提交</f7-button>
         </f7-block>
     </div>
+    <f7-block v-else>
+        <div class='hint text-center'>请扫描发电机编码</div>
+    </f7-block>
 </template>
 
 <script type="text/ecmascript-6">
@@ -39,14 +42,9 @@
       return {
         dyStatus,
         dyInfo,
-        status: dyStatus.right
       }
     },
     created () {
-      bus.$on('changeDyStatus', (status) => {
-        console.log('changeDy', status)
-        this.status = status
-      })
     },
     methods: {
       submit () {
@@ -59,7 +57,8 @@
     },
     computed: {
       ...mapState({
-        dyCode: ({rm}) => rm.dyCode
+        dyCode: ({rm}) => rm.dyCode,
+        dy: ({base}) => base.dy,
       })
     }
   }

@@ -48,9 +48,9 @@ let apiConfig = [
   new ApiConfig(native.doWorkNumberStatics, '/work-number/statics', 'get'),
   new ApiConfig(native.doWorkNumberAccess, '/work-number/access'),
   new ApiConfig(native.doWorkNumberDeny, '/work-number/deny'),
-  new ApiConfig(native.doDynamotorUpdate, '/dynamotor/udpate'),
+  new ApiConfig(native.doDynamotorUpdate, '/dynamotor/update'),
   new ApiConfig(native.doWorkBaseDynamotor, '/work-base/dynamotor', 'get'),
-  new ApiConfig(native.doStaticsPower, '/statics/power'),
-  new ApiConfig(native.doStaticsCar, '/statics/car')
+  new ApiConfig(native.doStaticsPower, '/statics/power', 'get'),
+  new ApiConfig(native.doStaticsCar, '/statics/car', 'get')
 ]
 export default apiConfig

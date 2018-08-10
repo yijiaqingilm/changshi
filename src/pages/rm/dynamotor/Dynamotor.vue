@@ -66,9 +66,6 @@
         this.$store.dispatch({
           type: native.doGetDynamotor,
           code
-        }).then(({data}) => {
-          console.log('data', data)
-          bus.$emit('changeDyStatus', data.status)
         }).catch((err) => {
           this.$f7.alert(err, modalTitle)
         })

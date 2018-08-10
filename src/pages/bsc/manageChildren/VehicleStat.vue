@@ -31,9 +31,10 @@
     data () {
       return {
         clientValue,
+        carList: [],
         options: {
           title: {
-            text: '堆叠区域图'
+            text: ''
           },
           tooltip: {
             trigger: 'axis',
@@ -45,7 +46,7 @@
             }
           },
           legend: {
-            data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+            data: []
           },
           toolbox: {
             feature: {
@@ -62,7 +63,7 @@
             {
               type: 'category',
               boundaryGap: false,
-              data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+              data: []
             }
           ],
           yAxis: [
@@ -73,7 +74,7 @@
           series: [
 
             {
-              name: '搜索引擎',
+              name: '使用次数',
               type: 'line',
               stack: '总量',
               label: {
@@ -83,7 +84,7 @@
                 }
               },
 
-              data: [820, 932, 901, 934, 1290, 1330, 1320]
+              data: []
             }
           ]
         }
@@ -110,6 +111,15 @@
           client: this.veStat.client
         }).then(({data}) => {
           console.log('data=======', data)
+          this.carList = data
+          let dataX = []
+          let dataY = []
+          this.carList.map((row) => {
+            dataX.push(row.day)
+            dataY.push(row.use_num)
+          })
+          this.options.xAxis[0].data = dataX
+          this.options.series[0].data = dataY
         })
       }
     },
@@ -131,15 +141,15 @@
         return currentAddress.length > 0 ? currentAddress : '请选择地址'
       },
     },
-   /* watch: {
-      'veStat': {
-        handler (nowClient, oldClient) {
-          console.log('????==>')
-          this.doStaticsCar()
-        },
-        deep: true
-      }
-    }*/
+    /* watch: {
+       'veStat': {
+         handler (nowClient, oldClient) {
+           console.log('????==>')
+           this.doStaticsCar()
+         },
+         deep: true
+       }
+     }*/
   }
 </script>
 

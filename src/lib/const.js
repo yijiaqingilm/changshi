@@ -44,7 +44,7 @@ const globalConst = {
   doWorkNumberDeny: 'doWorkNumberDeny',
   doWorkBaseDynamotor: 'doWorkBaseDynamotor',
   changeDyAddress: 'changeDyAddress',
-  doDynamotorUpdate: 'doDyNamotorUpdate',
+  doDynamotorUpdate: 'doDynamotorUpdate',
   doStaticsPower: 'doStaticsPower',
   doStaticsCar: 'doStaticsCar'
 
