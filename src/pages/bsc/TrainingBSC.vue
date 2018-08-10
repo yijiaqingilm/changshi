@@ -98,7 +98,6 @@
     },
     methods: {
       openDayDatePicker (event) {
-        console.log('触发')
         this.$refs.dayDate.open(event)
       },
       openMonthDatePicker (event) {

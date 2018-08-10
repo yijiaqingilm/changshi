@@ -10,7 +10,6 @@ export default {
         }
       }
       if (parent) {
-        console.log('找到了。', parent)
         parent[methodName](params)
       }
     }

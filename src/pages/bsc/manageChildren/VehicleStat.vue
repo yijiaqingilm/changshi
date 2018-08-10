@@ -110,7 +110,6 @@
           month: this.veDate,
           client: this.veStat.client
         }).then(({data}) => {
-          console.log('data=======', data)
           this.carList = data
           let dataX = []
           let dataY = []
@@ -134,7 +133,6 @@
       currentAddress () {
         let {provinceName, cityName, districtName} = this.activeAddress
         if (provinceName && cityName && districtName) {
-          console.log('what?')
           this.doStaticsCar()
         }
         let currentAddress = provinceName + cityName + districtName
@@ -144,7 +142,6 @@
     /* watch: {
        'veStat': {
          handler (nowClient, oldClient) {
-           console.log('????==>')
            this.doStaticsCar()
          },
          deep: true
