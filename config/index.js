@@ -23,7 +23,8 @@ module.exports = {
     globals: {
       __DEBUG__: false,
       serverUrl: JSON.stringify('http://api.changshi.showtou.com/api'),
-      VERSION: JSON.stringify('V.1.0')
+      VERSION: JSON.stringify('V.1.0'),
+      appId: JSON.stringify('wx0cb3ab16edb62a97'),
     }
   },
   dev: {
@@ -53,7 +54,8 @@ module.exports = {
     globals: {
       __DEBUG__: true,
       serverUrl: JSON.stringify('http://127.0.0.1:8008/api'),
-      VERSION: JSON.stringify('V.1.0')
+      VERSION: JSON.stringify('V.1.0'),
+      appId: JSON.stringify('wx0cb3ab16edb62a97'),
     }
   },
 }

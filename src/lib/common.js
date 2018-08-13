@@ -35,6 +35,22 @@ let common = {
     }
     return new common.newBlob(ia, type)
   },
+  awaitUserLogin: function (code, state, callBack) {
+    try {
+      var url = `${serverUrl}/user/wx-login?code=${code}&state=${state}&url=${encodeURIComponent(location.href.split('#')[0])}`
+      let request = new XMLHttpRequest()
+      request.open('GET', url, false) // 第三个参数 false 代表设置同步请求
+      request.send(null)
+      if (request.status === 200) {
+
+        var data = JSON.parse(request.response)
+        callBack(data.data)
+
+      }
+    } catch (err) {
+      // err
+    }
+  },
 }
 let ActionManager = {}
 let token

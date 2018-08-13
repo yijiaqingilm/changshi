@@ -5,7 +5,8 @@ import './lib/flexible.js'
 import ApiClient from 'lib/client'
 import clientMiddleware from 'lib/clientMiddleware'
 import { saveStore } from './lib/common'
-
+import { isEmptyObject, Cache } from './lib/utils'
+import wxloginAPI from 'api/wxlogin'
 import Framework7Vue from 'framework7-vue'
 import 'velocity-animate'
 
@@ -80,6 +81,29 @@ Vue.component('base-form-list-item', BaseFormListItem)
 
 let user_store = sessionStorage.getItem('changshi_store')
 user_store && store.replaceState(Object.assign(store.state, JSON.parse(user_store)))
+
+let setUserInfo = function (data) {
+  Cache.set('userInfo', data)
+  let wxConfig = JSON.parse(data.wx_config)
+  // 微信配置
+  wx.config({...wxConfig})
+}
+let userInfo = Cache.get('userInfo')
+if (isEmptyObject(userInfo)) {
+  if (!__DEBUG__) {
+    wxloginAPI.wxLogin(function (data) {
+      setUserInfo(data)
+    })
+  }
+
+} else {
+  setUserInfo(userInfo)
+}
+
+wx.error(function (res) {
+  // err
+})
+
 // Init App
 let client = new ApiClient()
 let applyClientMiddleware = clientMiddleware(client)(store.commit)

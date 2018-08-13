@@ -4,9 +4,9 @@ import { isEmptyObject } from 'lib/utils'
 
 const globalMixin = {
   created () {
-    this.$store.dispatch({
-      type: native.doWxLogin
-    })
+    /* this.$store.dispatch({
+       type: native.doWxLogin
+     })*/
   },
   computed: mapState({}),
 }

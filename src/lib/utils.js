@@ -406,5 +406,6 @@ export {
   aMapUtil,
   isNumber,
   getTimer,
-  wxScanQRCode
+  wxScanQRCode,
+  getQuery
 }

@@ -23,7 +23,8 @@ module.exports = {
     webUrl: false,
     payUrl: false,
     Vue: false,
-    bindUrl: false
+    bindUrl: false,
+    appId: false
   },
   // https://github.com/standard/standard/blob/master/docs/RULES-en.md
   extends: 'standard',
