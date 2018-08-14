@@ -40,6 +40,12 @@ const dictionary = {
       retractMileage: {
         required: '收车里程数必填',
       },
+      username: {
+        required: '用户名必填'
+      },
+      password: {
+        required: '密码必填'
+      }
     }
   }
 }

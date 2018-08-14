@@ -240,7 +240,7 @@
           startDate: new Date().toISOString(),
           displayStartDate: '',
           displayEndDate: '',
-          endDate: '',
+          endDate: new Date().toISOString(),
           fee: '',
           refWorkNumber: '',
           isLeaveQuestion: false,
@@ -287,7 +287,6 @@
         content: 'required',
         startDate: 'required',
         endDate: 'required',
-        fee: 'required',
       })
       this.$set(this, 'errors', this.validator.errorBag)
     },
@@ -339,6 +338,9 @@
       },
       'jobCard.workType': {
         handler: function (nowWorkType, oldWorkType) {
+          if (nowWorkType !== oldWorkType) {
+            this.jobCard.workSort = ''
+          }
           this.changeSortTypeList()
         },
         immediate: true
@@ -435,7 +437,6 @@
           content,
           startDate: displayStartDate,
           endDate: displayEndDate,
-          fee
         })
         //  校验信息
         if (this.errors.errors.length > 0) {
@@ -462,6 +463,17 @@
           this.$f7.alert('请填写发电费用', modalTitle)
           return
         }
+
+        if (isLeaveQuestion) {
+          for (let i = 0; i < leave.length; i++) {
+            let question = leave[i]
+            if (!question.question) {
+              this.$f7.alert('请填写遗留问题内容', modalTitle)
+              break
+            }
+          }
+        }
+
         for (let i = 0; i < ammeter.length; i++) {
           let ammeterExp = ammeter[i]
           if (!ammeterExp.id) {
@@ -517,6 +529,8 @@
           this.$f7.alert('提交成功', modalTitle, () => {
             this.resetJobCard()
           })
+        }).catch(({data}) => {
+          this.$f7.alert(data.msg, modalTitle)
         })
       },
       openEndTime (event) {

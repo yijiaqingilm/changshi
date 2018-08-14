@@ -38,7 +38,17 @@
         this.picker.open()
       },
       initPicker (data) {
+        let mark = false
         this.picker = this.$f7.picker({
+          toolbarTemplate: `<div class="toolbar">
+                              <div class="toolbar-inner">
+                                <div class="left"></div>
+                                <div class="right">
+                                  <a href="#" class="confirm">确定</a>
+                                  <a href="#" class="close">关闭</a>
+                                </div>
+                              </div>
+                            </div> `,
           closeByOutsideClick: false,
           input: '.input-wrap',
           cols: [
@@ -49,12 +59,21 @@
             }
           ],
           onClose: ({cols, value, displayValue}) => {
-            this.displayValue = displayValue[0]
-            this.$emit('input', value[0] >>> 0)
-            this.$emit('change', this.data.filter((row) => row.id === (value[0] >>> 0))[0])
-            // this.$emit('change', {value: parseFloat(value[0]), displayValue: displayValue[0]})
+            if (mark) {
+              this.displayValue = displayValue[0]
+              this.$emit('input', value[0] >>> 0)
+              this.$emit('change', this.data.filter((row) => row.id === (value[0] >>> 0))[0])
+            }
           },
           onOpen: (picker) => {
+            picker.container.find('.confirm').on('click', () => {
+              mark = true
+              this.picker.close()
+            })
+            picker.container.find('.close').on('click', () => {
+              mark = false
+              this.picker.close()
+            })
           }
         })
         // this.picker.open()

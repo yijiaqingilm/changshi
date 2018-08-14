@@ -48,6 +48,7 @@
             type: native.doWorkNumberCancel,
             work_id: order.id
           }).then((data) => {
+            this.statics.unariched--
             this.workList.splice(index, 1)
           })
         })
@@ -62,6 +63,7 @@
             work_id: order.id
           }).then((data) => {
             this.workList.splice(index, 1)
+            this.statics.approve++
             bus.$emit(native.clearReviewOrder)
           })
         })
@@ -89,7 +91,8 @@
     computed: {
       ...mapState({
         workOrderPage: ({base}) => base.workOrderPage,
-        workOrderReviewList: ({base}) => base.workOrderReviewList
+        workOrderReviewList: ({base}) => base.workOrderReviewList,
+        statics: ({base}) => base.workNumberStatics
       })
     },
     components: {InfiniteLoading}

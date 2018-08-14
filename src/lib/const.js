@@ -106,8 +106,8 @@ const majorValue = [
   {value: major.jizhan, label: '基站'},
   {value: major.ironTower, label: '铁塔'},
   {value: major.jtzx, label: '集团专线'},
-  {value: major.wlan, label: 'wlan'},
-  {value: major.jf, label: '机房'}
+  {value: major.wlan, label: '室分及WLAN'},
+  {value: major.jf, label: '机房及动力配套'}
 ]
 const majorObj = arr2obj(majorValue)
 const workType = {
