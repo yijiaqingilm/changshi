@@ -110,7 +110,7 @@
     },
     methods: {
       login () {
-        this.$router.reloadPage('/login')
+        this.$router.loadPage('/login')
       },
       logout () {
         this.$f7.confirm('确定退出登录？', modalTitle, () => {

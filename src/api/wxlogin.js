@@ -11,7 +11,7 @@ let wxloginAPI = {
     var state = getQuery('state')
     if (code === null || state === null) {
       /*eslint max-len: ["error", { "ignoreUrls": true }]*/
-      location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?response_type=code&scope=snsapi_base&state=base&appid=${appId}&redirect_uri=${encodeURIComponent(location.href)}#wechat_redirect`
+      location.replace(`https://open.weixin.qq.com/connect/oauth2/authorize?response_type=code&scope=snsapi_base&state=base&appid=${appId}&redirect_uri=${encodeURIComponent(location.href)}#wechat_redirect`)
       return false
     } else {
       console.log('wx登陆开始')
