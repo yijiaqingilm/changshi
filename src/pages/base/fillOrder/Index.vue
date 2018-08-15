@@ -529,8 +529,8 @@
           this.$f7.alert('提交成功', modalTitle, () => {
             this.resetJobCard()
           })
-        }).catch(({data}) => {
-          this.$f7.alert(data.msg, modalTitle)
+        }).catch((error) => {
+          this.$f7.alert(error, modalTitle)
         })
       },
       openEndTime (event) {

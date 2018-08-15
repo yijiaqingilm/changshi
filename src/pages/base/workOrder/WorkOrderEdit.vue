@@ -12,7 +12,7 @@
                 <base-form-group label="作业点：" :item="workOrder.work_base"></base-form-group>
                 <base-form-group label="包年/按次：" :item="workOrder.work_type"></base-form-group>
                 <base-form-group label="作业类别：" :item="workOrder.work_sort"></base-form-group>
-                <base-form-group label="起止时间：" :item="workOrder.start_date"></base-form-group>
+                <base-form-group label="起止时间：" :item="workOrder.start_date+'至'+workOrder.end_date"></base-form-group>
                 <base-form-group label="关联工单号："
                                  :item="workOrder.ref_work_number && workOrder.ref_work_number"></base-form-group>
                 <base-form-group label="是否存在问题：" :item="workOrder.is_leave_question==='Y'?'存在':'不存在'"></base-form-group>

@@ -8,6 +8,7 @@
                     :workName="order.id"
                     :workNo="order.number"
                     :workClient="order.client"
+                    :workSort="order.work_sort"
                     :workMajor="order.major"
                     :workCheckTime="order.approve_at"
                     :workPoint="order.work_base">
