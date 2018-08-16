@@ -58,11 +58,12 @@
               values: data.map((row) => row[this.nodeKey])
             }
           ],
-          onClose: ({cols, value, displayValue}) => {
+          onClose: ({cols}) => {
             if (mark) {
-              this.displayValue = displayValue[0]
-              this.$emit('input', value[0] >>> 0)
-              this.$emit('change', this.data.filter((row) => row.id === (value[0] >>> 0))[0])
+              let {value, displayValue} = cols[0]
+              this.displayValue = displayValue
+              this.$emit('input', value >>> 0)
+              this.$emit('change', this.data.filter((row) => row.id === (value >>> 0))[0])
             }
           },
           onOpen: (picker) => {

@@ -16,7 +16,6 @@
                 </base-radio>
             </base-radio-group>
         </section>
-
         <base-form-group class="m-40" label="专业选择" mark>
             <base-select v-model="jobCard.major" text="请选择专业" :data="majorValue"></base-select>
         </base-form-group>
@@ -47,7 +46,7 @@
             </div>
         </base-form-group>
         <line-10></line-10>
-        <section>
+        <section v-if='showWorkType'>
             <header class='header'><span class='mark'>*</span>包年/按次</header>
             <base-radio-group v-model="jobCard.workType" class="radio-group">
                 <base-radio v-for="(workType,index) in workTypeValue"
@@ -230,6 +229,7 @@
     data () {
       return {
         getTimer,
+        showWorkType: true,
         jobCard: {
           client: client.mobile,
           major: '',
@@ -333,6 +333,12 @@
         handler: function (nowClient, oldClient) {
           this.changeSortTypeList()
           // this.changePointList()
+          if (nowClient === client.ironTower) {
+            this.showWorkType = false
+            this.jobCard.workType = workType.other
+          } else {
+            this.showWorkType = true
+          }
         },
         immediate: true
       },
