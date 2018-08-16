@@ -19,6 +19,7 @@
         <base-form-group class="m-40" label="专业选择" mark>
             <base-select v-model="jobCard.major" text="请选择专业" :data="majorValue"></base-select>
         </base-form-group>
+
         <base-form-group class="m-40" label="作业点" mark>
             <div class='mb-c-20'>
                 <div>
