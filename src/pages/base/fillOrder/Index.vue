@@ -48,7 +48,7 @@
         </base-form-group>
         <line-10></line-10>
         <section>
-            <header class='header'><span class='mark'>*</span>年包/按次</header>
+            <header class='header'><span class='mark'>*</span>包年/按次</header>
             <base-radio-group v-model="jobCard.workType" class="radio-group">
                 <base-radio v-for="(workType,index) in workTypeValue"
                             :key="index"
@@ -509,10 +509,14 @@
           dynamotorObj.start_time = dataFormat(dynamotorObj.startTime)
           dynamotorObj.end_time = dataFormat(dynamotorObj.endTime)
         }
+        let {provinceName, cityName, districtName} = this.activeAddress
         this.$store.dispatch({
           type: native.doWorkSender,
           client,
           major,
+          province: provinceName,
+          city: cityName,
+          district: districtName,
           work_base: workBase,
           work_type: workType,
           work_sort: workSort,

@@ -11,7 +11,7 @@
                     :workClient="order.client"
                     :workMajor="order.major"
                     :workPassTime="order.approve_at"
-                    :workPoint="order.work_base_name">
+                    :workPoint="order.work_base">
             </base-list-item>
             <infinite-loading @infinite="loadData">
                 <div slot="no-results">没有数据</div>
