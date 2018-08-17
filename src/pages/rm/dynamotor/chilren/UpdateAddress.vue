@@ -2,9 +2,9 @@
     <div class='update-address' v-if="dy && dy.code">
         <div class='group'>
             <base-form-group class='title' label="当前发电机存放点" isTitle>
-                {{dy.work_base?'固定机油':'仓库'}}{{dy.work_base}}
+                {{dy.work_base?'固定油机':'仓库'}}
             </base-form-group>
-            <base-form-group :label="dy.province+dy.city+dy.district"></base-form-group>
+            <base-form-group :label="dy.province+dy.city+dy.district+'('+dy.work_base+')'"></base-form-group>
         </div>
         <line-10></line-10>
         <div class='group'>
@@ -36,7 +36,8 @@
                 </div>
             </section>
             <f7-block class='group'>
-                <f7-button big full active @click="submit">调整位置</f7-button>
+                <f7-button big full active v-if="!isSubmit" @click="beforeSumit">调整位置</f7-button>
+                <f7-button big full active v-else @click="submit">提交</f7-button>
             </f7-block>
         </div>
     </div>
@@ -49,6 +50,7 @@
   import { globalConst as native, modalTitle } from 'lib/const'
   import emitter from 'mixins/emitter'
   import { mapState } from 'vuex'
+  import { aMapUtil } from 'lib/utils'
 
   let addressStatus = {
     store: 0,
@@ -56,7 +58,7 @@
   }
   let addressInfo = [
     {key: addressStatus.store, value: '存放仓库'},
-    {key: addressStatus.static, value: '固定机油'}
+    {key: addressStatus.static, value: '固定油机'}
   ]
   export default {
     data () {
@@ -66,7 +68,8 @@
         point: addressStatus.store,
         adress: '',
         workBase: '',
-        workBaseList: []
+        workBaseList: [],
+        isSubmit: false
       }
     },
     mixins: [emitter],
@@ -79,6 +82,14 @@
       })*/
     },
     methods: {
+      beforeSumit () {
+        this.$f7.confirm('是否确认调整位置？', modalTitle, () => {
+          this.isSubmit = true
+          aMapUtil.geolocation().then((data) => {
+            this.$store.commit(native.changeDyAddress, data.addressComponent)
+          })
+        })
+      },
       submit () {
         if (!this.nowAddressInfo) {
           this.$f7.alert('请选择最新存放地址', modalTitle)

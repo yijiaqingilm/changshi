@@ -141,15 +141,15 @@ const baseListTypes = {
   veLogs: 4
 }
 // 1紧急，2一般，3非紧急’
-const leave = {
+const level = {
   three: 1,
   two: 2,
   one: 3
 }
-const leaveValue = [
-  {value: leave.three, label: '紧急'},
-  {value: leave.two, label: '一般'},
-  {value: leave.one, label: '非紧急'},
+const levelValue = [
+  {value: level.three, label: '紧急'},
+  {value: level.two, label: '一般'},
+  {value: level.one, label: '非紧急'},
 ]
 const generatorIds = [15, 55]
 
@@ -182,13 +182,13 @@ export {
   major,
   majorValue,
   majorObj,
-  leaveValue,
+  levelValue,
   workType,
   workTypeValue,
   workOrderTypes,
   workOrderTypeStatus,
   baseListTypes,
-  leave,
+  level,
   generatorIds,
   formatData
 }

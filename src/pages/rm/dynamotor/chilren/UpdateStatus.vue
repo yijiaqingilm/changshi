@@ -50,7 +50,7 @@
       submit () {
         this.$store.dispatch({
           type: native.doDynamotorUpdateStatus,
-          status: this.status,
+          status: this.dy.status,
           code: this.dyCode
         })
       }

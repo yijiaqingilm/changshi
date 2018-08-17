@@ -24,10 +24,10 @@
                 <input type="text" class='s-input' readonly :value='prevNum'>
             </base-form-group>
             <base-form-group class='item-group' label="本周期抄电表度数">
-                <input type="text" class='s-input' v-model='_currentNum'>
+                <input type="number" class='s-input' v-model='_currentNum'>
             </base-form-group>
             <base-form-group class='item-group' label="使用度数">
-                <input type="text" class='s-input' v-model='_useNum'>
+                <input type="number" class='s-input' v-model='_useNum'>
             </base-form-group>
             <base-form-group class='item-group' label="上传电表照">
 

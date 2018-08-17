@@ -2,6 +2,9 @@ import Vue from 'vue'
 import moment from 'lib/moment'
 import 'lib/moment/locale/zh-cn'
 
+console.log('测试会开始')
+console.log(moment(Number('1534486721787')).format('YYYY-MM-DD HH:mm:ss'))
+console.log('结束')
 Vue.filter('uppercase', function (value) {
   if (!value) {
     return ''
@@ -18,10 +21,10 @@ Vue.filter('toFixed', function (value, num = defaultNum) {
 })
 
 Vue.filter('dateFormat', function (value, format = 'YYYY-MM-DD HH:mm:ss') {
-  /* if (!Number(value)) {
+  if (!Number(value)) {
     return value
-  }*/
-  return moment(value).format(format)
+  }
+  return moment(Number(value)).format(format)
 })
 Vue.filter('fromNow', function (value) {
   let now = moment()

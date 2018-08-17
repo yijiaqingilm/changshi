@@ -8,7 +8,7 @@
         </div>
 
         <base-form-group label="遗留问题级别：">
-            <base-select v-model="_leave" text="text" :data="leaveValue"></base-select>
+            <base-select v-model="_level" text="text" :data="levelValue"></base-select>
         </base-form-group>
         <div>
             <header>遗留问题:</header>
@@ -21,21 +21,21 @@
 </template>
 
 <script>
-  import { leave, leaveValue } from 'lib/const'
+  import { level, levelValue } from 'lib/const'
 
   export default {
     props: {
       index: {},
       question: String,
-      leave: {
+      level: {
         type: Number,
-        default: leave.two
+        default: level.two
       }
     },
     name: '',
     data () {
       return {
-        leaveValue
+        levelValue
       }
     },
     methods: {
@@ -52,12 +52,12 @@
           this.$emit('update:question', value)
         }
       },
-      _leave: {
+      _level: {
         get () {
-          return this.leave
+          return this.level
         },
         set (value) {
-          this.$emit('update:leave', value)
+          this.$emit('update:level', value)
         }
 
       },

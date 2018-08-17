@@ -72,7 +72,7 @@
       },
       scanDynamotor () {
         if (__DEBUG__) {
-          this.getDy('rewrwrwr')
+          this.getDy('12345')
         } else {
           wxScanQRCode().then((result) => {
             this.dyCode = result

@@ -96,7 +96,7 @@
                            :key="index"
                            :index="index+1"
                            @del="handleDelQuestion(question,index)"
-                           :leave.sync="question.leave"
+                           :level.sync="question.level"
                            :question.sync="question.question">
             </question-item>
         </question-group>
@@ -179,7 +179,7 @@
 
 <script>
   import {
-    leave as leaveType,
+    level as levelType,
     client,
     clientValue,
     globalConst as native,
@@ -218,9 +218,9 @@
   }
 
   class Question {
-    constructor (question = '', leave = leaveType.two) {
+    constructor (question = '', level = levelType.two) {
       this.question = question
-      this.leave = leave
+      this.level = level
     }
   }
 
@@ -258,7 +258,7 @@
           }
         },
         clientValue,
-        workTypeValue,
+        workTypeValue: workTypeValue.filter((item) => item.key !== workType.other),
         jobPoint: null,
         jobPointName: '',
         dateTime: {
@@ -339,6 +339,7 @@
             this.jobCard.workType = workType.other
           } else {
             this.showWorkType = true
+            this.jobCard.workType = workType.year
           }
         },
         immediate: true
@@ -472,11 +473,36 @@
         }
 
         if (isLeaveQuestion) {
+          if (leave.length === 0) {
+            this.$f7.alert('请添加遗留问题', modalTitle)
+            return
+          }
           for (let i = 0; i < leave.length; i++) {
             let question = leave[i]
             if (!question.question) {
               this.$f7.alert('请填写遗留问题内容', modalTitle)
-              break
+              return
+            }
+          }
+        }
+        if (this.showAmmeter) {
+          if (ammeter.length === 0) {
+            this.$f7.alert('请填写抄电表', modalTitle)
+            return
+          }
+          for (let i = 0; i < ammeter.length; i++) {
+            let ammeterItem = ammeter[i]
+            if (!ammeterItem.currentNum) {
+              this.$f7.alert('请填写本周期抄电表度数', modalTitle)
+              return
+            }
+            if (!ammeterItem.useNum) {
+              this.$f7.alert('请填写电表使用度数', modalTitle)
+              return
+            }
+            if (!ammeterItem.img) {
+              this.$f7.alert('请选择电表照片', modalTitle)
+              return
             }
           }
         }
@@ -485,22 +511,22 @@
           let ammeterExp = ammeter[i]
           if (!ammeterExp.id) {
             this.$f7.alert('请扫描电表编号', modalTitle)
-            break
+            return
           }
           if (!ammeterExp.currentNum) {
             this.$f7.alert('请填写电表本周期抄表度数', modalTitle)
-            break
+            return
           }
           if (!ammeterExp.useNum) {
             this.$f7.alert('请填写电表使用度数', modalTitle)
-            break
+            return
           }
           if (__DEBUG__) {
             ammeterExp.img = 'test'
           }
           if (!ammeterExp.img) {
             this.$f7.alert('请上传电表照', modalTitle)
-            break
+            return
           }
         }
         let ammeterList = ammeter.map((row) => {
@@ -617,7 +643,7 @@
           wx.chooseImage({
             count: 1, // 默认9
             sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-            sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
+            // sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
             success: (res) => {
               let localIds = res.localIds[0] // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
               let step = 100
