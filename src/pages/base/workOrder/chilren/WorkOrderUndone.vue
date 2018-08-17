@@ -64,6 +64,7 @@
           }).then((data) => {
             this.workList.splice(index, 1)
             this.statics.approve++
+            this.statics.unariched--
             bus.$emit(native.clearReviewOrder)
           })
         })

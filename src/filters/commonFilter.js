@@ -2,9 +2,6 @@ import Vue from 'vue'
 import moment from 'lib/moment'
 import 'lib/moment/locale/zh-cn'
 
-console.log('测试会开始')
-console.log(moment(Number('1534486721787')).format('YYYY-MM-DD HH:mm:ss'))
-console.log('结束')
 Vue.filter('uppercase', function (value) {
   if (!value) {
     return ''
