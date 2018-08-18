@@ -44,14 +44,28 @@
         listType: baseListTypes.sysOrder,
         workList: [],
         isLoadData: false,
-        workBase: '',
-        page: 1
+        page: 1,
+        query: {
+          workBase: '',
+          client: '',
+          province: '',
+          city: '',
+          district: '',
+          major: ''
+        }
       }
     },
     methods: {
       changeWorkBase (result) {
-        let {workBase} = result
-        this.workBase = workBase
+        let {workBase, client, province, city, district, major} = result
+        this.query = {
+          workBase,
+          client,
+          province,
+          city,
+          district,
+          major
+        }
         if (!this.isLoadData) {
           this.isLoadData = true
           this.$nextTick(() => {
@@ -88,10 +102,16 @@
         })
       },
       loadData ($state) {
+        let {workBase, client, major, province, city, district} = this.query
         this.$store.dispatch({
           type: native.doWorkNumberManage,
           page: this.page,
           work_base: this.workBase,
+          client,
+          major,
+          province,
+          city,
+          district
         }).then(({data}) => {
           if (Array.isArray(data) && data.length > 0) {
             this.workList = this.workList.concat(data)

@@ -12,7 +12,8 @@
                 <base-form-group label="作业点：" :item="workOrder.work_base"></base-form-group>
                 <base-form-group label="包年/按次：" :item="workOrder.work_type"></base-form-group>
                 <base-form-group label="作业类别：" :item="workOrder.work_sort"></base-form-group>
-                <base-form-group label="起止时间：" :item="workOrder.start_date+'至'+ workOrder.end_date"></base-form-group>
+                <base-form-group label="开始时间：" :item="workOrder.start_date"></base-form-group>
+                <base-form-group label="结束时间：" :item="workOrder.end_date"></base-form-group>
                 <base-form-group label="劳务费：" :item="workOrder.fee"></base-form-group>
                 <base-form-group label="关联工单号："
                                  :item="workOrder.ref_work_number && workOrder.ref_work_number"></base-form-group>

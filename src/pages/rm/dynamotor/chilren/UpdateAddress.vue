@@ -107,6 +107,10 @@
           city,
           district,
           work_base: this.workBase
+        }).then(() => {
+          this.$f7.alert('提交成功', modalTitle)
+        }).catch((error) => {
+          this.$f7.alert(error, modalTitle)
         })
       },
       openNowCityPicker () {

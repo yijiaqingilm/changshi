@@ -46,7 +46,8 @@ const globalConst = {
   changeDyAddress: 'changeDyAddress',
   doDynamotorUpdate: 'doDynamotorUpdate',
   doStaticsPower: 'doStaticsPower',
-  doStaticsCar: 'doStaticsCar'
+  doStaticsCar: 'doStaticsCar',
+  clearDy: 'clearDy'
 
 }
 let methods = [SUCCESS.toLowerCase(), FAILURE.toLowerCase(), REQUEST.toLowerCase()]

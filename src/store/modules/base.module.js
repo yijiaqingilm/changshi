@@ -168,6 +168,15 @@ const actions = {
   }
 }
 let mutations = {
+  [native.clearDy] (state) {
+    state.dy.city = ''
+    state.dy.code = ''
+    state.dy.district = ''
+    state.dy.id = ''
+    state.dy.province = ''
+    state.dy.status = 1
+    state.dy.work_base = ''
+  },
   [mutationNames.doLeaveQuestionUpdate_success] (state) {
 
   },

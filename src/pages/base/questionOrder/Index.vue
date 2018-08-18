@@ -42,13 +42,25 @@
         isLoadData: false,
         query: {
           workBase: '',
+          client: '',
+          province: '',
+          city: '',
+          district: '',
+          major: ''
         }
       }
     },
     methods: {
       changeWorkBase (result) {
-        let {workBase} = result
-        this.query.workBase = workBase
+        let {workBase, client, province, city, district, major} = result
+        this.query = {
+          workBase,
+          client,
+          province,
+          city,
+          district,
+          major
+        }
         if (!this.isLoadData) {
           this.isLoadData = true
           this.$nextTick(() => {
@@ -68,14 +80,16 @@
         this.$router.loadPage(`/base/questionOrder/detail/${order.id}`)
       },
       loadData ($state) {
-        let {workBase} = this.query
+        let {workBase, client, major, province, city, district} = this.query
         this.$store.dispatch({
           type: native.doLeaveQuestion,
           page: this.page,
           work_base: workBase,
-          province: this.activeAddress.provinceName,
-          city: this.activeAddress.cityName,
-          district: this.activeAddress.districtName
+          client,
+          major,
+          province,
+          city,
+          district
         }).then(({data}) => {
           console.log('data', data)
           if (Array.isArray(data) && data.length > 0) {

@@ -3,8 +3,12 @@
 .base-radio-group {
   display: flex;
   width: 100%;
-  justify-content: flex-start;
   justify-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  &.between {
+    justify-content: space-between;
+  }
 }
 
 .base-radio {
@@ -15,6 +19,7 @@
   text-align: center;
   border-radius: 14px;
   margin-right: 20px;
+  margin-bottom: 20px;
   @include setFontSize($middleFontSize);
   border: 1px solid $gray_color; /*no*/
   &.is-checked {

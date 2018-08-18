@@ -67,6 +67,7 @@
           type: native.doGetDynamotor,
           code
         }).catch((err) => {
+          this.$store.commit(native.clearDy)
           this.$f7.alert(err, modalTitle)
         })
       },

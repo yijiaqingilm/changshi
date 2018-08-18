@@ -6,7 +6,7 @@
         <div>
             <base-select v-model="client" text="请选择客户" :data="clientValue"></base-select>
         </div>
-        <div>
+        <div v-if='majorValue.length>0'>
             <base-select v-model="major" text="请选择专业" :data="majorValue"></base-select>
         </div>
         <div class='point'>
@@ -34,7 +34,7 @@
       return {
         workBaseList: [],
         workBase: '',
-        client: clientObj.mobile,
+        client: '',
         major: '',
         clientValue,
       }
@@ -45,7 +45,14 @@
       },
       changePoint (value) {
         this.jobPoint = value.displayValue
-        this.$emit('changeWorkBase', {workBase: this.workBase})
+        let {provinceName, cityName, districtName} = this.activeAddress
+        this.$emit('changeWorkBase', {
+          workBase: this.workBase, province: provinceName,
+          city: cityName,
+          district: districtName,
+          client: this.client,
+          major: this.major
+        })
       },
       loadBaseWork () {
         let {provinceName, cityName, districtName} = this.activeAddress
@@ -72,6 +79,9 @@
         activeAddress: ({base}) => base.activeAddress,
       }),
       majorValue () {
+        if (!this.client) {
+          return []
+        }
         /*
           * 客户移动、联通、电信分别对应1线路，2基站，3铁塔，4集团专线，5室分及WLAN，然后
           * 铁塔对应3铁塔、5室分及WLAN、6机房及动力配套
@@ -91,6 +101,13 @@
         let currentAddress = provinceName + cityName + districtName
         if (provinceName && cityName && districtName) {
           this.loadBaseWork()
+          this.$emit('changeWorkBase', {
+            province: provinceName,
+            city: cityName,
+            district: districtName,
+            client: this.client,
+            major: this.major
+          })
         }
         return currentAddress.length > 0 ? currentAddress : '请选择地址'
       },

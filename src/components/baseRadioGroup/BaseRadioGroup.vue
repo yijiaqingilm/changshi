@@ -1,5 +1,5 @@
 <template>
-    <div class="base-radio-group">
+    <div class="base-radio-group " :class="{'between':between}">
         <slot></slot>
     </div>
 </template>
@@ -7,6 +7,10 @@
 <script>
   export default {
     props: {
+      between: {
+        type: Boolean,
+        default: false
+      },
       value: {}
     },
     componentName: 'baseRadioGroup',

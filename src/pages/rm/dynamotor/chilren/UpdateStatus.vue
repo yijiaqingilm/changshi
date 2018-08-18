@@ -1,7 +1,7 @@
 <template>
     <div class='update-status' v-if="dy && dy.code">
         <base-form-group class='title' label="发电机状态" isTitle></base-form-group>
-        <base-radio-group v-model="dy.status">
+        <base-radio-group v-model="dy.status" between>
             <base-radio v-for="(info,index) in dyInfo"
                         :label="info.key"
                         name="info"
