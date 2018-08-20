@@ -105,15 +105,16 @@
             <line-10></line-10>
             <ammeter-group @addAmmeter="addAmmeter">
                 <ammeter-item v-for="(ammeter,index) in jobCard.ammeter"
-                              :index="index+1"
+                              :index="index"
                               :code.sync="ammeter.code"
                               :date.sync="ammeter.date"
                               :prevNum="ammeter.prevNum"
                               :currentNum.sync="ammeter.currentNum"
                               :useNum.sync="ammeter.useNum"
                               :img.sync="ammeter.img"
+                              :displayImg.sync="ammeter.displayImg"
                               @del="handleDelAmmeter(ammeter,index)"
-                              @scanAmmeter="scanAmmeter(ammeter,index)"
+                              @scanAmmeter="scanAmmeter"
                               @uploadAmmeterImg="uploadAmmeterImg(ammeter)"
                               :key="index">
                 </ammeter-item>
@@ -123,8 +124,7 @@
             <line-10></line-10>
             <base-form-group class="m-40" label="发电机记录" isTitle></base-form-group>
             <base-form-group class="m-40" label="发电机编号">
-                <input type="text" v-model="jobCard.dynamotor.code" readonly class='s-scan' @click="scanDynamotor"
-                       placeholder='请扫描或输入电表编号'>
+                <scan-input v-model="jobCard.dynamotor.code" @scan="scanDynamotor" placeholder="请扫描或输入编号"></scan-input>
             </base-form-group>
             <base-form-group class="m-40" label="发电时间">
                 <div class='dy-date'>
@@ -206,7 +206,7 @@
   import { Validator } from 'lib/custom_validator'
 
   class Ammeter {
-    constructor (code, date, currentNum, useNum, img, prevNum, id) {
+    constructor (code, date, currentNum, useNum, img, prevNum, id, displayImg) {
       this.code = code
       this.date = date
       this.currentNum = currentNum
@@ -214,6 +214,7 @@
       this.useNum = useNum
       this.img = img
       this.id = id
+      this.displayImg = displayImg
     }
   }
 
@@ -509,7 +510,7 @@
 
         for (let i = 0; i < ammeter.length; i++) {
           let ammeterExp = ammeter[i]
-          if (!ammeterExp.id) {
+          if (ammeterExp.id === '') {
             this.$f7.alert('请扫描电表编号', modalTitle)
             return
           }
@@ -594,17 +595,11 @@
         })
       },
       // 发电机
-      scanDynamotor () {
-        let code = ''
+      scanDynamotor (code) {
         if (__DEBUG__) {
           code = 'rewrwrwr'
-          this.doGetDynamotor(code)
-        } else {
-          wxScanQRCode().then((result) => {
-            this.doGetDynamotor(result)
-          })
         }
-
+        this.doGetDynamotor(code)
       },
       doGetDynamotor (code) {
         this.$store.dispatch({
@@ -616,16 +611,13 @@
         })
       },
       // 电表
-      scanAmmeter (ammeter, index) {
-        let code = ''
+      scanAmmeter (params) {
+        let {code, index} = params
+        let ammeter = this.jobCard.ammeter[index]
         if (__DEBUG__) {
           code = 'erqwr'
-          this.doGetAmmeter(ammeter, code)
-        } else {
-          wxScanQRCode().then((result) => {
-            this.doGetAmmeter(ammeter, result)
-          })
         }
+        this.doGetAmmeter(ammeter, code)
       },
       doGetAmmeter (ammeter, code) {
         this.$store.dispatch({
@@ -636,6 +628,12 @@
           ammeter.id = data.id
           ammeter.prevNum = data.last_num ? data.last_num + '' : '0'
           ammeter.date = new Date().getTime() + ''
+        }).catch((error) => {
+          ammeter.code = ''
+          ammeter.id = ''
+          ammeter.prevNum = ''
+          ammeter.date = ''
+          this.$f7.alert(error, modalTitle)
         })
       },
       uploadAmmeterImg (ammeter) {
@@ -646,6 +644,7 @@
             // sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
             success: (res) => {
               let localIds = res.localIds[0] // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+              ammeter.displayImg = localIds
               let step = 100
               setTimeout(() => {
                 wx.uploadImage({

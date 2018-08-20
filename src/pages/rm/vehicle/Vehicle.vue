@@ -7,7 +7,7 @@
         <header>
             <hint>提示：出车及收车信息根据触发‘出车’及‘收车’按键时自动生成</hint>
             <base-form-group class="title" label="车牌号" isTitle>
-                <input type="text" v-model='carnumber' readonly @click="scanCode" placeholder='请扫描' class='s-scan'>
+                <scan-input v-model="carnumber" @scan="scanCode"></scan-input>
             </base-form-group>
         </header>
         <section class='info-panel'>
@@ -54,14 +54,13 @@
             <base-form-group label="行驶总路程" isTitle v-if="vehicleInfo.out.date">
                 {{totalMileage}} 公里
             </base-form-group>
-            <base-form-group label="总费用" isTitle v-if="vehicleInfo.out.date">
+            <base-form-group label="总费用" isTitle>
                 ￥ {{totalFee}}
             </base-form-group>
         </section>
         <section class='footer'>
-            <f7-button big full active :color="btnDisable ? 'gray':''" @click='startOff' v-if="!vehicleInfo.out.date">出车
-            </f7-button>
-            <f7-button big full active @click="getTo" v-else>收车</f7-button>
+            <f7-button big full active :color="btnOutCarDisable ? 'gray':''" @click='startOff' v-if="!vehicleInfo.out.date">出车</f7-button>
+            <f7-button big full active :color="btnDisable ? 'gray':''" @click="getTo" v-else>收车</f7-button>
         </section>
     </f7-page>
 </template>
@@ -118,10 +117,6 @@
           this.$f7.alert('请扫描车牌号', modalTitle)
           return
         }
-        if (!this.info.outMileage) {
-          this.$f7.alert('请输入出车里程数', modalTitle)
-          return
-        }
         this.$f7.confirm('是否确认出车', modalTitle, () => {
           if (this.info.outMileage < this.vehicleInfo.mileage) {
             this.$f7.alert('出车里程数必须大于或等于上一次收车里程数', modalTitle)
@@ -132,6 +127,7 @@
             license_plate: this.carnumber,
             out_mileage: this.info.outMileage,
           }).then(({data}) => {
+            console.log('出车成功', data)
             this.vehicleInfo.out.date = data.out.date
             this.vehicleInfo.out.position = data.out.position
           })
@@ -181,7 +177,7 @@
               this.$f7.alert('收车成功', modalTitle)
               this.carnumber = ''
               this.vehicleInfo.out.date = ''
-              this.vehicleInfo.out.address = ''
+              this.vehicleInfo.out.position = ''
               this.vehicleInfo.retract.date = ''
               this.vehicleInfo.retract.address = ''
               this.info = {}
@@ -189,16 +185,11 @@
           })
         })
       },
-      scanCode () {
+      scanCode (code) {
         if (__DEBUG__) {
-          this.carnumber = '432424'
-          this.doCarDetail()
-        } else {
-          wxScanQRCode().then((result) => {
-            this.carnumber = result
-            this.doCarDetail()
-          })
+          this.carnumber = '粤B2500'
         }
+        this.doCarDetail()
       },
       doCarDetail () {
         this.$store.dispatch({
@@ -210,16 +201,31 @@
           this.vehicleInfo.mileage = data.mileage
         }).catch((err) => {
           this.$f7.alert(err, modalTitle)
+          this.carnumber = ''
+          this.vehicleInfo.out.date = ''
+          this.vehicleInfo.out.position = ''
+          this.vehicleInfo.retract.date = ''
+          this.vehicleInfo.retract.address = ''
+          this.info = {}
         })
       }
     },
     computed: {
+      btnOutCarDisable () {
+        if (!this.carnumber) {
+          return true
+        }
+        if (!this.info.outMileage) {
+          return true
+        }
+        return false
+      },
       btnDisable () {
         let {bridgefee, servicefee, otherfee, oilfee, retractMileage} = this.info
-        if (!isNumber(bridgefee) && isNumber(servicefee) && isNumber(otherfee) && isNumber(oilfee) && isNumber(retractMileage)) {
-          return true
-        } else {
+        if (isNumber(bridgefee) && isNumber(servicefee) && isNumber(otherfee) && isNumber(oilfee) && isNumber(retractMileage)) {
           return false
+        } else {
+          return true
         }
       },
       totalMileage () {

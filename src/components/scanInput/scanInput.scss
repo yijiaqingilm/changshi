@@ -1,0 +1,14 @@
+@import "../../css/globalFunc";
+
+.scan-input {
+  position: relative;
+  display: inline-block;
+  .scan {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+  }
+}

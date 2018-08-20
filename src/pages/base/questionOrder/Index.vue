@@ -2,7 +2,7 @@
     <f7-page class='work-order-detail'>
         <f7-navbar>
             <f7-nav-left back-link="返回" sliding></f7-nav-left>
-            <f7-nav-center>遗留问题工单</f7-nav-center>
+            <f7-nav-center>遗留问题工单({{total}})</f7-nav-center>
         </f7-navbar>
         <div class='detail-header'>
             <base-work-base @changeWorkBase="changeWorkBase"></base-work-base>
@@ -47,7 +47,8 @@
           city: '',
           district: '',
           major: ''
-        }
+        },
+        total: 0
       }
     },
     methods: {
@@ -92,14 +93,16 @@
           district
         }).then(({data}) => {
           console.log('data', data)
-          if (Array.isArray(data) && data.length > 0) {
-            this.quesitonList = this.quesitonList.concat(data)
+          let items = data.items
+          this.total = data.num
+          if (Array.isArray(items) && items.length > 0) {
+            this.quesitonList = this.quesitonList.concat(items)
             $state.loaded()
             this.page += 1
           } else {
             $state.complete()
           }
-          if (data.length < pageSize) {
+          if (items.length < pageSize) {
             $state.complete()
           }
         })

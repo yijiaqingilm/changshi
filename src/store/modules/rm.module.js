@@ -38,7 +38,7 @@ const actions = {
     return applyClientMiddleware(api.doCarDetail)(refs)
   },
   [native.startOff] ({state}, refs) {
-    aMapUtil.geolocation().then((data) => {
+    return aMapUtil.geolocation().then((data) => {
       let formattedAddress = data.formattedAddress
       let {lat, lng} = data.position
       Object.assign(refs, {out_lng: lng, out_lat: lat, out_add: formattedAddress})
@@ -47,7 +47,7 @@ const actions = {
 
   },
   [native.getTo] ({state}, refs) {
-    aMapUtil.geolocation().then((data) => {
+    return aMapUtil.geolocation().then((data) => {
       let formattedAddress = data.formattedAddress
       let {lat, lng} = data.position
       Object.assign(refs, {retract_lng: lng, retract_lat: lat, retract_add: formattedAddress})

@@ -12,8 +12,10 @@
                 <base-form-group label="作业点：" :item="questionOrder.work_base"></base-form-group>
                 <base-form-group label="包年/按次：" :item="questionOrder.work_type"></base-form-group>
                 <base-form-group label="作业类别：" :item="questionOrder.work_sort"></base-form-group>
-                <base-form-group label="起止时间："
-                                 :item="questionOrder.start_date+'至'+questionOrder.end_date"></base-form-group>
+                <base-form-group label="开始时间："
+                                 :item="questionOrder.start_date"></base-form-group>
+                <base-form-group label="结束时间："
+                                 :item="questionOrder.end_date"></base-form-group>
                 <base-form-group label="劳务费：" :item="questionOrder.fee"></base-form-group>
                 <base-form-group label="关联工单号："
                                  :item="questionOrder.ref_work_number && questionOrder.ref_work_number"></base-form-group>
@@ -67,6 +69,8 @@
             leave_id: question.id
           }).then(() => {
             question.status = 'Y'
+          }).catch((error) => {
+            this.$f7.alert(error, modalTitle)
           })
         })
       }

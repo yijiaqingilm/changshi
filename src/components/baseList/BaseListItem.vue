@@ -32,7 +32,8 @@
                 <template v-if="itemType===baseListTypes.veLogs">
                     <div>记录：{{workName}}</div>
                     <div>车辆信息：{{veInfo}}</div>
-                    <div>使用时间：{{veStartTime}}至{{veEndTime}}</div>
+                    <div>出车时间：{{veStartTime}}</div>
+                    <div>收车时间：{{veEndTime}}</div>
                     <div>行驶总路程：{{vePath}}公里</div>
                     <div>总费用：￥{{veTotal}}</div>
                 </template>

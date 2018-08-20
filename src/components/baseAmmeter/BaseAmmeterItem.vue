@@ -1,7 +1,7 @@
 <template>
     <div class='ammeter-list-item'>
         <header class='ammeter-list-item-header'>
-            <div class='header-left'>电表{{index}}</div>
+            <div class='header-left'>电表{{index+1}}</div>
             <div class='header-right'>
                 <div>
                     <base-icon @click="handleDel" iconName="del" label="删除"></base-icon>
@@ -14,8 +14,7 @@
         </header>
         <section v-show="isExpand">
             <base-form-group class='item-group' label="电表编号">
-                <input class='s-scan' readonly @click="scanAmmeter" type="text" v-model='_code'
-                       placeholder="请扫描或输入电表编号">
+                <scan-input v-model="_code" @scan="scanAmmeter" placeholder="请扫描或输入电表编号"></scan-input>
             </base-form-group>
             <base-form-group class='item-group' label="抄表时间">
                 {{_date | dateFormat}}
@@ -27,13 +26,13 @@
                 <input type="number" class='s-input' v-model='_currentNum'>
             </base-form-group>
             <base-form-group class='item-group' label="使用度数">
-                <input type="number" class='s-input' v-model='_useNum'>
+                <input type="number" readonly class='s-input' v-model='_useNum'>
             </base-form-group>
             <base-form-group class='item-group' label="上传电表照">
 
             </base-form-group>
             <div class='item-group' @click="uploadAmmeterImg">
-                <img :src="img" class='item-img' alt="">
+                <img :src="displayImg" class='item-img' alt="">
             </div>
         </section>
     </div>
@@ -54,8 +53,12 @@
       img: {
         type: [Object, String],
         default: function () {
-          return defaultImg
+          return ''
         }
+      },
+      displayImg: {
+        type: [Object, String],
+        default: defaultImg
       },
       expand: {
         type: Boolean,
@@ -79,8 +82,11 @@
         })
 
       },
-      scanAmmeter () {
-        this.$emit('scanAmmeter')
+      scanAmmeter (scanCode) {
+        this.$emit('scanAmmeter', {
+          code: scanCode,
+          index: this.index
+        })
       },
       uploadAmmeterImg () {
         this.$emit('uploadAmmeterImg')
@@ -92,7 +98,7 @@
     computed: {
       _useNum: {
         get () {
-          return this.useNum
+          return this._currentNum - this.prevNum
         },
         set (value) {
           this.$emit('update:useNum', value)

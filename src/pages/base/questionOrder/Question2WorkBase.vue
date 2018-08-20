@@ -56,14 +56,15 @@
           work_base: workBase,
         }).then(({data}) => {
           console.log('data', data)
-          if (Array.isArray(data) && data.length > 0) {
-            this.quesitonList = this.quesitonList.concat(data)
+          let items = data.items
+          if (Array.isArray(items) && items.length > 0) {
+            this.quesitonList = this.quesitonList.concat(items)
             $state.loaded()
             this.page += 1
           } else {
             $state.complete()
           }
-          if (data.length < pageSize) {
+          if (items.length < pageSize) {
             $state.complete()
           }
         })

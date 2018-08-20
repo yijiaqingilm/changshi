@@ -5,7 +5,7 @@
             <f7-nav-center>发电机管理</f7-nav-center>
         </f7-navbar>
         <base-form-group class="title" label="发电机编码" isTitle>
-            <input type="text" v-model="dyCode" readonly @click="scanDynamotor" placeholder='请扫描' class='s-scan'>
+            <scan-input v-model="dyCode" @scan="scanDynamotor" placeholder="请扫描或输入编号"></scan-input>
         </base-form-group>
         <line-10></line-10>
         <tabs-ctrl v-model="ammeterType" @change="showTab">
@@ -71,15 +71,11 @@
           this.$f7.alert(err, modalTitle)
         })
       },
-      scanDynamotor () {
+      scanDynamotor (code) {
         if (__DEBUG__) {
-          this.getDy('12345')
-        } else {
-          wxScanQRCode().then((result) => {
-            this.dyCode = result
-            this.getDy(result)
-          })
+          code = '12345'
         }
+        this.getDy(code)
       },
       cityInfo (cityInfo) {
         this.$store.commit(native.changeDyAddress, cityInfo)

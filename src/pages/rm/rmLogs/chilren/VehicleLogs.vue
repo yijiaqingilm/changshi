@@ -6,7 +6,7 @@
                             :workName="car.id"
                             :veInfo="car.carnumber"
                             :veStartTime="car.out"
-                            :veStartEnd="car.retract"
+                            :veEndTime="car.retract"
                             :vePath="car.mileage"
                             :veTotal="car.totalfee"
                             v-for="(car,index) in carList">
