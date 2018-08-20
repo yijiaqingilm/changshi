@@ -40,9 +40,19 @@
                 <template v-if="itemType===baseListTypes.dyLogs">
                     <div>记录：{{workName}}</div>
                     <div>发电机编号：{{dyCode}}</div>
-                    <div>操作：{{dyHandle}}</div>
-                    <div>使用时间：{{dyStartTime}} 至{{dyEndTime}}</div>
-                    <div>发电时长：{{dyTime}}</div>
+                    <div>操作：{{actionObj[dyHandle] && actionObj[dyHandle].value}}</div>
+                    <template v-if="dyHandle===actionStatus.use">
+                        <div>开始时间：{{dyStartTime}}</div>
+                        <div>结束时间：{{dyEndTime}}</div>
+                        <div>发电时长：{{dyDuration}}</div>
+                    </template>
+                    <template v-else-if="dyHandle===actionStatus.updateAddress">
+                        <div>操作时间：{{dyCreateTime}}</div>
+                    </template>
+                    <template v-else>
+                        <div>当前状态：{{dyStatus}}</div>
+                        <div>操作时间：{{dyCreateTime}}</div>
+                    </template>
                 </template>
                 <span v-if="hasDetail" class='item-ctrl-gt'></span>
             </div>
@@ -74,7 +84,7 @@
     </div>
 </template>
 <script>
-  import { baseListTypes } from 'lib/const'
+  import { baseListTypes, actionStatus, actionValue, actionObj } from 'lib/const'
 
   export default {
     props: {
@@ -108,13 +118,18 @@
       dyHandle: {},
       dyStartTime: {},
       dyEndTime: {},
-      dyTime: {}
+      dyDuration: {},
+      dyCreateTime: {},
+      dyStatus: {}
     },
     name: '',
     data () {
       return {
         itemType: baseListTypes.workOrder,
-        baseListTypes
+        baseListTypes,
+        actionStatus,
+        actionValue,
+        actionObj
       }
     },
     created () {

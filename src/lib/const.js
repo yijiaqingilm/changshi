@@ -63,10 +63,10 @@ for (let actionName in globalConst) {
 }
 
 const pageSize = 10
-const arr2obj = (arr) => {
+const arr2obj = (arr, keyName = 'key', valueName = 'value') => {
   let obj = {}
   arr.forEach((row) => {
-    obj[row.key] = {value: row.value}
+    obj[row[keyName]] = {value: row[valueName]}
   })
   return obj
 }
@@ -152,6 +152,20 @@ const levelValue = [
   {value: level.two, label: '一般'},
   {value: level.one, label: '非紧急'},
 ]
+
+// 状态action：1使用，2修订地址，3变更状态
+const actionStatus = {
+  use: 1,
+  updateAddress: 2,
+  updateStatus: 3
+}
+const actionValue = [
+  {value: actionStatus.use, label: '使用'},
+  {value: actionStatus.updateAddress, label: '修改地址'},
+  {value: actionStatus.updateStatus, label: '变更状态'},
+]
+const actionObj = arr2obj(actionValue, 'value', 'label')
+
 const generatorIds = [15, 55]
 
 /**
@@ -191,5 +205,8 @@ export {
   baseListTypes,
   level,
   generatorIds,
-  formatData
+  formatData,
+  actionStatus,
+  actionValue,
+  actionObj
 }

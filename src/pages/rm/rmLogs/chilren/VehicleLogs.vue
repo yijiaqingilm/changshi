@@ -28,7 +28,7 @@
       return {
         type: baseListTypes.veLogs,
         carList: [],
-        page: 1
+        page: 1,
       }
     },
     methods: {

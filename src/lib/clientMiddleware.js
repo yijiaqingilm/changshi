@@ -1,4 +1,4 @@
-import { REQUEST, SUCCESS, FAILURE, ERROR_UNAUTHORIZED } from 'lib/const'
+import { REQUEST, SUCCESS, FAILURE, ERROR_UNAUTHORIZED, modalTitle } from 'lib/const'
 import { app } from 'src/main.js'
 
 export default function clientMiddleware (client) {
@@ -30,6 +30,8 @@ export default function clientMiddleware (client) {
             data: result.data, refs: rest
           })
           resolve({data: result.data})
+        } else if (result.code === -1) {
+          app.$f7.alert(result.msg, modalTitle)
         } else {
           commit(mutation_fail, {
             error: result.msg, refs: rest

@@ -7,7 +7,9 @@
                             :dyHandle="dy.action"
                             :dyStartTime="dy.start_time"
                             :dyEndTime="dy.end_time"
-                            :dyTime="dy.end_time"
+                            :dyCreateTime="dy.created_at"
+                            :dyDuration="dy.duration"
+                            :dyStatus="dy.status"
                             :key="index" :hasDetail="false">
             </base-list-item>
             <infinite-loading @infinite="loadData">
@@ -19,15 +21,17 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { baseListTypes, globalConst as native, pageSize } from 'lib/const'
+  import { baseListTypes, globalConst as native, pageSize, actionStatus, activeValue } from 'lib/const'
   import InfiniteLoading from 'vue-infinite-loading'
-    // 状态：1使用，2修订地址，3变更状态
+
   export default {
     data () {
       return {
         type: baseListTypes.dyLogs,
         page: 1,
-        dynamotorList: []
+        dynamotorList: [],
+        actionStatus,
+        activeValue
       }
     },
     methods: {
