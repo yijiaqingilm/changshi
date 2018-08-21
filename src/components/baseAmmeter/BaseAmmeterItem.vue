@@ -17,7 +17,9 @@
                 <scan-input v-model="_code" @scan="scanAmmeter" placeholder="请扫描或输入电表编号"></scan-input>
             </base-form-group>
             <base-form-group class='item-group' label="抄表时间">
-                {{_date | dateFormat}}
+                <!--{{_date | dateFormat}}-->
+                <input type="text" @click="openDatePicker" placeholder="请选择时间" class='time-input' readonly
+                       v-model="_displayDate">
             </base-form-group>
             <base-form-group class='item-group' label="上一周期抄电表度数">
                 <input type="text" class='s-input' readonly :value='prevNum'>
@@ -40,6 +42,8 @@
 
 <script>
   import { leave, leaveValue, modalTitle } from 'lib/const'
+  import { bus } from 'src/main'
+  import emitter from 'mixins/emitter'
 
   let defaultImg = require('../../assets/icon_upload.png')
   export default {
@@ -47,9 +51,10 @@
       index: {},
       code: String,
       date: String,
+      displayDate: String,
       prevNum: String,
       currentNum: String,
-      useNum: String,
+      useNum: [String, Number],
       img: {
         type: [Object, String],
         default: function () {
@@ -65,6 +70,7 @@
         default: true
       }
     },
+    mixins: [emitter],
     name: '',
     data () {
       return {
@@ -76,6 +82,10 @@
       this.isExpand = this.expand
     },
     methods: {
+      openDatePicker (event) {
+        // bus.$emit('openDatePicker', {event, refName: `ammeterTime${this.index}`})
+        this.dispatchMethod('fillorder', 'openDatePicker', {event, index: this.index})
+      },
       handleDel () {
         this.$f7.confirm('确定删除？', modalTitle, () => {
           this.$emit('del')
@@ -96,9 +106,19 @@
       }
     },
     computed: {
+      _displayDate: {
+        get () {
+          return this.displayDate
+        },
+        set (value) {
+          this.$emit('update:displayDate', value)
+        }
+      },
       _useNum: {
         get () {
-          return this._currentNum - this.prevNum
+          let value = this._currentNum - this.prevNum
+          this.$emit('update:useNum', value)
+          return value
         },
         set (value) {
           this.$emit('update:useNum', value)

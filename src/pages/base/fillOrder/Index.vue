@@ -108,6 +108,7 @@
                               :index="index"
                               :code.sync="ammeter.code"
                               :date.sync="ammeter.date"
+                              :displayDate.sync="ammeter.displayDate"
                               :prevNum="ammeter.prevNum"
                               :currentNum.sync="ammeter.currentNum"
                               :useNum.sync="ammeter.useNum"
@@ -173,6 +174,13 @@
                       v-model='jobCard.endDate' :format="dateTime.options.format"
                       type="datetime"
                       :phrases="dateTime.options.phrases"></datetime>
+
+            <div v-for="(ammeter,index) in jobCard.ammeter" :key="index">
+                <datetime ref="ammeterTime" :displayValue.sync="ammeter.displayDate" placeholder="请选择时间"
+                          v-model='ammeter.date' :format="dateTime.options.format"
+                          type="datetime"
+                          :phrases="dateTime.options.phrases"></datetime>
+            </div>
         </div>
     </f7-page>
 </template>
@@ -204,11 +212,13 @@
   import emitter from 'mixins/emitter'
   import { aMapUtil, getTimer, wxScanQRCode, dataFormat } from 'lib/utils'
   import { Validator } from 'lib/custom_validator'
+  import { bus } from 'src/main'
 
   class Ammeter {
-    constructor (code, date, currentNum, useNum, img, prevNum, id, displayImg) {
+    constructor (code, date, displayDate, currentNum, useNum, img, prevNum, id, displayImg) {
       this.code = code
-      this.date = date
+      this.date = new Date().toISOString()
+      this.displayDate = displayDate
       this.currentNum = currentNum
       this.prevNum = prevNum
       this.useNum = useNum
@@ -227,6 +237,7 @@
 
   export default {
     name: 'fillorder',
+    componentName: 'fillorder',
     mixins: [emitter],
     data () {
       return {
@@ -498,6 +509,7 @@
               return
             }
             if (!ammeterItem.useNum) {
+              console.log(ammeterItem, '===>test')
               this.$f7.alert('请填写电表使用度数', modalTitle)
               return
             }
@@ -572,10 +584,16 @@
         })
       },
       openEndTime (event) {
+        console.log('openEndTime', this)
         this.$refs.endDate.open(event)
       },
       openStartTime (event) {
         this.$refs.startDate.open(event)
+      },
+      openDatePicker (params) {
+        console.log(params, '====>')
+        let {event, index} = params
+        this.$refs.ammeterTime[index].open(event)
       },
       showPopup () {
         this.$f7.popup('.popup-province', false)
@@ -608,6 +626,8 @@
         }).then((data) => {
           this.jobCard.dynamotor.id = data.data.id
           this.jobCard.dynamotor.code = code
+        }).catch((error) => {
+          this.$f7.alert(error, modalTitle)
         })
       },
       // 电表
@@ -627,7 +647,6 @@
           ammeter.code = code
           ammeter.id = data.id
           ammeter.prevNum = data.last_num ? data.last_num + '' : '0'
-          ammeter.date = new Date().getTime() + ''
         }).catch((error) => {
           ammeter.code = ''
           ammeter.id = ''

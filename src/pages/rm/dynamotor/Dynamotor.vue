@@ -5,7 +5,7 @@
             <f7-nav-center>发电机管理</f7-nav-center>
         </f7-navbar>
         <base-form-group class="title" label="发电机编码" isTitle>
-            <scan-input v-model="dyCode" @scan="scanDynamotor" placeholder="请扫描或输入编号"></scan-input>
+            <scan-input v-model="rm.dyCode" @scan="scanDynamotor" placeholder="请扫描或输入编号"></scan-input>
         </base-form-group>
         <line-10></line-10>
         <tabs-ctrl v-model="ammeterType" @change="showTab">
@@ -57,7 +57,8 @@
         ammeterType: ammeterTypesStatus.updateAddress,
         provinceId: '',
         cityId: '',
-        districtId: ''
+        districtId: '',
+        test: ''
       }
     },
     methods: {
@@ -90,7 +91,8 @@
     computed: {
       ...mapState({
         dyInfo: ({rm}) => rm.dyInfo,
-        dyCode: ({rm}) => rm.dyCode
+        dyCode: ({rm}) => rm.dyCode,
+        rm: ({rm}) => rm
       })
     },
     components: {

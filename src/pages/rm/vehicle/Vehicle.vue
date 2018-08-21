@@ -215,9 +215,6 @@
         if (!this.carnumber) {
           return true
         }
-        if (!this.info.outMileage) {
-          return true
-        }
         return false
       },
       btnDisable () {
