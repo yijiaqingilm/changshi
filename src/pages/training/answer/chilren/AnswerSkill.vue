@@ -1,24 +1,36 @@
 <template>
-    <div>
-        <base-form-group class='form-group' label="级别选择" isTitle>
-            <base-select v-model="leavel"></base-select>
-        </base-form-group>
-        <section>
-            <answer-tabs>
-                <answer-tab link="/training/answer/begin">xx专业</answer-tab>
-                <answer-tab>xx专业</answer-tab>
-                <answer-tab>xx专业</answer-tab>
-                <answer-tab>xx专业</answer-tab>
-            </answer-tabs>
-        </section>
-    </div>
+    <section>
+        <answer-tabs>
+            <answer-tab v-for="(train,index) in trainMajorList" :key="index" @click="goChooseLevel(train)">
+                {{train.name}}
+            </answer-tab>
+        </answer-tabs>
+    </section>
 </template>
 
 <script type="text/ecmascript-6">
+  import { globalConst as native, trainTypeStatus } from 'lib/const'
   export default {
     data () {
       return {
-        leavel: ''
+        trainMajorList: []
+      }
+    },
+    created () {
+      this.$store.dispatch({
+        type: native.doTrainMajor,
+        category: trainTypeStatus.skill
+      }).then(({data}) => {
+        this.trainMajorList = data
+      })
+    },
+    methods: {
+      goChooseLevel (train) {
+        // this.$router.loadPage()
+        this.$router.load({
+          url: `/training/answer/chooseLevel/${trainTypeStatus.skill}/${train.id}`,
+          query: {name: train.name}
+        })
       }
     }
   }

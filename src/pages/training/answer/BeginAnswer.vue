@@ -18,14 +18,25 @@
 <script>
   import { globalConst as native } from 'lib/const'
   import BeginPanel from 'components/answerBeginPanel/AnswerBeginPanel.vue'
+  import { mapState } from 'vuex'
   export default {
     name: 'beginAnswer',
     data () {
       return {}
     },
     created () {
+      let {levelId, trainType, major} =this.currentSubject
+      this.$store.dispatch({
+        type: native.doTrainSubject,
+        level_id: levelId,
+        category: trainType
+      })
     },
-    computed: {},
+    computed: {
+      ...mapState({
+        currentSubject: ({answer}) => answer.currentSubject
+      })
+    },
     methods: {
       beginAnswer(){
         this.$router.loadPage('/training/answer')

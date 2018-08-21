@@ -50,8 +50,11 @@ const globalConst = {
   clearDy: 'clearDy',
   doStaticsWork: 'doStaticsWork',
   doStaticsRunStatus: 'doStaticsRunStatus',
-  doStaticsApproveNum: 'doStaticsApproveNum'
-
+  doStaticsApproveNum: 'doStaticsApproveNum',
+  doTrainMajor: 'doTrainMajor',
+  doTrainLevel: 'doTrainLevel',
+  setCurrentSubject: 'setCurrentSubject',
+  doTrainSubject: 'doTrainSubject'
 }
 let methods = [SUCCESS.toLowerCase(), FAILURE.toLowerCase(), REQUEST.toLowerCase()]
 const mutationNames = {}
@@ -190,6 +193,15 @@ const baseWorkMode = {
   base: 0,
   list: 1
 }
+
+const trainTypeStatus = {
+  skill: 1,
+  manage: 2,
+}
+const trainTypes = [
+  {value: trainTypeStatus.skill, label: '技能培训类题库'},
+  {value: trainTypeStatus.manage, label: '管理培训类题库'}
+]
 export {
   globalConst,
   modalTitle,
@@ -217,5 +229,7 @@ export {
   actionStatus,
   actionValue,
   actionObj,
-  baseWorkMode
+  baseWorkMode,
+  trainTypeStatus,
+  trainTypes
 }

@@ -26,16 +26,34 @@ const state = {
       hasAnswer: false,
       subject: [{value: 'A', desc: '1.xxxx'}, {value: 'A', desc: '1.xxxx'}]
     }]
+  },
+  currentSubject: {
+    levelId: '',
+    trainType: '',
+    major: '',
   }
 }
 const getters = {}
 const actions = {
+  [native.doTrainSubject] ({state}, refs) {
+    return applyClientMiddleware(api.doTrainSubject)(refs)
+  },
+  [native.doTrainLevel] ({state}, refs) {
+    return applyClientMiddleware(api.doTrainLevel)(refs)
+  },
+  [native.doTrainMajor] ({state}, refs) {
+    return applyClientMiddleware(api.doTrainMajor)(refs)
+  },
   [native.doAnswer] ({state}, refs) {
     console.log('refs', refs)
     return applyClientMiddleware(api.doAnswer)(refs)
   }
 }
 let mutations = {
+  [native.setCurrentSubject] (state, params) {
+    let {levelId, trainType, major} = params
+    state.currentSubject = {levelId, trainType, major}
+  },
   [mutationNames.doAnswer_success] (state, {data}) {
     // 回答成功填充当前答案，
     // --------------

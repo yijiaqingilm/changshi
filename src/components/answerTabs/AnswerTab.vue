@@ -17,6 +17,7 @@
     },
     methods: {
       _click () {
+        console.log('???>what', this.link)
         if (this.link) {
           console.log('this', this)
           this.$router.loadPage(this.link)

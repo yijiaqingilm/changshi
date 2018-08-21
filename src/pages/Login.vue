@@ -26,8 +26,8 @@
     data () {
       return {
         user: {
-          username: 'dfasdafd',
-          password: '890675'
+          username: 'adddd',
+          password: '123456'
         },
         errors: null,
         validator: null,

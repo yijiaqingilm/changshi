@@ -36,6 +36,7 @@ let mutations = {
     state.userInfo = {}
     state.isManage = false
     state.sessionKey = ''
+    LocalCache.del('userLoginInfo')
   },
   [mutationNames.doWxLogin_success] (state, {data}) {
     state.wxConfig = data.wx_config
