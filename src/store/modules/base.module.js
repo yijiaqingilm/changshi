@@ -19,7 +19,8 @@ const state = {
     cityId: -1,
     cityName: '',
     districtId: -1,
-    districtName: ''
+    districtName: '',
+    isChange: true
   },
   dateTimeConfig: {
     options: {

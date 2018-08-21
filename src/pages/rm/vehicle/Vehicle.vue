@@ -59,7 +59,9 @@
             </base-form-group>
         </section>
         <section class='footer'>
-            <f7-button big full active :color="btnOutCarDisable ? 'gray':''" @click='startOff' v-if="!vehicleInfo.out.date">出车</f7-button>
+            <f7-button big full active :color="btnOutCarDisable ? 'gray':''" @click='startOff'
+                       v-if="!vehicleInfo.out.date">出车
+            </f7-button>
             <f7-button big full active :color="btnDisable ? 'gray':''" @click="getTo" v-else>收车</f7-button>
         </section>
     </f7-page>
@@ -188,6 +190,8 @@
       scanCode (code) {
         if (__DEBUG__) {
           this.carnumber = '粤B2500'
+        } else {
+          this.carnumber = code
         }
         this.doCarDetail()
       },

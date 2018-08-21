@@ -1,5 +1,5 @@
 <template>
-    <div class='base-work-base'>
+    <div class='base-work-base' v-if="mode===baseWorkMode.base">
         <div class="city">
             <div><span class='s-select' @click="showPopup">{{currentAddress}}</span></div>
         </div>
@@ -9,7 +9,7 @@
         <div v-if='majorValue.length>0'>
             <base-select v-model="major" text="请选择专业" :data="majorValue"></base-select>
         </div>
-        <div class='point'>
+        <div class='point' v-if="hasWorkBase">
             <template v-if='workBaseList && workBaseList.length>0'>
                 <base-select v-model='workBase'
                              text="请选择作业点"
@@ -23,15 +23,59 @@
             </div>
         </div>
     </div>
+    <div class='base-work-base' v-else>
+        <base-form-group class="mt-15" label="地址选择：">
+            <span class='s-select' @click="showPopup">{{currentAddress}}</span>
+        </base-form-group>
+        <base-form-group class="mt-15" label="客户选择：">
+            <base-select v-model="client" text="请选择客户" :data="clientValue"></base-select>
+        </base-form-group>
+        <base-form-group v-if='majorValue.length>0' class="mt-15" label="专业选择:">
+            <base-select v-model="major" text="请选择专业" :data="majorValue"></base-select>
+        </base-form-group>
+        <template v-if="hasWorkBase">
+            <template v-if='workBaseList && workBaseList.length>0'>
+                <base-form-group class="mt-15" label="站点选择:">
+                    <base-select v-model='workBase'
+                                 text="请选择作业点"
+                                 :data="workBaseList"
+                                 nodeKey="id"
+                                 @change="changePoint"
+                                 nodeLabel="work_base"></base-select>
+                </base-form-group>
+            </template>
+            <div v-else class='hint'>
+                当前条件没有可选择的作业点
+            </div>
+        </template>
+    </div>
 </template>
 <script>
   import { mapState } from 'vuex'
-  import { globalConst as native, clientValue, majorValue, client as clientObj, major as majorObj } from 'lib/const'
+  import {
+    globalConst as native,
+    clientValue,
+    majorValue,
+    client as clientObj,
+    major as majorObj,
+    baseWorkMode
+  } from 'lib/const'
   // major=2,client=1
   export default {
+    props: {
+      mode: {
+        type: Number,
+        default: baseWorkMode.base
+      },
+      hasWorkBase: {
+        type: Boolean,
+        default: true
+      }
+    },
     name: '',
     data () {
       return {
+        baseWorkMode,
         workBaseList: [],
         workBase: '',
         client: '',
@@ -100,7 +144,7 @@
         let {provinceName, cityName, districtName} = this.activeAddress
         let currentAddress = provinceName + cityName + districtName
         if (provinceName && cityName && districtName) {
-          this.loadBaseWork()
+          this.hasWorkBase && this.loadBaseWork()
           this.$emit('changeWorkBase', {
             province: provinceName,
             city: cityName,

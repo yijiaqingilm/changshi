@@ -47,7 +47,9 @@ const globalConst = {
   doDynamotorUpdate: 'doDynamotorUpdate',
   doStaticsPower: 'doStaticsPower',
   doStaticsCar: 'doStaticsCar',
-  clearDy: 'clearDy'
+  clearDy: 'clearDy',
+  doStaticsWork: 'doStaticsWork',
+  doStaticsRunStatus: 'doStaticsRunStatus'
 
 }
 let methods = [SUCCESS.toLowerCase(), FAILURE.toLowerCase(), REQUEST.toLowerCase()]
@@ -182,6 +184,11 @@ const formatData = (dataObj = {}, nodeKey = 'id', nodeLabel = 'label') => {
   }
   return data
 }
+
+const baseWorkMode = {
+  base: 0,
+  list: 1
+}
 export {
   globalConst,
   modalTitle,
@@ -208,5 +215,6 @@ export {
   formatData,
   actionStatus,
   actionValue,
-  actionObj
+  actionObj,
+  baseWorkMode
 }

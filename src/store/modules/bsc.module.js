@@ -41,6 +41,12 @@ const state = {
 }
 const getters = {}
 const actions = {
+  [native.doStaticsRunStatus] ({state}, refs) {
+    return applyClientMiddleware(api.doStaticsRunStatus)(refs)
+  },
+  [native.doStaticsWork] ({state}, refs) {
+    return applyClientMiddleware(api.doStaticsWork)(refs)
+  },
   [native.doStaticsPower] ({state}, refs) {
     return applyClientMiddleware(api.doStaticsPower)(refs)
   },

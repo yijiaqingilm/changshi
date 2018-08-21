@@ -1,4 +1,5 @@
 import { globalConst as native } from 'lib/const'
+import api from './api'
 
 class ApiConfig {
   constructor (name, url, config, method = 'post') {
@@ -51,6 +52,8 @@ let apiConfig = [
   new ApiConfig(native.doDynamotorUpdate, '/dynamotor/update'),
   new ApiConfig(native.doWorkBaseDynamotor, '/work-base/dynamotor', 'get'),
   new ApiConfig(native.doStaticsPower, '/statics/power', 'get'),
-  new ApiConfig(native.doStaticsCar, '/statics/car', 'get')
+  new ApiConfig(native.doStaticsCar, '/statics/car', 'get'),
+  new ApiConfig(native.doStaticsWork, '/statics/work', 'get'),
+  new ApiConfig(native.doStaticsRunStatus, '/statics/run-status', 'get')
 ]
 export default apiConfig

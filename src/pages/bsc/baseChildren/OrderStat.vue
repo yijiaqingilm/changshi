@@ -13,18 +13,7 @@
             </div>
         </div>
         <div class='combo'>
-            <base-form-group class="mt-15" label="地址选择：">
-                <span class='s-select' @click="showPopup">{{currentAddress}}</span>
-            </base-form-group>
-            <base-form-group class="mt-15" label="客户选择：">
-                <base-select v-model="orderStat.client" text="请选择客户" :data="clientValue"></base-select>
-            </base-form-group>
-            <base-form-group class="mt-15" label="专业选择:">
-                <base-select v-model="orderStat.major" text="请选择专业" :data="majorValue"></base-select>
-            </base-form-group>
-            <base-form-group class="mt-15" label="站点选择:">
-                <base-select v-model="orderStat.client" text="请选择站点" :data="clientValue"></base-select>
-            </base-form-group>
+            <base-work-base @changeWorkBase="changeWorkBase" :mode="baseWorkMode.list"></base-work-base>
         </div>
         <line-10></line-10>
         <chart :options="options"></chart>
@@ -33,20 +22,21 @@
 
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex'
-  import { majorValue, clientValue } from 'lib/const'
+  import { majorValue, clientValue, globalConst as native, baseWorkMode } from 'lib/const'
   import emitter from 'mixins/emitter'
   import moment from 'lib/moment'
+  import BaseWorkBase from 'components/baseWorkBase/BaseWorkBase'
 
   export default {
     mixins: [emitter],
     data () {
       return {
+        baseWorkMode,
         clientValue,
         majorValue,
         options: {
           title: {
-            text: '某站点用户访问来源',
-            subtext: '纯属虚构',
+            text: '工单统计',
             x: 'center'
           },
           tooltip: {
@@ -59,21 +49,16 @@
             left: 10,
             top: 20,
             bottom: 20,
-            data: ['直接访问1', '邮件营销2', '联盟广告2', '视频广告', '搜索引擎']
+            data: ['工单总数', '已归档工单', '待审核工单', '未归档工单']
           },
+         /* color: ['red', 'green', 'blue', 'yellow'],*/
           series: [
             {
-              name: '访问来源',
+              name: '工单统计',
               type: 'pie',
               radius: '55%',
               center: ['50%', '60%'],
-              data: [
-                {value: 335, name: '直接访问1'},
-                {value: 310, name: '邮件营销1'},
-                {value: 234, name: '联盟广告2'},
-                {value: 135, name: '视频广告2'},
-                {value: 1548, name: '搜索引擎'}
-              ],
+              data: [],
               /* label: {
                 normal: {
                   position: 'inner'
@@ -88,10 +73,57 @@
               }
             }
           ]
+        },
+        staticsWork: {
+          total: '',
+          ariched: '',
+          approve: '',
+          unariched: ''
+        },
+        query: {
+          workBase: '',
+          client: '',
+          province: '',
+          city: '',
+          district: '',
+          major: ''
         }
       }
     },
     methods: {
+      changeWorkBase (result) {
+        this.doStatics(result)
+
+      },
+      doStatics (result) {
+        let {
+          workBase,
+          client,
+          province,
+          city,
+          district,
+          major
+        } = result
+        this.$store.dispatch({
+          type: native.doStaticsWork,
+          province,
+          city,
+          district,
+          work_base: workBase,
+          client,
+          major,
+          start_date: this.startTime,
+          end_date: this.endTime
+        }).then(({data}) => {
+          let {total, ariched, approve, unariched} = data
+          this.options.series[0].data = [
+            {value: total, name: '工单总数'},
+            {value: ariched, name: '已归档工单'},
+            {value: approve, name: '待审核工单'},
+            {value: unariched, name: '未归档工单'}
+          ]
+        })
+      },
       openStartTime (event) {
         this.dispatchMethod('base-bsc', 'openStartTime', event)
       },
@@ -113,11 +145,8 @@
       endTime () {
         return this.orderStat.endDate && moment(this.orderStat.endDate).format('YYYY-MM-DD')
       },
-      currentAddress () {
-        let currentAddress = this.activeAddress.provinceName + this.activeAddress.cityName + this.activeAddress.districtName
-        return currentAddress.length > 0 ? currentAddress : '请选择地址'
-      },
-    }
+    },
+    components: {BaseWorkBase}
   }
 </script>
 

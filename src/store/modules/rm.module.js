@@ -41,7 +41,8 @@ const actions = {
     return aMapUtil.geolocation().then((data) => {
       let formattedAddress = data.formattedAddress
       let {lat, lng} = data.position
-      Object.assign(refs, {out_lng: lng, out_lat: lat, out_add: formattedAddress})
+      let {province, city, district} = data.addressComponent
+      Object.assign(refs, {out_lng: lng, out_lat: lat, out_add: formattedAddress, province, city, district})
       return applyClientMiddleware(api.startOff)(refs)
     })
 

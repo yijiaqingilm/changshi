@@ -15,36 +15,30 @@
             </div>
         </div>
         <div class='combo'>
-            <base-form-group class="mt-15" label="地址选择：">
-                <span class='s-select' @click="showPopup">{{currentAddress}}</span>
-            </base-form-group>
-            <base-form-group class="mt-15" label="客户选择：">
-                <base-select v-model="anchorStat.client" text="请选择客户" :data="clientValue"></base-select>
-            </base-form-group>
-            <base-form-group class="mt-15" label="专业选择:">
-                <base-select v-model="anchorStat.major" text="请选择专业" :data="majorValue"></base-select>
-            </base-form-group>
+            <base-work-base @changeWorkBase="changeWorkBase" :mode="baseWorkMode.list"
+                            :hasWorkBase="false"></base-work-base>
         </div>
         <line-10></line-10>
-        <chart :options="polar"></chart>
+        <chart :options="options"></chart>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex'
-  import { majorValue, clientValue } from 'lib/const'
+  import { majorValue, clientValue, baseWorkMode, globalConst as native } from 'lib/const'
   import emitter from 'mixins/emitter'
   import moment from 'lib/moment'
+  import BaseWorkBase from 'components/baseWorkBase/BaseWorkBase'
 
   export default {
     mixins: [emitter],
     data () {
       return {
         clientValue,
-        majorValue,
-        polar: {
+        baseWorkMode,
+        options: {
           title: {
-            text: '工单统计',
+            text: '维护点运行状况统计',
             subtext: '',
             x: 'center'
           },
@@ -55,7 +49,7 @@
           legend: {
             orient: 'vertical',
             left: 'left',
-            data: ['已归档工单', '未归档工单', '待审核工单']
+            data: ['非常好', '好', '良好', '合格', '不合格']
           },
           series: [
             {
@@ -63,11 +57,7 @@
               type: 'pie',
               radius: '55%',
               center: ['50%', '60%'],
-              data: [
-                {value: 335, name: '已归档工单'},
-                {value: 310, name: '未归档工单'},
-                {value: 234, name: '待审核工单'},
-              ],
+              data: [],
               itemStyle: {
                 emphasis: {
                   shadowBlur: 10,
@@ -81,6 +71,37 @@
       }
     },
     methods: {
+      changeWorkBase (result) {
+        this.doStatics(result)
+      },
+      doStatics (result) {
+        let {
+          client,
+          province,
+          city,
+          district,
+          major
+        } = result
+        this.$store.dispatch({
+          type: native.doStaticsRunStatus,
+          province,
+          city,
+          district,
+          client,
+          major,
+          start_date: this.startTime,
+          end_date: this.endTime
+        }).then(({data}) => {
+          let {stat1, stat2, stat3, stat4, stat5} = data
+          this.options.series[0].data = [
+            {value: stat1, name: '非常好'},
+            {value: stat2, name: '好'},
+            {value: stat3, name: '良好'},
+            {value: stat4, name: '合格'},
+            {value: stat5, name: '不合格'},
+          ]
+        })
+      },
       openStartTime (event) {
         this.dispatchMethod('base-bsc', 'openAnchorStartTime', event)
       },
@@ -94,7 +115,7 @@
     computed: {
       ...mapState({
         activeAddress: ({base}) => base.activeAddress,
-        anchorStat: ({bsc}) => bsc.anchorStat,
+        anchorStat: ({bsc}) => bsc.anchorStat
       }),
       startTime () {
         return this.anchorStat.startDate && moment(this.anchorStat.startDate).format('YYYY-MM-DD')
@@ -102,11 +123,8 @@
       endTime () {
         return this.anchorStat.endDate && moment(this.anchorStat.endDate).format('YYYY-MM-DD')
       },
-      currentAddress () {
-        let currentAddress = this.activeAddress.provinceName + this.activeAddress.cityName + this.activeAddress.districtName
-        return currentAddress.length > 0 ? currentAddress : '请选择地址'
-      },
-    }
+    },
+    components: {BaseWorkBase}
   }
 </script>
 
