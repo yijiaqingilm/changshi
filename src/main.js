@@ -5,7 +5,7 @@ import './lib/flexible.js'
 import ApiClient from 'lib/client'
 import clientMiddleware from 'lib/clientMiddleware'
 import { saveStore } from './lib/common'
-import { isEmptyObject, Cache } from './lib/utils'
+import { isEmptyObject, Cache, LocalCache } from './lib/utils'
 import wxloginAPI from 'api/wxlogin'
 import Framework7Vue from 'framework7-vue'
 import 'velocity-animate'
@@ -84,6 +84,13 @@ Vue.component('scan-input', ScanInput)
 let user_store = sessionStorage.getItem('changshi_store')
 user_store && store.replaceState(Object.assign(store.state, JSON.parse(user_store)))
 
+let userLoginInfo = LocalCache.get('userLoginInfo')
+if (userLoginInfo) {
+  userLoginInfo = JSON.parse(userLoginInfo)
+  store.state.auth.userInfo = userLoginInfo
+  store.state.auth.sessionKey = userLoginInfo.sessionkey
+  store.state.auth.isManage = userLoginInfo.is_manage === 1
+}
 let setUserInfo = function (data) {
   Cache.set('userInfo', data)
   let wxConfig = JSON.parse(data.wx_config)

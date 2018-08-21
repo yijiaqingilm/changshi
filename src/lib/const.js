@@ -49,7 +49,8 @@ const globalConst = {
   doStaticsCar: 'doStaticsCar',
   clearDy: 'clearDy',
   doStaticsWork: 'doStaticsWork',
-  doStaticsRunStatus: 'doStaticsRunStatus'
+  doStaticsRunStatus: 'doStaticsRunStatus',
+  doStaticsApproveNum: 'doStaticsApproveNum'
 
 }
 let methods = [SUCCESS.toLowerCase(), FAILURE.toLowerCase(), REQUEST.toLowerCase()]

@@ -37,10 +37,14 @@ const state = {
   }, trainMonthStat: {
     client: '',
     major: '',
-  }
+  },
+  approveNum: 0
 }
 const getters = {}
 const actions = {
+  [native.doStaticsApproveNum] ({state}, refs) {
+    return applyClientMiddleware(api.doStaticsApproveNum)(refs)
+  },
   [native.doStaticsRunStatus] ({state}, refs) {
     return applyClientMiddleware(api.doStaticsRunStatus)(refs)
   },
@@ -54,7 +58,11 @@ const actions = {
     return applyClientMiddleware(api.doStaticsCar)(refs)
   }
 }
-let mutations = {}
+let mutations = {
+  [mutationNames.doStaticsApproveNum_success] (state, {data}) {
+    state.approveNum = data
+  }
+}
 mutations = Object.assign(margeMutations(actions), mutations)
 export {
   state,

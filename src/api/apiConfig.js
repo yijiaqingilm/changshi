@@ -54,6 +54,7 @@ let apiConfig = [
   new ApiConfig(native.doStaticsPower, '/statics/power', 'get'),
   new ApiConfig(native.doStaticsCar, '/statics/car', 'get'),
   new ApiConfig(native.doStaticsWork, '/statics/work', 'get'),
-  new ApiConfig(native.doStaticsRunStatus, '/statics/run-status', 'get')
+  new ApiConfig(native.doStaticsRunStatus, '/statics/run-status', 'get'),
+  new ApiConfig(native.doStaticsApproveNum, '/statics/approve-num', 'get')
 ]
 export default apiConfig

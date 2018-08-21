@@ -1,6 +1,9 @@
 <template>
     <div class='base-tab' @click="_click">
-        <div class='tab-icon'><img :src="icon" class='icon' alt=""></div>
+        <div class='tab-icon'>
+            <img :src="icon" class='icon' alt="">
+            <f7-badge v-if="badge" color="red" class="base-tab-badge">{{badge}}</f7-badge>
+        </div>
         <div class='tab-label'>{{label}}</div>
     </div>
 </template>
@@ -13,7 +16,11 @@
     props: {
       icon: {},
       label: String,
-      link: {}
+      link: {},
+      badge: {
+        type: [Number, String],
+        default: 0
+      }
     },
     methods: {
       _click () {

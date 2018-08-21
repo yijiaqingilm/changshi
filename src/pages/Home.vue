@@ -33,7 +33,7 @@
                 <section>
                     <base-title title="操作管理"></base-title>
                     <base-tabs>
-                        <base-tab link="/sys/index" label="工单管理" :icon="iconSrc.mOrder"></base-tab>
+                        <base-tab link="/sys/index" label="工单管理" :badge="approveNum" :icon="iconSrc.mOrder"></base-tab>
                     </base-tabs>
                 </section>
                 <section>
@@ -107,6 +107,9 @@
       }
     },
     created () {
+      this.$store.dispatch({
+        type: native.doStaticsApproveNum,
+      })
     },
     methods: {
       login () {
@@ -122,7 +125,8 @@
       ...mapState({
         userInfo: ({auth}) => auth.userInfo,
         isManage: ({auth}) => auth.isManage,
-        sessionKey: ({auth}) => auth.sessionKey
+        sessionKey: ({auth}) => auth.sessionKey,
+        approveNum: ({bsc}) => bsc.approveNum
       })
     },
     components: {BaseTitle, BaseTabs, BaseTab}

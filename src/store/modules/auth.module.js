@@ -3,7 +3,7 @@
  */
 import { setToken } from 'lib/common'
 import api from 'api/api'
-import { isEmptyObject, margeMutations } from 'lib/utils'
+import { isEmptyObject, margeMutations, LocalCache } from 'lib/utils'
 import { globalConst as native, mutationNames } from 'lib/const'
 import Vue from 'vue'
 import { applyClientMiddleware } from 'src/main'
@@ -49,6 +49,7 @@ let mutations = {
     state.userInfo = data
     state.sessionKey = data.sessionkey
     state.isManage = data.is_manage === 1
+    LocalCache.set('userLoginInfo', JSON.stringify(state.userInfo))
   }
 }
 mutations = Object.assign(margeMutations(actions), mutations)
