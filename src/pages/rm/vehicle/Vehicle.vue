@@ -65,7 +65,7 @@
             <f7-button big full active :color="btnOutCarDisable ? 'gray':''" @click='debounceStartOff'
                        v-if="!vehicleInfo.out.date">出车
             </f7-button>
-            <f7-button big full active :color="btnDisable ? 'gray':''" @click="getTo" v-else>收车</f7-button>
+            <f7-button big full active :color="btnDisable ? 'gray':''" @click="debounceGetTo" v-else>收车</f7-button>
         </section>
     </f7-page>
 </template>

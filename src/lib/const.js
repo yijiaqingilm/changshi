@@ -172,7 +172,7 @@ const actionValue = [
 ]
 const actionObj = arr2obj(actionValue, 'value', 'label')
 
-const generatorIds = [15, 55]
+const generatorIds = [15, 59, 103, 136]
 
 /**
  * 格式化地址对象 变成base select 所需的数据格式

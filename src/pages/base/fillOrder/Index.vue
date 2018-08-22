@@ -59,7 +59,7 @@
         </section>
         <base-form-group class="m-40" label="作业类别" mark v-if='workSortList && workSortList.length>0'>
             <base-select v-model='jobCard.workSort' nodeKey="id" nodeLabel="name" text="请选择作业类别"
-                         :data="workSortList"></base-select>
+                         :data="workSortList" @change="changeWorkSort"></base-select>
         </base-form-group>
         <base-form-group class="m-40" label="作业起止时间" mark></base-form-group>
         <div class='time-group'>
@@ -290,7 +290,8 @@
         validator: null,
         errors: null,
         btnDyStartTimeDisable: false,
-        btnDyEndTimeDisable: true
+        btnDyEndTimeDisable: true,
+        showDynamotor: false
       }
     },
     created () {
@@ -326,9 +327,9 @@
             return false
         }
       },
-      showDynamotor () {
+     /* showDynamotor () {
         return generatorIds.indexOf(this.jobCard.workSort >>> 0) !== -1
-      },
+      },*/
       majorValue () {
         let {xianlu, jizhan, ironTower, jtzx, wlan, jf} = major
         switch (this.jobCard.client >>> 0) {
@@ -374,6 +375,9 @@
       }
     },
     methods: {
+      changeWorkSort (workSort) {
+        this.showDynamotor = workSort.name === '发电'
+      },
       resetJobCard () {
         this.jobCard = {
           client: client.mobile,

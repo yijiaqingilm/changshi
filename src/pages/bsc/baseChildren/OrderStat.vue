@@ -51,7 +51,7 @@
             bottom: 20,
             data: ['工单总数', '已归档工单', '待审核工单', '未归档工单']
           },
-         /* color: ['red', 'green', 'blue', 'yellow'],*/
+          color: ['#a9d08e', '#00b050', '#c40202', '#b4c6e7'],
           series: [
             {
               name: '工单统计',
