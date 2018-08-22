@@ -45,6 +45,9 @@ const dictionary = {
       },
       password: {
         required: '密码必填'
+      },
+      outMileage: {
+        required: '出车里程数必填'
       }
     }
   }

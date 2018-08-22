@@ -16,7 +16,7 @@
                 <base-form-group label="出车时间">
                     {{vehicleInfo.out.date && vehicleInfo.out.date}}
                 </base-form-group>
-                <base-form-group label="出车位置">
+                <base-form-group label="出车位置" :ellipsis="false">
                     {{vehicleInfo.out.position && vehicleInfo.out.position}}
                 </base-form-group>
             </section>
@@ -27,7 +27,7 @@
                 <base-form-group label="收车时间">
                     {{vehicleInfo.retract.date && vehicleInfo.retract.date | dateFormat}}
                 </base-form-group>
-                <base-form-group label="收车位置">
+                <base-form-group label="收车位置" :ellipsis="false">
                     {{vehicleInfo.retract.address && vehicleInfo.retract.address}}
                 </base-form-group>
             </section>
@@ -57,9 +57,12 @@
             <base-form-group label="总费用" isTitle>
                 ￥ {{totalFee}}
             </base-form-group>
+            <base-form-group label="备注" isTitle>
+                <input type="text" v-model='info.remark' class='s-input' placeholder='请填写备注(非必填)'>
+            </base-form-group>
         </section>
         <section class='footer'>
-            <f7-button big full active :color="btnOutCarDisable ? 'gray':''" @click='startOff'
+            <f7-button big full active :color="btnOutCarDisable ? 'gray':''" @click='debounceStartOff'
                        v-if="!vehicleInfo.out.date">出车
             </f7-button>
             <f7-button big full active :color="btnDisable ? 'gray':''" @click="getTo" v-else>收车</f7-button>
@@ -72,6 +75,7 @@
   import { modalTitle, globalConst as native } from 'lib/const'
   import { Validator } from 'lib/custom_validator'
   import { aMapUtil, isNumber, wxScanQRCode } from 'lib/utils'
+  import debounce from 'lodash/debounce'
 
   export default {
     data () {
@@ -110,8 +114,11 @@
         servicefee: 'required',
         otherfee: 'required',
         retractMileage: 'required',
+        outMileage: 'required'
       })
       this.$set(this, 'errors', this.validator.errorBag)
+      this.debounceStartOff = debounce(this.startOff, 500, true)
+      this.debounceGetTo = debounce(this.getTo, 500, true)
     },
     methods: {
       startOff () {
@@ -134,6 +141,7 @@
             this.vehicleInfo.out.position = data.out.position
           })
         })
+
       },
       getTo () {
         let {bridgefee, servicefee, otherfee, oilfee, outMileage, remark, retractMileage} = this.info
@@ -142,7 +150,8 @@
           bridgefee,
           servicefee,
           otherfee,
-          retractMileage
+          retractMileage,
+          outMileage
         })
         //  校验信息
         if (this.errors.errors.length > 0) {
@@ -222,8 +231,8 @@
         return false
       },
       btnDisable () {
-        let {bridgefee, servicefee, otherfee, oilfee, retractMileage} = this.info
-        if (isNumber(bridgefee) && isNumber(servicefee) && isNumber(otherfee) && isNumber(oilfee) && isNumber(retractMileage)) {
+        let {bridgefee, servicefee, otherfee, oilfee, retractMileage, outMileage} = this.info
+        if (isNumber(bridgefee) && isNumber(servicefee) && isNumber(otherfee) && isNumber(oilfee) && isNumber(retractMileage) && isNumber(outMileage)) {
           return false
         } else {
           return true
