@@ -131,7 +131,7 @@
           return
         }
         this.$f7.confirm('是否确认出车', modalTitle, () => {
-          if (this.info.outMileage < this.vehicleInfo.mileage) {
+          if (parseFloat(this.info.outMileage, 10) < parseFloat(this.vehicleInfo.mileage, 10)) {
             this.$f7.alert('出车里程数必须大于或等于上一次收车里程数', modalTitle)
             return
           }
@@ -157,6 +157,14 @@
           retractMileage,
           outMileage
         })
+        if (parseFloat(outMileage, 10) < parseFloat(this.vehicleInfo.mileage, 10)) {
+          this.$f7.alert('出车里程数必须大于或等于上一次收车里程数', modalTitle)
+          return
+        }
+        if (parseFloat(retractMileage, 10) < parseFloat(outMileage, 10)) {
+          this.$f7.alert('收车里程数必须大于或等于出车里程数', modalTitle)
+          return
+        }
         //  校验信息
         if (this.errors.errors.length > 0) {
           this.$f7.addNotification({
