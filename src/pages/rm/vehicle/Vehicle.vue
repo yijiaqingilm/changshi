@@ -117,8 +117,12 @@
         outMileage: 'required'
       })
       this.$set(this, 'errors', this.validator.errorBag)
-      this.debounceStartOff = debounce(this.startOff, 500, true)
-      this.debounceGetTo = debounce(this.getTo, 500, true)
+      this.debounceStartOff = debounce(this.startOff, 500, {
+        leading: true,
+      })
+      this.debounceGetTo = debounce(this.getTo, 500, {
+        leading: true,
+      })
     },
     methods: {
       startOff () {
