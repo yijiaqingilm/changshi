@@ -54,7 +54,9 @@ const globalConst = {
   doTrainMajor: 'doTrainMajor',
   doTrainLevel: 'doTrainLevel',
   setCurrentSubject: 'setCurrentSubject',
-  doTrainSubject: 'doTrainSubject'
+  doTrainSubject: 'doTrainSubject',
+  resetPaper: 'resetPaper',
+  doGetSubject: 'doGetSubject'
 }
 let methods = [SUCCESS.toLowerCase(), FAILURE.toLowerCase(), REQUEST.toLowerCase()]
 const mutationNames = {}
@@ -202,11 +204,35 @@ const trainTypes = [
   {value: trainTypeStatus.skill, label: '技能培训类题库'},
   {value: trainTypeStatus.manage, label: '管理培训类题库'}
 ]
+const trainObj = arr2obj(trainTypes, 'value', 'label')
 const dateType = {
   year: 0,
   yearAndMonth: 1,
   yearAndMonthAndDay: 2
 }
+// 1单选题，2多选题，3判断题
+const subjectStatus = {
+  radioSubject: 1,
+  checkSubject: 2,
+  switchSubject: 3
+}
+const subjectTypes = [
+  {value: subjectStatus.radioSubject, label: '单选题'},
+  {value: subjectStatus.checkSubject, label: '多选题'},
+  {value: subjectStatus.switchSubject, label: '判断题'}
+]
+
+class Subject {
+  constructor (title, answer, resolve, hasAnswer = false, items = [], sort) {
+    this.title = title
+    this.answer = answer
+    this.resolve = resolve
+    this.hasAnswer = hasAnswer
+    this.items = items
+    this.sort = sort
+  }
+}
+
 export {
   globalConst,
   modalTitle,
@@ -237,5 +263,9 @@ export {
   baseWorkMode,
   trainTypeStatus,
   trainTypes,
-  dateType
+  trainObj,
+  dateType,
+  subjectStatus,
+  subjectTypes,
+  Subject
 }

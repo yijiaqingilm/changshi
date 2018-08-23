@@ -19,7 +19,8 @@ class ApiConfig {
 }
 
 let apiConfig = [
-  new ApiConfig(native.doAnswer, '/user/profile/main'),
+  new ApiConfig(native.doGetSubject, '/train-subject/get-subject'),
+  new ApiConfig(native.doAnswer, '/train-subject/set-subject'),
   new ApiConfig(native.doWorkSender, '/work/sender'),
   new ApiConfig(native.doGetWorkBase, '/work-base/index', {global: false}, 'get'),
   new ApiConfig(native.doAddressProvinceList, '/address/index', {global: false}, 'get'),

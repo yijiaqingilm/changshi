@@ -117,15 +117,12 @@
         outMileage: 'required'
       })
       this.$set(this, 'errors', this.validator.errorBag)
-      this.debounceStartOff = debounce(this.startOff, 500, {
-        leading: true,
-      })
-      this.debounceGetTo = debounce(this.getTo, 500, {
-        leading: true,
-      })
+      this.debounceStartOff = debounce(this.startOff, 500)
+      this.debounceGetTo = debounce(this.getTo, 500)
     },
     methods: {
       startOff () {
+        console.log('支持测试')
         if (!this.carnumber) {
           this.$f7.alert('请扫描车牌号', modalTitle)
           return
@@ -148,6 +145,7 @@
 
       },
       getTo () {
+        console.log('支持测试')
         let {bridgefee, servicefee, otherfee, oilfee, outMileage, remark, retractMileage} = this.info
         this.validator.validateAll({
           oilfee,

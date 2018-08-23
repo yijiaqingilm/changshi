@@ -44,7 +44,7 @@
     methods: {
       chooseLevel (level) {
         this.$store.commit(native.setCurrentSubject, {
-          levelId: level.id,
+          levelId: level.refid,
           trainType: this.categoryId,
           major: this.majorId
         })

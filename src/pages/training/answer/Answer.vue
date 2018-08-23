@@ -10,43 +10,47 @@
                 <div class='progress'>
                     <f7-progressbar :progress="20"></f7-progressbar>
                 </div>
-                <div class='step'><span class='current'>1</span><span>/50</span></div>
+                <div class='step'><span class='current'>{{paper.currentProgress}}</span><span>/{{paper.count}}</span>
+                </div>
             </header>
             <section>
-                <f7-tabs animated>
-                    <f7-tab class="tab-0" active>
+                <f7-tabs animated v-if="paper.subjects &&paper.subjects.length>0">
+                    <f7-tab v-for="(subject,index) in paper.subjects"
+                            :key="index" :class="['tab-'+index]">
                         <section class='subject'>
                             <section class='s-body'>
-                                <f7-block-title>1.我是国务院。1.我是国务院。1.我是国务院。1.我是国务院。1.我是国务院。1.我是国务院。1.我是国务院。
-                                </f7-block-title>
+                                <f7-block-title>{{index+1}}.{{subject.title}}</f7-block-title>
                                 <f7-list form no-hairlines no-hairlines-between>
-                                    <f7-list-item no-border checkbox name="t-c-1" value="A"
-                                                  title="Checkbox A"></f7-list-item>
-                                    <f7-list-item checkbox name="t-c-1" value="B" title="Checkbox B"></f7-list-item>
-                                    <f7-list-item checkbox name="t-c-1" value="C" title="Checkbox C"></f7-list-item>
+                                    <template v-if="subject.sort===subjectStatus.checkSubject">
+                                        <f7-list-item v-for="(item,index) in subject.items" :key="index"
+                                                      no-border
+                                                      checkbox
+                                                      :name="'t-c-'+index"
+                                                      v-model="subject.answer"
+                                                      :value="item.id"
+                                                      :title="item.name"></f7-list-item>
+                                    </template>
+                                    <template v-else>
+                                        {{test}} <!-- v-model="test"-->
+                                        <f7-list-item v-for="(item,itemIndex) in subject.items" :key="itemIndex"
+                                                      no-border
+                                                      checkbox
+                                                      v-model="test"
+                                                      @change="changeItem(item)"
+                                                      :name="'t-c-'+index"
+                                                      :value="item.id"
+                                                      :title="item.name"></f7-list-item>
+                                        <!--<f7-list-item required radio name="tst" value="a"
+                                                      title="Checkbox C"></f7-list-item>
+                                        <f7-list-item required radio name="tst" value="C"
+                                                      title="Checkbox C"></f7-list-item>
+                                        <f7-list-item checkbox name="t-c-1" value="B" title="Checkbox B"></f7-list-item>
+                                        <f7-list-item checkbox name="t-c-1" value="C" title="Checkbox C"></f7-list-item>-->
+                                    </template>
                                 </f7-list>
                             </section>
                             <line-10></line-10>
-                            <footer class='tab-footer'>
-                                <div>回答正确，正确答案：B</div>
-                                <div class='f-resolve'>
-                                    <div>答案解析：</div>
-                                    <div>xxx</div>
-                                </div>
-                            </footer>
-                        </section>
-                    </f7-tab>
-                    <f7-tab class="tab-1">
-                        <section class='subject'>
-                            <header class='s-title'>2.xxx</header>
-                            <section class='s-body'>
-                                <f7-list form>
-                                    <f7-list-item checkbox name="t-c-2" value="A1" title="Checkbox Ax"></f7-list-item>
-                                    <f7-list-item checkbox name="t-c-2" value="B1" title="Checkbox Bx"></f7-list-item>
-                                    <f7-list-item checkbox name="t-c-2" value="C2" title="Checkbox Cx"></f7-list-item>
-                                </f7-list>
-                            </section>
-                            <footer class='tab-footer'>
+                            <footer class='tab-footer' v-show="subject.hasAnswer">
                                 <div>回答正确，正确答案：B</div>
                                 <div class='f-resolve'>
                                     <div>答案解析：</div>
@@ -71,13 +75,28 @@
 
 <script>
   import { mapState } from 'vuex'
-  import { globalConst as native } from '../../../lib/const'
+  import { globalConst as native, subjectStatus } from '../../../lib/const'
 
   export default {
     name: 'answer',
+    data () {
+      return {
+        subjectStatus,
+        test: '123'
+      }
+    },
+    created () {
+      this.$store.dispatch({
+        type: native.doGetSubject,
+        page: this.paper.currentProgress
+      })
+    },
     methods: {
+      changeItem (e) {
+        console.log('log==>', e)
+      },
       showPrev () {
-        return this.paper.currentProgress !== 0
+        return this.paper.currentProgress !== 1
       },
       showNext () {
         let {currentProgress, subjects} = this.paper
@@ -93,8 +112,13 @@
       },
       doAnswer () {
         // 回答逻辑
+        let {currentProgress} = this.paper
         this.$store.dispatch({
           type: native.doAnswer,
+          page: currentProgress,
+          answer: true
+        }).then(() => {
+
         })
       },
       doPrev () {

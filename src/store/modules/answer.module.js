@@ -1,17 +1,18 @@
 import { setToken } from 'lib/common'
 import api from 'api/api'
 import { isEmptyObject, margeMutations } from 'lib/utils'
-import { globalConst as native, mutationNames } from 'lib/const'
+import { globalConst as native, mutationNames, Subject } from 'lib/const'
 import Vue from 'vue'
 import { applyClientMiddleware } from 'src/main'
 
 const state = {
   paper: {
-    currentProgress: 0,
-    category: 'xxx',
-    count: 50,
-    score: 100,
-    sType: 'xxx,ddd',
+    refId: '',
+    currentProgress: 1,
+    title: '',
+    count: 0,
+    score: 0,
+    sType: '',
     expTime: 60 * 60,
     subjects: [{
       title: 'xxx',
@@ -24,7 +25,7 @@ const state = {
       answer: ['A'],
       resolve: 'aadd',
       hasAnswer: false,
-      subject: [{value: 'A', desc: '1.xxxx'}, {value: 'A', desc: '1.xxxx'}]
+      items: [{value: 'A', desc: '1.xxxx'}, {value: 'A', desc: '1.xxxx'}]
     }]
   },
   currentSubject: {
@@ -35,6 +36,9 @@ const state = {
 }
 const getters = {}
 const actions = {
+  [native.doGetSubject] ({state}, refs) {
+    return applyClientMiddleware(api.doGetSubject)(refs)
+  },
   [native.doTrainSubject] ({state}, refs) {
     return applyClientMiddleware(api.doTrainSubject)(refs)
   },
@@ -50,6 +54,43 @@ const actions = {
   }
 }
 let mutations = {
+  [mutationNames.doGetSubject_success] (state, {data, refs}) {
+    let {answer, final, id, remark, sort, subject} = data
+    let {page} = refs
+    let currentSubject = state.paper.subjects[page - 1]
+    currentSubject.title = subject
+    currentSubject.resolve = remark
+    currentSubject.items = answer
+    currentSubject.sort = sort
+  },
+  [mutationNames.doTrainSubject_success] (state, {data}) {
+    let {refid, title, subject, score, subjectType, answerTime} = data
+    console.log('what', title, data)
+    state.paper.refId = refid
+    state.paper.title = title
+    state.paper.count = subject
+    state.paper.score = score
+    state.paper.sType = subjectType
+    state.paper.expTime = answerTime
+    let subjects = []
+    //  state.paper.count
+    for (let i = 0; i < 10; i++) {
+      subjects.push(new Subject())
+    }
+    state.paper.subjects = subjects
+  },
+  [native.resetPaper] (state) {
+    state.paper = {
+      refId: '',
+      title: '',
+      currentProgress: 1,
+      count: 0,
+      score: 0,
+      sType: '',
+      expTime: 60 * 60,
+      subjects: []
+    }
+  },
   [native.setCurrentSubject] (state, params) {
     let {levelId, trainType, major} = params
     state.currentSubject = {levelId, trainType, major}
