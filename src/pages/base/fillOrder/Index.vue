@@ -4,7 +4,6 @@
             <f7-nav-left back-link="返回" sliding></f7-nav-left>
             <f7-nav-center>作业填报</f7-nav-center>
         </f7-navbar>
-        <!-- {{jobCard}}-->
         <section>
             <header class='header'><span class='mark'>*</span>客户选择</header>
             <base-radio-group v-model="jobCard.client" class="radio-group">
@@ -327,9 +326,9 @@
             return false
         }
       },
-     /* showDynamotor () {
-        return generatorIds.indexOf(this.jobCard.workSort >>> 0) !== -1
-      },*/
+      /* showDynamotor () {
+         return generatorIds.indexOf(this.jobCard.workSort >>> 0) !== -1
+       },*/
       majorValue () {
         let {xianlu, jizhan, ironTower, jtzx, wlan, jf} = major
         switch (this.jobCard.client >>> 0) {
@@ -644,9 +643,13 @@
         this.doGetAmmeter(ammeter, code)
       },
       doGetAmmeter (ammeter, code) {
+        let {provinceName, cityName, districtName} = this.activeAddress
         this.$store.dispatch({
           type: native.doGetAmmeter,
-          code
+          code,
+          province: provinceName,
+          city: cityName,
+          district: districtName
         }).then(({data}) => {
           ammeter.code = code
           ammeter.id = data.id

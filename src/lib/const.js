@@ -202,6 +202,11 @@ const trainTypes = [
   {value: trainTypeStatus.skill, label: '技能培训类题库'},
   {value: trainTypeStatus.manage, label: '管理培训类题库'}
 ]
+const dateType = {
+  year: 0,
+  yearAndMonth: 1,
+  yearAndMonthAndDay: 2
+}
 export {
   globalConst,
   modalTitle,
@@ -231,5 +236,6 @@ export {
   actionObj,
   baseWorkMode,
   trainTypeStatus,
-  trainTypes
+  trainTypes,
+  dateType
 }

@@ -3,9 +3,7 @@
         <header>查询时间</header>
         <div class='time-group'>
             <div>
-                <input type="text" readonly class='time-input' placeholder="请选择时间"
-                       @click="openDyDatePicker"
-                       :value="dyDate">
+                <base-date-picker v-model="dyDate" text="请选择时间" :mode="dateType.yearAndMonth"></base-date-picker>
             </div>
         </div>
         <div class='combo'>
@@ -23,16 +21,15 @@
 
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex'
-  import { clientValue, globalConst as native } from 'lib/const'
+  import { clientValue, globalConst as native, dateType } from 'lib/const'
   import emitter from 'mixins/emitter'
-  import moment from 'lib/moment'
-
   export default {
     mixins: [emitter],
     created () {
     },
     data () {
       return {
+        dateType,
         dyList: [],
         clientValue,
         options: {
@@ -90,14 +87,12 @@
               data: []
             }
           ]
-        }
+        },
+        dyDate: ''
 
       }
     },
     methods: {
-      openDyDatePicker (event) {
-        this.dispatchMethod('manage-bsc', 'openDyDatePicker', event)
-      },
       showPopup () {
         this.$f7.popup('.popup-province', false)
       },
@@ -131,9 +126,6 @@
         activeAddress: ({base}) => base.activeAddress,
         dyStat: ({bsc}) => bsc.dyStat,
       }),
-      dyDate () {
-        return this.dyStat.date && moment(this.dyStat.date).format('YYYY-MM')
-      },
       currentAddress () {
         let {provinceName, cityName, districtName} = this.activeAddress
         if (provinceName && cityName && districtName) {

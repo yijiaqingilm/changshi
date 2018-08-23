@@ -4,14 +4,12 @@
         <div class='time-group'>
             <span class='time-slash'></span>
             <div>
-                <input type="text" readonly class='time-input' placeholder="请选择开始时间"
-                       @click="openStartTime"
-                       :value="startTime">
+                <base-date-picker v-model="startTime" text="请选择开始时间"
+                                  :mode="dateType.yearAndMonthAndDay"></base-date-picker>
             </div>
             <div>
-                <input type="text" readonly class='time-input' placeholder="请选择结束时间"
-                       :value="endTime"
-                       @click="openEndTime">
+                <base-date-picker v-model="endTime" text="请选择结束时间"
+                                  :mode="dateType.yearAndMonthAndDay"></base-date-picker>
             </div>
         </div>
         <div class='combo'>
@@ -25,7 +23,7 @@
 
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex'
-  import { majorValue, clientValue, baseWorkMode, globalConst as native } from 'lib/const'
+  import { majorValue, clientValue, baseWorkMode, globalConst as native, dateType } from 'lib/const'
   import emitter from 'mixins/emitter'
   import moment from 'lib/moment'
   import BaseWorkBase from 'components/baseWorkBase/BaseWorkBase'
@@ -34,6 +32,7 @@
     mixins: [emitter],
     data () {
       return {
+        dateType,
         clientValue,
         baseWorkMode,
         options: {
@@ -68,7 +67,9 @@
               }
             }
           ]
-        }
+        },
+        startTime: '',
+        endTime: ''
       }
     },
     methods: {
@@ -103,12 +104,6 @@
           ]
         })
       },
-      openStartTime (event) {
-        this.dispatchMethod('base-bsc', 'openAnchorStartTime', event)
-      },
-      openEndTime (event) {
-        this.dispatchMethod('base-bsc', 'openAnchorEndTime', event)
-      },
       showPopup () {
         this.$f7.popup('.popup-province', false)
       },
@@ -118,12 +113,6 @@
         activeAddress: ({base}) => base.activeAddress,
         anchorStat: ({bsc}) => bsc.anchorStat
       }),
-      startTime () {
-        return this.anchorStat.startDate && moment(this.anchorStat.startDate).format('YYYY-MM-DD')
-      },
-      endTime () {
-        return this.anchorStat.endDate && moment(this.anchorStat.endDate).format('YYYY-MM-DD')
-      },
     },
     components: {BaseWorkBase}
   }

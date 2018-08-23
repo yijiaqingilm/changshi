@@ -31,7 +31,9 @@ export default function clientMiddleware (client) {
           })
           resolve({data: result.data})
         } else if (result.code === -1) {
-          app.$f7.alert(result.msg, modalTitle)
+          app.$f7.alert(result.msg, modalTitle, () => {
+            app.$router.loadPage('/login')
+          })
         } else {
           commit(mutation_fail, {
             error: result.msg, refs: rest

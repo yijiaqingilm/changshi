@@ -4,12 +4,10 @@
         <div class='time-group'>
             <span class='time-slash'></span>
             <div>
-                <input type="text" readonly class='time-input' placeholder="请选择开始时间" :value="startTime"
-                       @click="openStartTime">
+                <base-date-picker v-model="startTime" text="请选择开始时间" :mode="dateType.yearAndMonthAndDay"></base-date-picker>
             </div>
             <div>
-                <input type="text" readonly class='time-input' placeholder="请选择结束时间" :value="endTime"
-                       @click="openEndTime">
+                <base-date-picker v-model="endTime" text="请选择结束时间" :mode="dateType.yearAndMonthAndDay"></base-date-picker>
             </div>
         </div>
         <div class='combo'>
@@ -22,15 +20,15 @@
 
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex'
-  import { majorValue, clientValue, globalConst as native, baseWorkMode } from 'lib/const'
+  import { majorValue, clientValue, globalConst as native, baseWorkMode, dateType } from 'lib/const'
   import emitter from 'mixins/emitter'
-  import moment from 'lib/moment'
   import BaseWorkBase from 'components/baseWorkBase/BaseWorkBase'
 
   export default {
     mixins: [emitter],
     data () {
       return {
+        dateType,
         baseWorkMode,
         clientValue,
         majorValue,
@@ -87,7 +85,9 @@
           city: '',
           district: '',
           major: ''
-        }
+        },
+        startTime: '',
+        endTime: ''
       }
     },
     methods: {
@@ -124,12 +124,12 @@
           ]
         })
       },
-      openStartTime (event) {
-        this.dispatchMethod('base-bsc', 'openStartTime', event)
-      },
-      openEndTime (event) {
-        this.dispatchMethod('base-bsc', 'openEndTime', event)
-      },
+      /*  openStartTime (event) {
+          this.dispatchMethod('base-bsc', 'openStartTime', event)
+        },
+        openEndTime (event) {
+          this.dispatchMethod('base-bsc', 'openEndTime', event)
+        },*/
       showPopup () {
         this.$f7.popup('.popup-province', false)
       },
@@ -139,12 +139,12 @@
         activeAddress: ({base}) => base.activeAddress,
         orderStat: ({bsc}) => bsc.orderStat,
       }),
-      startTime () {
-        return this.orderStat.startDate && moment(this.orderStat.startDate).format('YYYY-MM-DD')
-      },
-      endTime () {
-        return this.orderStat.endDate && moment(this.orderStat.endDate).format('YYYY-MM-DD')
-      },
+      /* startTime () {
+         return this.orderStat.startDate && moment(this.orderStat.startDate).format('YYYY-MM-DD')
+       },
+       endTime () {
+         return this.orderStat.endDate && moment(this.orderStat.endDate).format('YYYY-MM-DD')
+       },*/
     },
     components: {BaseWorkBase}
   }

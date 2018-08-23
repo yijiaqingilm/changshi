@@ -252,7 +252,8 @@
       },
       totalMileage () {
         let total = this.info.retractMileage - this.info.outMileage
-        return isNaN(parseFloat(total)) ? 0 : parseFloat(total)
+        total = isNaN(parseFloat(total)) ? 0 : parseFloat(total)
+        return total < 0 ? 0 : total
       },
       totalFee () {
         let {bridgefee, servicefee, otherfee, oilfee} = this.info
@@ -269,7 +270,8 @@
           oilfee = 0
         }
         let totalFee = parseFloat(bridgefee) + parseFloat(servicefee) + parseFloat(otherfee) + parseFloat(oilfee)
-        return isNaN(parseFloat(totalFee)) ? 0 : parseFloat(totalFee)
+        totalFee = isNaN(parseFloat(totalFee)) ? 0 : parseFloat(totalFee)
+        return totalFee < 0 ? 0 : totalFee
       }
     },
     components: {Hint}

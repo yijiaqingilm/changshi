@@ -17,26 +17,6 @@
                 </keep-alive>
             </f7-tab>
         </f7-tabs>
-        <div slot="fixed">
-            <datetime ref="startDate" :displayValue.sync="orderStat.displayStartDate" class="time-input"
-                      placeholder="请选择开始时间" v-model='orderStat.startDate'
-                      :format="dateTimeFormat"
-                      type="date"
-                      :phrases="dateTimePhrases"></datetime>
-            <datetime ref="endDate" :displayValue.sync="orderStat.displayEndDate" placeholder="请选择结束时间"
-                      v-model='orderStat.endDate' :format="dateTimeFormat"
-                      type="date"
-                      :phrases="dateTimePhrases"></datetime>
-            <datetime ref="startAnchorDate" :displayValue.sync="anchorStat.displayStartDate" class="time-input"
-                      placeholder="请选择开始时间" v-model='anchorStat.startDate'
-                      :format="dateTimeFormat"
-                      type="date"
-                      :phrases="dateTimePhrases"></datetime>
-            <datetime ref="endAnchorDate" :displayValue.sync="anchorStat.displayEndDate" placeholder="请选择结束时间"
-                      v-model='anchorStat.endDate' :format="dateTimeFormat"
-                      type="date"
-                      :phrases="dateTimePhrases"></datetime>
-        </div>
     </f7-page>
 </template>
 
@@ -106,30 +86,12 @@
     created () {
     },
     methods: {
-      openStartTime (event) {
-        console.log('触发')
-        this.$refs.startDate.open(event)
-      },
-      openEndTime (event) {
-        this.$refs.endDate.open(event)
-      },
-      openAnchorStartTime (event) {
-        this.$refs.startAnchorDate.open(event)
-      },
-      openAnchorEndTime (event) {
-        this.$refs.endAnchorDate.open(event)
-      },
       showTab (value) {
         this.$f7.showTab(`.tab-${value}`)
       }
     },
     computed: {
-      ...mapState({
-        dateTimePhrases: ({base}) => base.dateTimeConfig.options.phrases,
-        dateTimeFormat: ({base}) => base.dateTimeConfig.format,
-        orderStat: ({bsc}) => bsc.orderStat,
-        anchorStat: ({bsc}) => bsc.anchorStat
-      })
+      ...mapState({})
     },
     components: {
       TabsCtrl,

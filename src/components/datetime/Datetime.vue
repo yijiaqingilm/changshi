@@ -37,7 +37,6 @@
   import { DateTime, Settings } from 'luxon'
   import DatetimePopup from './DatetimePopup'
   import { datetimeFromISO, startOfDay, weekStart } from './util'
-  import moment from 'lib/moment'
   import 'lib/moment/locale/zh-cn'
 
   export default {

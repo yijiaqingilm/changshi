@@ -3,8 +3,8 @@
         <header>查询时间</header>
         <div class='time-group'>
             <div>
-                <input type="text" readonly class='time-input' placeholder="请选择时间" :value="veDate"
-                       @click="openVeDatePicker">
+                <base-date-picker v-model="veDate" text="请选择时间"
+                                  :mode="dateType.yearAndMonth"></base-date-picker>
             </div>
         </div>
         <div class='combo'>
@@ -22,14 +22,14 @@
 
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex'
-  import { clientValue, globalConst as native } from 'lib/const'
+  import { clientValue, globalConst as native, dateType } from 'lib/const'
   import emitter from 'mixins/emitter'
-  import moment from 'lib/moment'
 
   export default {
     mixins: [emitter],
     data () {
       return {
+        dateType,
         clientValue,
         carList: [],
         options: {
@@ -87,13 +87,11 @@
               data: []
             }
           ]
-        }
+        },
+        veDate: ''
       }
     },
     methods: {
-      openVeDatePicker (event) {
-        this.dispatchMethod('manage-bsc', 'openVeDatePicker', event)
-      },
       showPopup () {
         this.$f7.popup('.popup-province', false)
       },
@@ -127,9 +125,6 @@
         activeAddress: ({base}) => base.activeAddress,
         veStat: ({bsc}) => bsc.veStat,
       }),
-      veDate () {
-        return this.veStat.date && moment(this.veStat.date).format('YYYY-MM')
-      },
       currentAddress () {
         let {provinceName, cityName, districtName} = this.activeAddress
         if (provinceName && cityName && districtName) {
