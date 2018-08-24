@@ -1,7 +1,7 @@
 import { setToken } from 'lib/common'
 import api from 'api/api'
 import { isEmptyObject, margeMutations } from 'lib/utils'
-import { globalConst as native, mutationNames, Subject } from 'lib/const'
+import { globalConst as native, mutationNames, Subject, subjectStatus } from 'lib/const'
 import Vue from 'vue'
 import { applyClientMiddleware } from 'src/main'
 
@@ -19,7 +19,7 @@ const state = {
       answer: ['A'],
       resolve: 'aadd',
       hasAnswer: false,
-      subject: [{value: 'A', desc: '1.xxxx'}, {value: 'A', desc: '1.xxxx'}]
+      items: [{value: 'A', desc: '1.xxxx'}, {value: 'A', desc: '1.xxxx'}]
     }, {
       title: 'xxxyy',
       answer: ['A'],
@@ -61,7 +61,15 @@ let mutations = {
     currentSubject.title = subject
     currentSubject.resolve = remark
     currentSubject.items = answer
+    if (__DEBUG__) {
+      currentSubject.items = [{id: 'A', name: '用于测试1', enabled: 1}, {id: 'B', name: '用于测试2', enabled: 0}]
+    }
     currentSubject.sort = sort
+    currentSubject.answer = sort === subjectStatus.checkSubject ? [] : ''
+    if (__DEBUG__) {
+      currentSubject.sort = subjectStatus.checkSubject
+      currentSubject.answer = currentSubject.sort === subjectStatus.checkSubject ? [] : ''
+    }
   },
   [mutationNames.doTrainSubject_success] (state, {data}) {
     let {refid, title, subject, score, subjectType, answerTime} = data

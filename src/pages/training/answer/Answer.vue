@@ -22,24 +22,17 @@
                                 <f7-block-title>{{index+1}}.{{subject.title}}</f7-block-title>
                                 <f7-list form no-hairlines no-hairlines-between>
                                     <template v-if="subject.sort===subjectStatus.checkSubject">
-                                        <f7-list-item v-for="(item,index) in subject.items" :key="index"
-                                                      no-border
-                                                      checkbox
-                                                      :name="'t-c-'+index"
-                                                      v-model="subject.answer"
-                                                      :value="item.id"
-                                                      :title="item.name"></f7-list-item>
+                                        {{subject.answer}}
+                                        <base-checkbox-group v-model="subject.answer">
+                                            <base-checkbox v-for="(item,itemIndex) in subject.items"
+                                                           :name="'t-c-'+index"
+                                                           no-border
+                                                           :label="item.id"
+                                                           :title="item.name"
+                                                           :key="itemIndex"></base-checkbox>
+                                        </base-checkbox-group>
                                     </template>
                                     <template v-else>
-                                        {{test}} <!-- v-model="test"-->
-                                        <f7-list-item v-for="(item,itemIndex) in subject.items" :key="itemIndex"
-                                                      no-border
-                                                      checkbox
-                                                      v-model="test"
-                                                      @change="changeItem(item)"
-                                                      :name="'t-c-'+index"
-                                                      :value="item.id"
-                                                      :title="item.name"></f7-list-item>
                                         <!--<f7-list-item required radio name="tst" value="a"
                                                       title="Checkbox C"></f7-list-item>
                                         <f7-list-item required radio name="tst" value="C"
@@ -52,9 +45,10 @@
                             <line-10></line-10>
                             <footer class='tab-footer' v-show="subject.hasAnswer">
                                 <div>回答正确，正确答案：B</div>
+                                <div>回答错误，正确答案：B</div>
                                 <div class='f-resolve'>
                                     <div>答案解析：</div>
-                                    <div>xxx</div>
+                                    <div>{{subject.resolve}}</div>
                                 </div>
                             </footer>
                         </section>
@@ -75,14 +69,14 @@
 
 <script>
   import { mapState } from 'vuex'
-  import { globalConst as native, subjectStatus } from '../../../lib/const'
+  import { globalConst as native, subjectStatus, modalTitle } from 'lib/const'
 
   export default {
     name: 'answer',
     data () {
       return {
         subjectStatus,
-        test: '123'
+        test: ['A']
       }
     },
     created () {
@@ -100,25 +94,42 @@
       },
       showNext () {
         let {currentProgress, subjects} = this.paper
-        return subjects[currentProgress + 1] && subjects[currentProgress].hasAnswer
+        return subjects[currentProgress] && subjects[currentProgress - 1].hasAnswer
       },
       showRes () {
         let {currentProgress, subjects} = this.paper
-        return subjects[currentProgress] && !subjects[currentProgress].hasAnswer
+        return subjects[currentProgress - 1] && !subjects[currentProgress - 1].hasAnswer
       },
       showSubmit () {
         let {currentProgress, subjects} = this.paper
-        return currentProgress === subjects.length - 1 && subjects[currentProgress].hasAnswer
+        return currentProgress === subjects.length && subjects[currentProgress - 1].hasAnswer
       },
       doAnswer () {
         // 回答逻辑
-        let {currentProgress} = this.paper
+        let {currentProgress, subjects} = this.paper
+        let answer = false
+        let subject = subjects[currentProgress - 1]
+        // 当前选择回答的id
+        let currentAnswer = subject.answer
+        // 获取当前选择的题目
+        let checkedAnswer = subject.items.filter((item) => {
+          switch (subject.sort) {
+            case subjectStatus.checkSubject:
+              return currentAnswer ? currentAnswer.includes(item.id) : false
+            case subjectStatus.radioSubject:
+            case subjectStatus.switchSubject:
+              return currentAnswer === item.id
+          }
+        })
+        if (!checkedAnswer || checkedAnswer.length === 0) {
+          this.$f7.alert('请选择答案', modalTitle)
+          return
+        }
+        answer = !checkedAnswer.some((item) => item.enabled >>> 0 === 0)
         this.$store.dispatch({
           type: native.doAnswer,
           page: currentProgress,
-          answer: true
-        }).then(() => {
-
+          answer
         })
       },
       doPrev () {

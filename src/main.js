@@ -53,6 +53,8 @@ import BaseFormList from 'components/baseFormList/BaseFormList'
 import BaseFormListItem from 'components/baseFormList/BaseFormListItem'
 import ScanInput from 'components/scanInput/ScanInput'
 import BaseDatePicker from 'components/baseDatePicker/BaseDatePicker'
+import BaseCheckBox from 'components/baseCheckBox/BaseCheckBox'
+import BaseCheckBoxGroup from 'components/baseCheckBox/BaseCheckBoxGroup'
 /* 答题组件*/
 import AnswerTabs from 'components/answerTabs/AnswerTabs.vue'
 import AnswerTab from 'components/answerTabs/AnswerTab.vue'
@@ -82,6 +84,8 @@ Vue.component('base-form-list', BaseFormList)
 Vue.component('base-form-list-item', BaseFormListItem)
 Vue.component('scan-input', ScanInput)
 Vue.component('base-date-picker', BaseDatePicker)
+Vue.component('base-checkbox', BaseCheckBox)
+Vue.component('base-checkbox-group', BaseCheckBoxGroup)
 
 let user_store = sessionStorage.getItem('changshi_store')
 user_store && store.replaceState(Object.assign(store.state, JSON.parse(user_store)))

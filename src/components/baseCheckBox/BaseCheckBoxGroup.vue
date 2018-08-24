@@ -9,6 +9,7 @@
 <script>
   export default {
     name: '',
+    componentName: 'baseCheckBoxGroup',
     props: {
       value: {}
     }
