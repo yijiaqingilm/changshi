@@ -5,7 +5,6 @@ import * as base from './modules/base.module'
 import * as auth from './modules/auth.module'
 import * as bsc from './modules/bsc.module'
 import * as rm from './modules/rm.module'
-import { globalConst as native } from 'lib/const'
 
 Vue.use(Vuex)
 

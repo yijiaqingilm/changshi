@@ -59,6 +59,7 @@ let apiConfig = [
   new ApiConfig(native.doStaticsApproveNum, '/statics/approve-num', 'get'),
   new ApiConfig(native.doTrainMajor, '/train-major/index', 'get'),
   new ApiConfig(native.doTrainLevel, '/train-level/index', 'get'),
-  new ApiConfig(native.doTrainSubject, '/train-subject/index', 'get')
+  new ApiConfig(native.doTrainSubject, '/train-subject/index', 'get'),
+  new ApiConfig(native.doTrainSubjectHistory, '/train-subject/history', 'get')
 ]
 export default apiConfig

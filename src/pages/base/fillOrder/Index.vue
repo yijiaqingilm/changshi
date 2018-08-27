@@ -317,13 +317,20 @@
         return currentAddress.length > 0 ? currentAddress : '请选择地址'
       },
       showAmmeter () {
-        switch (this.jobCard.major >>> 0) {
+        /* switch (this.jobCard.major >>> 0) {
           case major.jizhan:
           case major.jf:
           case major.wlan:
             return true
           default:
             return false
+        }*/
+        switch (this.jobCard.major >>> 0) {
+          case major.xianlu:
+          case major.jtzx:
+            return false
+          default:
+            return true
         }
       },
       /* showDynamotor () {

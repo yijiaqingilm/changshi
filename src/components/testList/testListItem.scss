@@ -1,0 +1,25 @@
+@import "../../css/globalFunc";
+
+.list-item {
+  position: relative;
+  margin: 40px auto;
+  text-align: center;
+  header {
+    margin-bottom: 40px;
+    @include setFontSize($middleFontSize);
+  }
+  .gt{
+    position: absolute;
+    width: 15px;
+    height: 15px;
+
+  }
+  .item-wrap {
+    > div {
+      margin-bottom: 15px;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+@import "../../css/globalFunc";
+
+.item-panal {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  height: 140px;
+  .item-title {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    > div {
+      @include setFontSize($middleFontSize);
+    }
+  }
+  .item-subtitle {
+    flex: 1;
+    @include setFontSize($baseFontSize);
+    color: #999;
+  }
+}

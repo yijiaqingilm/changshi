@@ -4,10 +4,12 @@
         <div class='time-group'>
             <span class='time-slash'></span>
             <div>
-                <base-date-picker v-model="startTime" text="请选择开始时间" :mode="dateType.yearAndMonthAndDay"></base-date-picker>
+                <base-date-picker v-model="startTime" text="请选择开始时间"
+                                  :mode="dateType.yearAndMonthAndDay"></base-date-picker>
             </div>
             <div>
-                <base-date-picker v-model="endTime" text="请选择结束时间" :mode="dateType.yearAndMonthAndDay"></base-date-picker>
+                <base-date-picker v-model="endTime" text="请选择结束时间"
+                                  :mode="dateType.yearAndMonthAndDay"></base-date-picker>
             </div>
         </div>
         <div class='combo'>
@@ -49,7 +51,7 @@
             bottom: 20,
             data: ['工单总数', '已归档工单', '待审核工单', '未归档工单']
           },
-          color: ['#a9d08e', '#00b050', '#c40202', '#b4c6e7'],
+          color: ['#a1d57d', '#6dc394', '#ee8787', '#dec562'],
           series: [
             {
               name: '工单统计',

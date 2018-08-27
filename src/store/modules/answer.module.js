@@ -1,11 +1,12 @@
 import { setToken } from 'lib/common'
 import api from 'api/api'
 import { isEmptyObject, margeMutations } from 'lib/utils'
-import { globalConst as native, mutationNames, Subject, subjectStatus } from 'lib/const'
+import { globalConst as native, mutationNames, Subject, subjectStatus, trainModes } from 'lib/const'
 import Vue from 'vue'
 import { applyClientMiddleware } from 'src/main'
 
 const state = {
+  currentTrainMode: '',
   paper: {
     refId: '',
     currentProgress: 1,
@@ -36,6 +37,9 @@ const state = {
 }
 const getters = {}
 const actions = {
+  [native.doTrainSubjectHistory] ({state}, refs) {
+    return applyClientMiddleware(api.doTrainSubjectHistory)(refs)
+  },
   [native.doGetSubject] ({state}, refs) {
     return applyClientMiddleware(api.doGetSubject)(refs)
   },
@@ -54,6 +58,9 @@ const actions = {
   }
 }
 let mutations = {
+  [native.setTrainMode] (state, mode = trainModes.answer) {
+    state.currentTrainMode = mode
+  },
   [mutationNames.doGetSubject_success] (state, {data, refs}) {
     let {answer, final, id, remark, sort, subject} = data
     let {page} = refs

@@ -56,7 +56,9 @@ const globalConst = {
   setCurrentSubject: 'setCurrentSubject',
   doTrainSubject: 'doTrainSubject',
   resetPaper: 'resetPaper',
-  doGetSubject: 'doGetSubject'
+  doGetSubject: 'doGetSubject',
+  doTrainSubjectHistory: 'doTrainSubjectHistory',
+  setTrainMode: 'setTrainMode'
 }
 let methods = [SUCCESS.toLowerCase(), FAILURE.toLowerCase(), REQUEST.toLowerCase()]
 const mutationNames = {}
@@ -233,6 +235,12 @@ class Subject {
   }
 }
 
+const trainModes = {
+  answer: 0,
+  test: 1,
+  video: 2
+}
+
 export {
   globalConst,
   modalTitle,
@@ -267,5 +275,6 @@ export {
   dateType,
   subjectStatus,
   subjectTypes,
-  Subject
+  Subject,
+  trainModes
 }

@@ -5,49 +5,74 @@
             <f7-nav-center>培训记录</f7-nav-center>
         </f7-navbar>
         <h-list>
-            <h-list-item desc="培训答题次数" title="263" unit="次"></h-list-item>
-            <h-list-item desc="视频培训次数" title="263" unit="次"></h-list-item>
-            <h-list-item desc="考试次数" title="263" unit="次"></h-list-item>
+            <h-list-item desc="培训答题次数" :title="statics.train" unit="次"></h-list-item>
+            <h-list-item desc="视频培训次数" :title="statics.video" unit="次"></h-list-item>
+            <h-list-item desc="考试次数" :title="statics.examination" unit="次"></h-list-item>
         </h-list>
         <section>
-            <div class='list'>
-                <div class="list-item">
-                    <div class='item-panal'>
-                        <div class='item-title'>
-                            <div>答题惩戒</div>
-                            <div>88分米</div>
-                        </div>
-                        <div class='item-subtitle'>2018-07</div>
-                    </div>
-                    <line-10></line-10>
-                </div>
-                <div class="list-item">
-                    <div class='item-panal'>
-                        <div class='item-title'>
-                            <div>答题惩戒</div>
-                            <div>88分米</div>
-                        </div>
-                        <div class='item-subtitle'>2018-07</div>
-                    </div>
-                    <line-10></line-10>
-                </div>
-            </div>
+            <list>
+                <list-item v-for="(item,index) in historyList" :key="index" title="考试" :scope="80"
+                           subTitle="2018-01-15"></list-item>
+            </list>
+            <infinite-loading @infinite="loadData">
+                <div slot="no-results">没有数据</div>
+                <div slot="no-more">没有更多数据</div>
+            </infinite-loading>
         </section>
     </f7-page>
 </template>
 
 <script>
+  import TrainList from 'components/trainList/TrainList'
+  import TrainListItem from 'components/trainList/TrainListItem'
+  import { globalConst as native, pageSize } from 'lib/const'
+  import InfiniteLoading from 'vue-infinite-loading'
+
   export default {
     name: 'training-logs',
     data () {
-      return {}
+      return {
+        page: 1,
+        historyList: [],
+        statics: {
+          train: 0,
+          video: 0,
+          examination: 0
+        }
+      }
     },
     created () {
     },
-    methods: {},
+    methods: {
+      loadData ($state) {
+        this.$store.dispatch({
+          type: native.doTrainSubjectHistory,
+          page: this.page,
+        }).then(({data}) => {
+          let items = data.history
+          let {train_ans_num, videotraining, examinationnum} = data.statics
+          this.statics = {
+            train: train_ans_num,
+            video: videotraining,
+            examination: examinationnum
+          }
+          if (Array.isArray(items) && items.length > 0) {
+            this.historyList = this.historyList.concat(items)
+            $state.loaded()
+            this.page += 1
+          } else {
+            $state.complete()
+          }
+          if (items.length < pageSize) {
+            $state.complete()
+          }
+        })
+      },
+    },
     mounted () {
     },
-    watch: {}
+    watch: {},
+    components: {'list': TrainList, 'list-item': TrainListItem, InfiniteLoading}
   }
 </script>
 

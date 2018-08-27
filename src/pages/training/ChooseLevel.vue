@@ -6,16 +6,28 @@
         </f7-navbar>
         <section>
             <f7-block-title class="header">{{name}}专业题库</f7-block-title>
-            <f7-list>
-                <f7-list-item v-for="(level,index) in levelList" @click="chooseLevel(level)" :key="index" link
-                              :title="level.name"></f7-list-item>
-            </f7-list>
+            <template v-if="currentTrainMode.test">
+                <f7-list>
+                    <f7-list-item v-for="(level,index) in levelList" @click="chooseLevel(level)" :key="index" link
+                                  :title="level.name"></f7-list-item>
+                </f7-list>
+            </template>
+            <template v-else>
+               <list>
+                   <list-item title="一级" :startTime="2018" :endTime="2019" :limit="60"></list-item>
+                   <list-item title="一级" :startTime="2018" :endTime="2019" :limit="60"></list-item>
+               </list>
+            </template>
         </section>
     </f7-page>
 </template>
 
 <script>
   import { globalConst as native } from 'lib/const'
+  import { mapState } from 'vuex'
+  import TestList from 'components/testList/TestList'
+  import TestListItem from 'components/testList/TestListItem'
+
   export default {
     name: '',
     data () {
@@ -40,7 +52,11 @@
         this.levelList = data
       })
     },
-    computed: {},
+    computed: {
+      ...mapState({
+        currentTrainMode: ({answer}) => answer.currentTrainMode
+      })
+    },
     methods: {
       chooseLevel (level) {
         this.$store.commit(native.setCurrentSubject, {
@@ -48,10 +64,10 @@
           trainType: this.categoryId,
           major: this.majorId
         })
-        this.$router.loadPage('/training/answer/begin')
+        this.$router.loadPage('/training/begin')
       }
     },
-    components: {}
+    components: {'list': TestList, 'list-item': TestListItem}
   }
 </script>
 

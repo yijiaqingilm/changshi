@@ -64,9 +64,10 @@
             <section>
                 <base-title title="在线培训"></base-title>
                 <base-tabs>
-                    <base-tab label="在线答题" link="/training/answer/main" :icon="iconSrc.online"></base-tab>
-                    <base-tab label="在线视频" :icon="iconSrc.video"></base-tab>
-                    <base-tab label="考试" :icon="iconSrc.test"></base-tab>
+                    <base-tab label="在线答题" :link="'/training/home/'+trainModes.answer"
+                              :icon="iconSrc.online"></base-tab>
+                    <base-tab label="在线视频" :link="'/training/home/'+trainModes.video" :icon="iconSrc.video"></base-tab>
+                    <base-tab label="考试" :link="'/training/home/'+trainModes.test" :icon="iconSrc.test"></base-tab>
                     <base-tab label="培训记录" link="/training/logs" :icon="iconSrc.train"></base-tab>
                 </base-tabs>
             </section>
@@ -76,7 +77,7 @@
 
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex'
-  import { globalConst as native, modalTitle } from 'lib/const'
+  import { globalConst as native, modalTitle, trainModes } from 'lib/const'
   import Vue from 'vue'
   import BaseTitle from 'components/baseTitle/BaseTitle'
   import BaseTabs from 'components/baseTabs/BaseTabs'
@@ -87,6 +88,7 @@
     mixins: [globalMixin],
     data () {
       return {
+        trainModes,
         iconSrc: {
           orderAdd: require('../assets/icon_order_add.png'),
           myOrder: require('../assets/icon_order.png'),

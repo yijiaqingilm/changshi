@@ -2,7 +2,7 @@
     <f7-page>
         <f7-navbar>
             <f7-nav-left back-link="返回" sliding></f7-nav-left>
-            <f7-nav-center>在线答题</f7-nav-center>
+            <f7-nav-center>{{title}}</f7-nav-center>
         </f7-navbar>
         <section>
             <tabs-ctrl v-model="answerType" @change="showTab">
@@ -14,7 +14,7 @@
                         :class="{['tab-'+type.value]:true}"
                         :active="answerType===type.value">
                     <keep-alive>
-                        <train-child-panel :type='type.value' :mode="trainModes.answer"></train-child-panel>
+                        <train-child-panel :type='type.value' :mode="trainType"></train-child-panel>
                     </keep-alive>
                 </f7-tab>
             </f7-tabs>
@@ -34,11 +34,26 @@
       return {
         trainModes,
         trainTypes,
-        answerType: trainTypeStatus.skill
+        answerType: trainTypeStatus.skill,
+        trainType: trainModes.answer,
+        title: ''
       }
     },
     created () {
-      this.$store.commit(native.setTrainMode, trainModes.answer)
+      this.trainType = this.$route.params.trainType >>> 0
+      switch (this.trainType) {
+        case trainModes.test:
+          this.title = '考试'
+          break
+        case trainModes.video:
+          this.title = '在线视频'
+          break
+        case trainModes.answer:
+        default:
+          this.title = '在线答题'
+          break
+      }
+      this.$store.commit(native.setTrainMode, this.trainType)
     },
     computed: {},
     methods: {
