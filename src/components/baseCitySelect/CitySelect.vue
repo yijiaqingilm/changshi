@@ -16,9 +16,9 @@
                     <f7-list-item v-for="(row,index) in getProvinceList"
                                   :key="index"
                                   :title="row.name"
-                                  :value="row.name"
+                                  :value="row.id"
                                   name="province"
-                                  :checked="province==row.name"
+                                  :checked="province==row.id"
                                   @click="selectProvince(row)"
                                   radio>
                     </f7-list-item>
@@ -40,9 +40,9 @@
                     <f7-list-item v-for="(row,index) in getCityList"
                                   :key="index"
                                   :title="row.name"
-                                  :value="row.name"
+                                  :value="row.id"
                                   name="city"
-                                  :checked="city==row.name"
+                                  :checked="city==row.id"
                                   @click="selectCity(row)"
                                   radio>
                     </f7-list-item>
@@ -65,9 +65,9 @@
                     <f7-list-item v-for="(row,index) in getDistrictList"
                                   :key="index"
                                   :title="row.name"
-                                  :value="row.name"
+                                  :value="row.id"
                                   name="district"
-                                  :checked="district==row.name"
+                                  :checked="district==row.id"
                                   @click="selectDistrict(row)"
                                   radio>
                     </f7-list-item>
@@ -84,21 +84,24 @@
   export default {
     name: '',
     props: {
-      provinceId: {},
-      cityId: {},
-      districtId: {}
+      province_id: {},
+      city_id: {},
+      district_id: {}
     },
     data () {
       return {
+        provinceId: '',
         province: '',
+        cityId: '',
         city: '',
+        districtId: '',
         district: ''
       }
     },
     created () {
-      this.province = this.provinceId
-      this.city = this.cityId
-      this.district = this.districtId
+      this.provinceId = this.province_id
+      this.cityId = this.city_id
+      this.districtId = this.district_id
     },
     methods: {
       open () {
@@ -107,27 +110,64 @@
       selectProvince (province) {
         let {commit, dispatch} = this.$store
         this.province = province.name
+        this.provinceId = province.id
+        if (province.id !== this.activeAddress.provinceId) {
+          commit(native.resetCity)
+          commit(native.resetDistrict)
+          this.$emit('changeCity', {provinceName: province.name, provinceId: province.id})
+        }
+        commit(native.doSelectProvince, {
+          provinceId: province.id, provinceName: province.name
+        })
         dispatch({
           type: native.doAddressCityList,
-          province: province.name
+          province_id: province.id,
+          sort: 'city'
         })
         this.$f7.popup('.popup-city2')
       },
       selectCity (city) {
         let {commit, dispatch} = this.$store
         this.city = city.name
+        this.cityId = city.id
+        if (city.id !== this.activeAddress.cityId) {
+          commit(native.resetDistrict)
+          this.$emit('changeCity', {
+            provinceName: this.province,
+            provinceId: this.provinceId,
+            cityName: city.name,
+            cityId: city.id
+          })
+        }
+        commit(native.doSelectCity, {
+          cityId: city.id,
+          cityName: city.name
+        })
         this.$store.dispatch({
           type: native.doAddressDistrictList,
-          city: city.name
+          city_id: city.id,
+          sort: 'district'
         })
         this.$f7.popup('.popup-district2')
       },
       selectDistrict (districtObj) {
         let {commit} = this.$store
         this.district = districtObj.name
-        let {province, city, district} = this
-        this.$emit('cityInfo', {province, city, district}
-        )
+        this.districtId = districtObj.id
+        let {province, city, district, provinceId, cityId, districtId} = this
+        commit(native.doSelectDistrict, {
+          districtName: district,
+          districtId: districtId
+        })
+        this.$emit('cityInfo', {province, city, district, provinceId, cityId, districtId})
+        this.$emit('changeCity', {
+          provinceName: province,
+          cityName: city,
+          districtName: district,
+          provinceId,
+          cityId,
+          districtId
+        })
         this.closePopupCity()
       },
       closePopupDistrict () {
@@ -147,13 +187,20 @@
     },
     mounted () {
       this.$nextTick(() => {
-        this.$store.dispatch({
-          type: native.initActiveAddress,
-        })
+        /* let {province_id, city_id, district_id, provinceName, cityName, districtName} = this.userInfo
+        this.$store.commit(native.initActiveAddress, {
+          provinceName,
+          cityName,
+          districtName,
+          provinceId: province_id,
+          cityId: city_id,
+          districtId: district_id
+        })*/
         this.$$('.popup-province2').on('opened', () => {
           let {dispatch} = this.$store
           dispatch({
-            type: native.doAddressProvinceList
+            type: native.doAddressProvinceList,
+            sort: 'province'
           })
         })
       })
@@ -163,13 +210,14 @@
         'getProvinceList',
       ]),
       ...mapState({
-        activeAddress: ({base}) => base.activeAddress
+        activeAddress: ({base}) => base.activeAddress,
+        userInfo: ({auth}) => auth.userInfo
       }),
       getCityList () {
-        return this.$store.state.base.addressForCity[this.province]
+        return this.$store.state.base.addressForCity[this.provinceId]
       },
       getDistrictList () {
-        return this.$store.state.base.addressForDistrict[this.city]
+        return this.$store.state.base.addressForDistrict[this.cityId]
       }
     },
   }

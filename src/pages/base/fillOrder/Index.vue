@@ -606,7 +606,7 @@
         this.$refs.ammeterTime[index].open(event)
       },
       showPopup () {
-        this.$f7.popup('.popup-province', false)
+        bus.$emit('openCityPicker')
       },
       getJobPointList () {
         console.log('getJobPoint')

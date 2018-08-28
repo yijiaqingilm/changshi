@@ -36,8 +36,7 @@
                 </div>
             </section>
             <f7-block class='group'>
-                <f7-button big full active v-if="!isSubmit" @click="beforeSumit">调整位置</f7-button>
-                <f7-button big full active v-else @click="submit">提交</f7-button>
+                <f7-button big full active @click="submit">调整位置</f7-button>
             </f7-block>
         </div>
     </div>
@@ -69,7 +68,6 @@
         adress: '',
         workBase: '',
         workBaseList: [],
-        isSubmit: false
       }
     },
     mixins: [emitter],
@@ -82,14 +80,6 @@
       })*/
     },
     methods: {
-      beforeSumit () {
-        this.$f7.confirm('是否确认调整位置？', modalTitle, () => {
-          this.isSubmit = true
-          aMapUtil.geolocation().then((data) => {
-            this.$store.commit(native.changeDyAddress, data.addressComponent)
-          })
-        })
-      },
       submit () {
         if (!this.nowAddressInfo) {
           this.$f7.alert('请选择最新存放地址', modalTitle)
@@ -99,18 +89,20 @@
           this.$f7.alert('请选择站点', modalTitle)
           return
         }
-        let {province, city, district} = this.nowAddress
-        this.$store.dispatch({
-          type: native.doDynamotorUpdate,
-          code: this.dy.code,
-          province,
-          city,
-          district,
-          work_base: this.workBase
-        }).then(() => {
-          this.$f7.alert('提交成功', modalTitle)
-        }).catch((error) => {
-          this.$f7.alert(error, modalTitle)
+        this.$f7.confirm('是否确认调整位置？', modalTitle, () => {
+          let {province, city, district} = this.nowAddress
+          this.$store.dispatch({
+            type: native.doDynamotorUpdate,
+            code: this.dy.code,
+            province,
+            city,
+            district,
+            work_base: this.workBase
+          }).then(() => {
+            this.$f7.alert('提交成功', modalTitle)
+          }).catch((error) => {
+            this.$f7.alert(error, modalTitle)
+          })
         })
       },
       openNowCityPicker () {

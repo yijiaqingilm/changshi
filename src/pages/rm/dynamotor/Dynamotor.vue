@@ -21,9 +21,9 @@
         </f7-tabs>
         <div slot="fixed">
             <city-select @cityInfo="cityInfo"
-                         :provinceId="provinceId"
-                         :cityId="cityId"
-                         :districtId="districtId"
+                         :province_id="provinceId"
+                         :city_id="cityId"
+                         :district_id="districtId"
                          ref="citySelect">
             </city-select>
         </div>

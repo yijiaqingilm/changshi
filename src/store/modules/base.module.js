@@ -122,7 +122,13 @@ const actions = {
   [native.doGetAmmeter] ({state}, refs) {
     return applyClientMiddleware(api.doGetAmmeter)(refs)
   },
-  [native.doAddressProvinceList] ({state}, refs) {
+  /**
+   * 高德方式
+   * @param state
+   * @param refs
+   * @returns {*}
+   */
+  /* [native.doAddressProvinceList] ({state}, refs) {
     if (isEmptyObject(state.addressForProvince)) {
       return aMapUtil.destrictSearch('country', '中国', function (error, result) {
         if (error) {
@@ -134,8 +140,21 @@ const actions = {
     } else {
       return Promise.resolve(state.addressForProvince)
     }
+  },*/
+  [native.doAddressProvinceList] ({state}, refs) {
+    if (isEmptyObject(state.addressForProvince)) {
+      return applyClientMiddleware(api.doAddressProvinceList)(refs)
+    } else {
+      return Promise.resolve(state.addressForProvince)
+    }
   },
-  [native.doAddressCityList] ({state}, refs) {
+  /**
+   * 高德方式
+   * @param state
+   * @param refs
+   * @returns {*}
+   */
+  /* [native.doAddressCityList] ({state}, refs) {
     let {province} = refs
     if (isEmptyObject(state.addressForCity[province])) {
       return aMapUtil.destrictSearch('province', province, function (error, result) {
@@ -148,8 +167,22 @@ const actions = {
     } else {
       return Promise.resolve(state.addressForCity[province])
     }
+  },*/
+  [native.doAddressCityList] ({state}, refs) {
+    let {province_id} = refs
+    if (isEmptyObject(state.addressForCity[province_id])) {
+      return applyClientMiddleware(api.doAddressCityList)(refs)
+    } else {
+      return Promise.resolve(state.addressForCity[province_id])
+    }
   },
-  [native.doAddressDistrictList] ({state}, refs) {
+  /**
+   * 高德方式
+   * @param state
+   * @param refs
+   * @returns {*}
+   */
+  /* [native.doAddressDistrictList] ({state}, refs) {
     let {city} = refs
     console.log('what?', city)
     if (isEmptyObject(state.addressForDistrict[city])) {
@@ -162,6 +195,15 @@ const actions = {
       })
     } else {
       return Promise.resolve(state.addressForDistrict[city])
+    }
+  },*/
+  [native.doAddressDistrictList] ({state}, refs) {
+    console.log('what???', refs)
+    let {city_id} = refs
+    if (isEmptyObject(state.addressForDistrict[city_id])) {
+      return applyClientMiddleware(api.doAddressDistrictList)(refs)
+    } else {
+      return Promise.resolve(state.addressForDistrict[city_id])
     }
   },
   [native.doWorkSort] ({state}, refs) {
@@ -189,13 +231,7 @@ let mutations = {
     state.workNumberStatics = data
   },
   [native.initActiveAddress] (state, address) {
-    let {province, city, district} = address
-    state.activeAddress.provinceId = province
-    state.activeAddress.provinceName = province
-    state.activeAddress.cityId = city
-    state.activeAddress.cityName = city
-    state.activeAddress.districtId = district
-    state.activeAddress.districtName = district
+    state.activeAddress = address
   },
   [native.doSelectDistrict] (state, district) {
     let {districtName, districtId} = district
@@ -256,12 +292,15 @@ let mutations = {
     console.log(data, 'data')
   },
   [mutationNames.doAddressProvinceList_success] (state, {data}) {
+    state.addressForProvince = data
   },
   [mutationNames.doAddressCityList_success] (state, {data, refs}) {
-    Vue.set(state.addressForCity, state.activeAddress.provinceId, data)
+    let {province_id} = refs
+    Vue.set(state.addressForCity, province_id, data)
   },
   [mutationNames.doAddressDistrictList_success] (state, {data, refs}) {
-    Vue.set(state.addressForDistrict, state.activeAddress.cityId, data)
+    let {city_id} = refs
+    Vue.set(state.addressForDistrict, city_id, data)
   },
   [mutationNames.doWorkSort_success] (state, {data}) {
     state.workSortList = data

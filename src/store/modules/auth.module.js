@@ -16,6 +16,12 @@ const state = {
     id: '',
     empcode: '',
     realname: '',
+    province_id: '',
+    city_id: '',
+    district_id: '',
+    provinceName: '',
+    cityName: '',
+    districtName: ''
   },
   wxConfig: {},
 }
@@ -48,6 +54,9 @@ let mutations = {
   },
   [mutationNames.doLogin_success] (state, {data}) {
     state.userInfo = data
+    state.userInfo.provinceName = data.provinces
+    state.userInfo.cityName = data.citys
+    state.userInfo.districtName = data.districts
     state.sessionKey = data.sessionkey
     state.isManage = data.is_manage === 1
     LocalCache.set('userLoginInfo', JSON.stringify(state.userInfo))

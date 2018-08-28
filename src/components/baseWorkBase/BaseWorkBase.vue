@@ -60,6 +60,7 @@
     major as majorObj,
     baseWorkMode
   } from 'lib/const'
+  import { bus } from 'src/main'
   // major=2,client=1
   export default {
     props: {
@@ -83,9 +84,14 @@
         clientValue,
       }
     },
+    created () {
+      bus.$on('changeCity', (cityInfo) => {
+        this.changeCity(cityInfo)
+      })
+    },
     methods: {
       showPopup () {
-        this.$f7.popup('.popup-province', false)
+        bus.$emit('openCityPicker')
       },
       changePoint (value) {
         this.jobPoint = value.displayValue
@@ -117,6 +123,17 @@
           }
         })
       },
+      changeCity (cityInfo) {
+        let {provinceName, cityName, districtName} = cityInfo
+        this.hasWorkBase && this.loadBaseWork()
+        this.$emit('changeWorkBase', {
+          province: provinceName,
+          city: cityName,
+          district: districtName,
+          client: this.client,
+          major: this.major
+        })
+      }
     },
     computed: {
       ...mapState({
@@ -143,19 +160,25 @@
       currentAddress () {
         let {provinceName, cityName, districtName} = this.activeAddress
         let currentAddress = provinceName + cityName + districtName
-        if (provinceName && cityName && districtName) {
-          this.hasWorkBase && this.loadBaseWork()
-          this.$emit('changeWorkBase', {
-            province: provinceName,
-            city: cityName,
-            district: districtName,
-            client: this.client,
-            major: this.major
-          })
-        }
         return currentAddress.length > 0 ? currentAddress : '请选择地址'
       },
     },
+    watch: {
+      'client': {
+        handler (nowClient, oldClient) {
+          if (nowClient !== oldClient) {
+            this.changeCity(this.activeAddress)
+          }
+        }
+      },
+      'major': {
+        handler (nowMajor, oldMajor) {
+          if (nowMajor !== oldMajor) {
+            this.changeCity(this.activeAddress)
+          }
+        }
+      }
+    }
   }
 </script>
 

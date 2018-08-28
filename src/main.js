@@ -122,7 +122,10 @@ wx.error(function (res) {
 // Init App
 let client = new ApiClient()
 let applyClientMiddleware = clientMiddleware(client)(store.commit)
-
+const bus = new Vue()
+export {
+  bus
+}
 let app = new Vue({
   template: '<app/>',
   // Init Framework7 by passing parameters here
@@ -195,7 +198,6 @@ if (/Android/gi.test(navigator.userAgent)) {
     }
   })
 }
-const bus = new Vue()
-export { app, applyClientMiddleware, bus }
+export { app, applyClientMiddleware }
 
 

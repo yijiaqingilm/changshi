@@ -9,7 +9,7 @@ const globalConst = {
   doGetWorkBase: 'doGetWorkBase',
   doAddressCityList: 'doAddressCityList',
   doAddressProvinceList: 'doAddressProvinceList',
-  doAddressDistrictList: 'doAddressDistictList',
+  doAddressDistrictList: 'doAddressDistrictList',
   doGetAmmeter: 'doGetAmmeter',
   doGetDynamotor: 'doGetDynamotor',
   doDynamotorCreate: 'doDynamotorCreate',
