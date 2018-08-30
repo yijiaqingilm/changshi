@@ -21,27 +21,34 @@
 
         <base-form-group class="m-40" label="作业点" mark>
             <div class='mb-c-20'>
-                <div>
-                    <input class='s-input' placeholder="请从下方选择或搜索作业点" type="text" readonly v-model="jobPoint">
-                </div>
                 <div class="city"><span class='s-select' @click="showPopup">{{currentAddress}}</span></div>
-                <div v-if='workBaseList && workBaseList.length>0'>
-                    <div>
-                        <base-select v-model='jobCard.workBase'
-                                     text="请选择作业点"
-                                     :data="workBaseList"
-                                     nodeKey="id"
-                                     @change="changeJobPoint2"
-                                     nodeLabel="work_base"></base-select>
+                <template v-if="loadWorkBase">
+                    <div class='loading-wrap'>
+                        <f7-preloader></f7-preloader>
+                        作业点加载中...
                     </div>
-                    <div>
-                        <autocomplate placeholder='请搜索作业点'
-                                      @change="changeJobPoint"
-                                      :loadData="getJobPointList"></autocomplate>
+                </template>
+                <template v-else>
+                    <div v-if='workBaseList && workBaseList.length>0'>
+                        <div>
+                            <base-select v-model='jobCard.workBase'
+                                         text="请选择作业点"
+                                         :data="workBaseList"
+                                         nodeKey="id"
+                                         @change="changeJobPoint2"
+                                         nodeLabel="work_base"></base-select>
+                        </div>
+                        <div @click="openAutoComplate" class='mt-15'>
+                            <input type="text" class='s-input' readonly v-model="jobPointName" placeholder="请搜索作业点">
+                        </div>
                     </div>
-                </div>
-                <div v-else class='hint'>
-                    当前区域没有可选择的作业点
+                    <div v-else class='hint'>
+                        当前区域没有可选择的作业点
+                    </div>
+                </template>
+
+                <div>
+                    <input class='s-input' placeholder="请从上方选择或搜索作业点" type="text" readonly v-model="jobPoint">
                 </div>
             </div>
         </base-form-group>
@@ -180,6 +187,8 @@
                           type="datetime"
                           :phrases="dateTime.options.phrases"></datetime>
             </div>
+            <autocomplate ref="autocomplate" v-model="jobPointName" @change="changeJobPoint"
+                          :loadData="getJobPointList"></autocomplate>
         </div>
     </f7-page>
 </template>
@@ -306,7 +315,8 @@
     computed: {
       ...mapGetters(['getProvinceList']),
       ...mapState({
-        activeAddress: ({base}) => base.activeAddress
+        activeAddress: ({base}) => base.activeAddress,
+        loadWorkBase: ({base}) => base.loadWorkBase
       }),
       currentAddress () {
         let {provinceName, cityName, districtName} = this.activeAddress
@@ -381,6 +391,9 @@
       }
     },
     methods: {
+      openAutoComplate () {
+        this.$refs.autocomplate.open()
+      },
       changeWorkSort (workSort) {
         this.showDynamotor = workSort.name === '发电'
       },
@@ -508,10 +521,6 @@
           }
         }
         if (this.showAmmeter) {
-          if (ammeter.length === 0) {
-            this.$f7.alert('请填写抄电表', modalTitle)
-            return
-          }
           for (let i = 0; i < ammeter.length; i++) {
             let ammeterItem = ammeter[i]
             if (!ammeterItem.currentNum) {
@@ -523,6 +532,9 @@
               this.$f7.alert('请填写电表使用度数', modalTitle)
               return
             }
+            if (__DEBUG__) {
+              ammeterItem.img = 'test'
+            }
             if (!ammeterItem.img) {
               this.$f7.alert('请选择电表照片', modalTitle)
               return
@@ -530,28 +542,6 @@
           }
         }
 
-        for (let i = 0; i < ammeter.length; i++) {
-          let ammeterExp = ammeter[i]
-          if (ammeterExp.id === '') {
-            this.$f7.alert('请扫描电表编号', modalTitle)
-            return
-          }
-          if (!ammeterExp.currentNum) {
-            this.$f7.alert('请填写电表本周期抄表度数', modalTitle)
-            return
-          }
-          if (!ammeterExp.useNum) {
-            this.$f7.alert('请填写电表使用度数', modalTitle)
-            return
-          }
-          if (__DEBUG__) {
-            ammeterExp.img = 'test'
-          }
-          if (!ammeterExp.img) {
-            this.$f7.alert('请上传电表照', modalTitle)
-            return
-          }
-        }
         let ammeterList = ammeter.map((row) => {
           let {currentNum, useNum, ...rest} = row
           if (__DEBUG__) {

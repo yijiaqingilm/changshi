@@ -44,7 +44,9 @@ const state = {
   workOrderPage: {
     reviewPage: 1
   },
-  workOrderReviewList: []
+  workOrderReviewList: [],
+  getWorkBaseError: null,
+  loadWorkBase: false
 }
 const getters = {
   getProvinceList (state) {
@@ -278,8 +280,17 @@ let mutations = {
   [mutationNames.doWorkNumberCancel_success] (state, {data}) {
     console.log(data, 'data')
   },
-  [mutationNames.doGetWorkBase_success] (state, {data}) {
-    console.log(data, 'data')
+  [mutationNames.doGetWorkBase_request] (state) {
+    // state.getWorkBaseError = null
+    // state.loadWorkBase = true
+  },
+  [mutationNames.doGetWorkBase_success] (state) {
+    // state.getWorkBaseError = null
+    // state.loadWorkBase = false
+  },
+  [mutationNames.doGetWorkBase_failure] (state, {error}) {
+    // state.getWorkBaseError = error
+    // state.loadWorkBase = false
   },
   [mutationNames.doWorkNumber_success] (state, {data}) {
     console.log(data, 'data')

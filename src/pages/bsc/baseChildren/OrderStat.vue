@@ -132,9 +132,6 @@
         openEndTime (event) {
           this.dispatchMethod('base-bsc', 'openEndTime', event)
         },*/
-      showPopup () {
-        this.$f7.popup('.popup-province', false)
-      },
     },
     computed: {
       ...mapState({

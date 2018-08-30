@@ -1,5 +1,10 @@
 @import "globalFunc";
 
+.loading-wrap {
+  display: flex;
+  align-items: center;
+}
+
 .fill-order {
   section {
     padding: 0 35px;

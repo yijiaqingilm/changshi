@@ -25,7 +25,6 @@
   import { mapState } from 'vuex'
   import { majorValue, clientValue, baseWorkMode, globalConst as native, dateType } from 'lib/const'
   import emitter from 'mixins/emitter'
-  import moment from 'lib/moment'
   import BaseWorkBase from 'components/baseWorkBase/BaseWorkBase'
 
   export default {
@@ -103,9 +102,6 @@
             {value: stat5, name: '不合格'},
           ]
         })
-      },
-      showPopup () {
-        this.$f7.popup('.popup-province', false)
       },
     },
     computed: {

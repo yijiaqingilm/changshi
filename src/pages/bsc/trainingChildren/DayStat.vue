@@ -26,6 +26,7 @@
   import { clientValue } from 'lib/const'
   import emitter from 'mixins/emitter'
   import moment from 'lib/moment'
+  import { bus } from 'src/main'
 
   export default {
     mixins: [emitter],
@@ -103,7 +104,7 @@
         this.dispatchMethod('training-bsc', 'openDayDatePicker', event)
       },
       showPopup () {
-        this.$f7.popup('.popup-province', false)
+        bus.$emit('openCityPicker')
       },
     },
     computed: {

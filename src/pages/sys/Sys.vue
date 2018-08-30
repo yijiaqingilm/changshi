@@ -78,9 +78,6 @@
         }
 
       },
-      showPopup () {
-        this.$f7.popup('.popup-province', false)
-      },
       handleApplyNoPass (work, index) {
         this.$f7.confirm('是否确认审核不通过', modalTitle, () => {
           this.$store.dispatch({

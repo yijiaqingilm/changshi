@@ -4,39 +4,39 @@
   display: table;
   width: 100%;
   padding: 30px;
+  margin-top: 100px;
   .answer-tab {
     width: 33%;
     height: 160px;
     float: left;
-    margin-bottom: 30px;
+    margin-bottom: 50px;
     text-align: center;
-    &:nth-child(4n) {
-      .tab-label {
-        /* background-color: green;*/
-        /*background: linear-gradient(green, red, green);
-        background: -webkit-linear-gradient(green, red, green);
-        box-shadow: inset -2px -2px 4px green; !*no*!*/
-      }
-    }
     &:nth-child(4n+1) {
       .tab-label {
-        /*background-color: red;*/
+        background: linear-gradient(#70d2d7, #3cb1b7);
+        background: -webkit-linear-gradient(#70d2d7, #3cb1b7);
       }
     }
     &:nth-child(4n+2) {
       .tab-label {
-        /*background-color: yellow;*/
-       /* background: linear-gradient(white, yellow, white);
-        background: -webkit-linear-gradient(white, yellow, white);*/
+        background: linear-gradient(#f7938b, #da5c53);
+        background: -webkit-linear-gradient(#f7938b, #da5c53);
       }
     }
     &:nth-child(4n+3) {
       .tab-label {
-        /*background-color: blue;*/
+        background: linear-gradient(#fde171, #e3c646);
+        background: -webkit-linear-gradient(#fde171, #e3c646);
+      }
+    }
+    &:nth-child(4n) {
+      .tab-label {
+        background: linear-gradient(#88bcf0, #5893cf);
+        background: -webkit-linear-gradient(#88bcf0, #5893cf);
       }
     }
     .tab-label {
-      /*color: #ffffff;*/
+      color: #ffffff;
       width: 160px;
       line-height: 160px;
       margin: 0 auto;

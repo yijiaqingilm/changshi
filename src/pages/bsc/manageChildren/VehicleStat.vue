@@ -24,6 +24,7 @@
   import { mapState } from 'vuex'
   import { clientValue, globalConst as native, dateType } from 'lib/const'
   import emitter from 'mixins/emitter'
+  import { bus } from 'src/main'
 
   export default {
     mixins: [emitter],
@@ -93,7 +94,7 @@
     },
     methods: {
       showPopup () {
-        this.$f7.popup('.popup-province', false)
+        bus.$emit('openCityPicker')
       },
       doStaticsCar () {
         let {provinceName, cityName, districtName} = this.activeAddress

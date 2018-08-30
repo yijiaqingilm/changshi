@@ -3,7 +3,7 @@
         <div class='item-panal'>
             <div class='item-title'>
                 <div>{{title}}</div>
-                <div>{{scope}}分</div>
+                <div :class="{'strong':score<60}">{{score}}分</div>
             </div>
             <div class='item-subtitle'>{{subTitle}}</div>
         </div>
@@ -15,7 +15,7 @@
   export default {
     props: {
       title: String,
-      scope: [String, Number],
+      score: [String, Number],
       subTitle: [String, Number]
     },
     name: ''

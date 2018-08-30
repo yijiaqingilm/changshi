@@ -11,7 +11,7 @@
         </h-list>
         <section>
             <list>
-                <list-item v-for="(item,index) in historyList" :key="index" title="考试" :scope="80"
+                <list-item v-for="(item,index) in historyList" :key="index" :title="sortObj[item.sort].value" :score="score"
                            subTitle="2018-01-15"></list-item>
             </list>
             <infinite-loading @infinite="loadData">
@@ -25,13 +25,25 @@
 <script>
   import TrainList from 'components/trainList/TrainList'
   import TrainListItem from 'components/trainList/TrainListItem'
-  import { globalConst as native, pageSize } from 'lib/const'
+  import { globalConst as native, pageSize, arr2obj } from 'lib/const'
   import InfiniteLoading from 'vue-infinite-loading'
 
+  const sorts = {
+    train: 0,
+    test: 1,
+    video: 2
+  }
+  const sortsValue = [
+    {value: sorts.train, label: '答题'},
+    {value: sorts.test, label: '考试'},
+    {value: sorts.video, label: '视频'},
+  ]
+  const sortObj = arr2obj(sortsValue, 'value', 'label')
   export default {
     name: 'training-logs',
     data () {
       return {
+        sortObj,
         page: 1,
         historyList: [],
         statics: {

@@ -209,7 +209,7 @@ textarea {
 .s-select {
   display: inline-block;
   box-sizing: border-box;
-  width: 400px;
+  width: 100%;
   height: 50px;
   line-height: 50px;
   padding-left: 20px;
@@ -223,7 +223,7 @@ textarea {
 
 .s-input {
   box-sizing: border-box;
-  width: 400px;
+  width: 100%;
   height: 50px;
   line-height: 50px;
   padding-left: 15px;
@@ -281,7 +281,7 @@ textarea {
   margin-left: 20px;
 }
 
-.popup-city, .popup-province, .popup-district, .popup-city2, .popup-province2, .popup-district2 {
+.popup-city, .popup-province, .popup-district, .popup-city2, .popup-province2, .popup-district2, .popup-autocomplate {
   background: #efeff4;
   .city-navbar {
     position: relative;

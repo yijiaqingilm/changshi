@@ -74,9 +74,6 @@
         }
 
       },
-      showPopup () {
-        this.$f7.popup('.popup-province', false)
-      },
       goDetail (order = {}) {
         this.$router.loadPage(`/base/questionOrder/detail/${order.id}`)
       },

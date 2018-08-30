@@ -276,5 +276,6 @@ export {
   subjectStatus,
   subjectTypes,
   Subject,
-  trainModes
+  trainModes,
+  arr2obj
 }

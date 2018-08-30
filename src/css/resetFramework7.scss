@@ -27,3 +27,13 @@
   color: #6d6d72;
   margin: 35px 15px 10px;
 }
+
+.list-block .item-title {
+  text-overflow: initial;
+  overflow: initial;
+  white-space: initial;
+}
+
+.picker-items {
+  font-size: 15px; /*no*/
+}
