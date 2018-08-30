@@ -21,6 +21,7 @@
   import { globalConst as native, modalTitle } from 'lib/const'
   import { Validator } from 'lib/custom_validator'
   import { LocalCache } from 'lib/utils'
+  import { mapState } from 'vuex'
 
   export default {
     data () {
@@ -52,6 +53,15 @@
         }).then(() => {
           LocalCache.set('username', username)
           LocalCache.set('password', password)
+          let {province_id, city_id, district_id, provinceName, cityName, districtName} = this.userInfo
+          this.$store.commit(native.initActiveAddress, {
+            provinceName,
+            cityName,
+            districtName,
+            provinceId: province_id,
+            cityId: city_id,
+            districtId: district_id
+          })
           this.$router.reloadPage('/home')
         }).catch((error) => {
           this.$f7.alert(error, modalTitle)
@@ -66,6 +76,11 @@
         password: 'required',
       })
       this.$set(this, 'errors', this.validator.errorBag)
+    },
+    computed: {
+      ...mapState({
+        userInfo: ({auth}) => auth.userInfo
+      }),
     }
   }
 </script>

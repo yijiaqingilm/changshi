@@ -10,7 +10,7 @@
                 </div>
                 <div class="navbar-center">作业点搜索</div>
             </div>
-            <form class="searchbar searchbar-init hybrid-background">
+            <form class="searchbar searchbar-init hybrid-background" action="">
                 <div class="searchbar-input">
                     <input type="search" @keyup.enter="onSearch" :value="value" @input="updateSearchValue"
                            class="input-search"

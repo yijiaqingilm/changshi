@@ -187,7 +187,7 @@
     },
     mounted () {
       this.$nextTick(() => {
-        /* let {province_id, city_id, district_id, provinceName, cityName, districtName} = this.userInfo
+        let {province_id, city_id, district_id, provinceName, cityName, districtName} = this.userInfo
         this.$store.commit(native.initActiveAddress, {
           provinceName,
           cityName,
@@ -195,7 +195,7 @@
           provinceId: province_id,
           cityId: city_id,
           districtId: district_id
-        })*/
+        })
         this.$$('.popup-province2').on('opened', () => {
           let {dispatch} = this.$store
           dispatch({
