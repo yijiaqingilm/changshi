@@ -9,7 +9,7 @@
                 <base-form-group label="工单号：" :item="workOrder.number"></base-form-group>
                 <base-form-group label="客户：" :item="workOrder.client"></base-form-group>
                 <base-form-group label="专业：" :item="workOrder.major"></base-form-group>
-                <base-form-group label="作业点：" :item="workOrder.work_base"></base-form-group>
+                <base-form-group label="作业点：" :ellipsis="false">{{workOrder.work_base}}</base-form-group>
                 <base-form-group label="包年/按次：" :item="workOrder.work_type"></base-form-group>
                 <base-form-group label="作业类别：" :item="workOrder.work_sort"></base-form-group>
                 <base-form-group label="开始时间：" :item="workOrder.start_date"></base-form-group>

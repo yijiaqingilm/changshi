@@ -9,7 +9,7 @@
                 <base-form-group label="工单号：" :item="workOrder.number"></base-form-group>
                 <base-form-group label="客户：" :item="workOrder.client"></base-form-group>
                 <base-form-group label="专业：" :item="workOrder.major"></base-form-group>
-                <base-form-group label="作业点：" :item="workOrder.work_base"></base-form-group>
+                <base-form-group label="作业点：" :ellipsis="false" >{{workOrder.work_base}}</base-form-group>
                 <base-form-group label="包年/按次：" :item="workOrder.work_type"></base-form-group>
                 <base-form-group label="作业类别：" :item="workOrder.work_sort"></base-form-group>
                 <base-form-group label="开始时间：" :item="workOrder.start_date"></base-form-group>
@@ -29,7 +29,7 @@
                 <base-form-group label="本期抄表数：" :item="ammeter.last_num"></base-form-group>
                 <base-form-group label="使用度数：" :item="ammeter.use_num"></base-form-group>
                 <base-form-group label="电表照：">
-                    <img src="ammeter.img" alt="" class='ammeter_img'>
+                    <img :src="ammeter.img" alt="" class='ammeter_img'>
                 </base-form-group>
             </section>
         </section>

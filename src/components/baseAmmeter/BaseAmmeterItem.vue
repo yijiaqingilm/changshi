@@ -117,6 +117,7 @@
       _useNum: {
         get () {
           let value = this._currentNum - this.prevNum
+          value = value <= 0 ? 0 : Number(value).toFixed(2)
           this.$emit('update:useNum', value)
           return value
         },
