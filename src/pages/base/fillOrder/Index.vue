@@ -528,7 +528,6 @@
               return
             }
             if (!ammeterItem.useNum) {
-              console.log(ammeterItem, '===>test')
               this.$f7.alert('请填写电表使用度数', modalTitle)
               return
             }

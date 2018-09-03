@@ -122,7 +122,6 @@
     },
     methods: {
       startOff () {
-        console.log('支持测试')
         if (!this.carnumber) {
           this.$f7.alert('请扫描车牌号', modalTitle)
           return
@@ -145,7 +144,6 @@
 
       },
       getTo () {
-        console.log('支持测试')
         let {bridgefee, servicefee, otherfee, oilfee, outMileage, remark, retractMileage} = this.info
         this.validator.validateAll({
           oilfee,
@@ -175,13 +173,13 @@
           }, 2000)
           return
         }
-        let that = this
-        aMapUtil.geolocation().then((data) => {
-          let formattedAddress = data.formattedAddress
-          let {lat, lng} = data.position
-          that.$set(that.vehicleInfo.retract, 'date', new Date())
-          that.$set(that.vehicleInfo.retract, 'address', formattedAddress)
-          that.$f7.confirm('是否确认收车？', modalTitle, () => {
+        this.$f7.confirm('是否确认收车？', modalTitle, () => {
+          let that = this
+          aMapUtil.geolocation().then((data) => {
+            let formattedAddress = data.formattedAddress
+            let {lat, lng} = data.position
+            that.$set(that.vehicleInfo.retract, 'date', new Date())
+            that.$set(that.vehicleInfo.retract, 'address', formattedAddress)
             that.$store.dispatch({
               type: native.getTo,
               license_plate: that.carnumber,
@@ -195,13 +193,13 @@
               mileage: that.totalMileage,
               remark
             }).then(() => {
-              this.$f7.alert('收车成功', modalTitle)
-              this.carnumber = ''
-              this.vehicleInfo.out.date = ''
-              this.vehicleInfo.out.position = ''
-              this.vehicleInfo.retract.date = ''
-              this.vehicleInfo.retract.address = ''
-              this.info = {}
+              that.$f7.alert('收车成功', modalTitle)
+              that.carnumber = ''
+              that.vehicleInfo.out.date = ''
+              that.vehicleInfo.out.position = ''
+              that.vehicleInfo.retract.date = ''
+              that.vehicleInfo.retract.address = ''
+              that.info = {}
             })
           })
         })
