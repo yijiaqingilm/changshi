@@ -38,8 +38,6 @@
   import UpdateStatus from './chilren/UpdateStatus.vue'
   import CitySelect from 'components/baseCitySelect/CitySelect'
   import { modalTitle, globalConst as native } from 'lib/const'
-  import { bus } from 'src/main'
-  import { wxScanQRCode } from 'lib/utils'
 
   const ammeterTypesStatus = {
     updateAddress: 0,
@@ -61,6 +59,25 @@
         test: ''
       }
     },
+    created () {
+      let {
+        province_id,
+        city_id,
+        district_id,
+        provinceName,
+        cityName,
+        districtName
+      } = this.userInfo
+      this.$store.commit(native.changeDyAddress, {
+        province: provinceName,
+        city: cityName,
+        district: districtName,
+        provinceId: province_id,
+        cityId: city_id,
+        districtId: district_id
+      })
+      this.$store.commit(native.clearDy)
+    },
     methods: {
       getDy (code) {
         this.$store.state.rm.dyCode = code
@@ -74,7 +91,7 @@
       },
       scanDynamotor (code) {
         if (__DEBUG__) {
-          code = '12345'
+          code = 'TY1-CS012'
         }
         this.getDy(code)
       },
@@ -92,7 +109,8 @@
       ...mapState({
         dyInfo: ({rm}) => rm.dyInfo,
         dyCode: ({rm}) => rm.dyCode,
-        rm: ({rm}) => rm
+        rm: ({rm}) => rm,
+        userInfo: ({auth}) => auth.userInfo
       })
     },
     components: {

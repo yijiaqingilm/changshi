@@ -49,6 +49,7 @@
             work_id: order.id
           }).then((data) => {
             this.statics.unariched--
+            this.statics.total--
             this.workList.splice(index, 1)
           })
         })

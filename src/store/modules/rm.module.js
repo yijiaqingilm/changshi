@@ -10,6 +10,9 @@ const state = {
     number: '',
     oriAddress: '',
     nowAddress: {
+      provinceId: '',
+      cityId: '',
+      districtId: '',
       province: '',
       city: '',
       district: ''
@@ -58,10 +61,13 @@ const actions = {
 }
 let mutations = {
   [native.changeDyAddress] (state, address) {
-    let {province, city, district} = address
+    let {province, city, district, provinceId, cityId, districtId} = address
     state.dyInfo.nowAddress.province = province
     state.dyInfo.nowAddress.city = city
     state.dyInfo.nowAddress.district = district
+    state.dyInfo.nowAddress.provinceId = provinceId
+    state.dyInfo.nowAddress.cityId = cityId
+    state.dyInfo.nowAddress.districtId = districtId
   }
 }
 mutations = Object.assign(margeMutations(actions), mutations)

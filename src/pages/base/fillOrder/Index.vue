@@ -275,7 +275,8 @@
             duration: '',
             oilfee: '',
             remark: ''
-          }
+          },
+          poweradd: ''
         },
         clientValue,
         workTypeValue: workTypeValue.filter((item) => item.key !== workType.other),
@@ -625,6 +626,10 @@
         }).then((data) => {
           this.jobCard.dynamotor.id = data.data.id
           this.jobCard.dynamotor.code = code
+          let that = this
+          aMapUtil.geolocation().then((data) => {
+            that.jobCard.poweradd = data.formattedAddress
+          })
         }).catch((error) => {
           this.$f7.alert(error, modalTitle)
         })

@@ -32,6 +32,17 @@
                     <img :src="ammeter.img" alt="" class='ammeter_img'>
                 </base-form-group>
             </section>
+
+            <line-10></line-10>
+            <section class='detail-wrap' v-for="(power,index) in workOrder.power" :key="index">
+                <base-form-group :label="'发电机'+(index+1)" isTitle></base-form-group>
+                <base-form-group label="发电机编号：" :item="power.powercode"></base-form-group>
+                <base-form-group label="发电时间：" :item="power.start_date"></base-form-group>
+                <base-form-group label="结束时间：" :item="power.end_date"></base-form-group>
+                <base-form-group label="发电时长：" :item="power.duration"></base-form-group>
+                <base-form-group label="发电费用：" :item="power.oilfee"></base-form-group>
+                <base-form-group label="备注：" :item="power.remark"></base-form-group>
+            </section>
         </section>
     </f7-page>
 </template>

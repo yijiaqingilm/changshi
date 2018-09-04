@@ -9,6 +9,7 @@
         </div>
         <base-list :type="listType">
             <base-list-item showAction
+                            @click="goDetail(work)"
                             v-for="(work,index) in workList"
                             :key="index"
                             :workName="work.id"
@@ -56,6 +57,9 @@
       }
     },
     methods: {
+      goDetail (order) {
+        this.$router.loadPage(`/base/workOrder/detail/${order.id}`)
+      },
       changeWorkBase (result) {
         let {workBase, client, province, city, district, major} = result
         this.query = {
