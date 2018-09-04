@@ -328,14 +328,14 @@
         return currentAddress.length > 0 ? currentAddress : '请选择地址'
       },
       showAmmeter () {
-        /* switch (this.jobCard.major >>> 0) {
-          case major.jizhan:
-          case major.jf:
-          case major.wlan:
-            return true
-          default:
-            return false
-        }*/
+          /* switch (this.jobCard.major >>> 0) {
+           case major.jizhan:
+           case major.jf:
+           case major.wlan:
+           return true
+           default:
+           return false
+           }*/
         switch (this.jobCard.major >>> 0) {
           case major.xianlu:
           case major.jtzx:
@@ -344,9 +344,9 @@
             return true
         }
       },
-      /* showDynamotor () {
+        /* showDynamotor () {
          return generatorIds.indexOf(this.jobCard.workSort >>> 0) !== -1
-       },*/
+         },*/
       majorValue () {
         let {xianlu, jizhan, ironTower, jtzx, wlan, jf} = major
         switch (this.jobCard.client >>> 0) {
@@ -473,7 +473,7 @@
         this.handleWorkBaseDetail(value)
       },
       submit () {
-        let {client, major, workType, workBase, workSort, content, displayStartDate, displayEndDate, fee, refWorkNumber, isLeaveQuestion, leave, ammeter, dynamotor} = this.jobCard
+        let {client, major, workType, workBase, workSort, content, displayStartDate, displayEndDate, fee, refWorkNumber, isLeaveQuestion, leave, ammeter, dynamotor, poweradd} = this.jobCard
         console.log('cart', this.jobCard)
         this.validator.validateAll({
           workBase,
@@ -574,7 +574,8 @@
           is_leave_question: isLeaveQuestion ? 'Y' : 'N',
           leave: JSON.stringify(leave),
           ammeter: JSON.stringify(ammeterList),
-          power: dynamotor.id ? JSON.stringify(dynamotorObj) : '{}'
+          power: dynamotor.id ? JSON.stringify(dynamotorObj) : '{}',
+          poweradd
         }).then(() => {
           this.$f7.alert('提交成功', modalTitle, () => {
             this.resetJobCard()
