@@ -391,6 +391,14 @@ let getTimer = function (time) {
   }
   return hour + '时' + minute + '分钟' + second + '秒'
 }
+
+function prefixInteger (num) {
+  if (num < 10) {
+    num = '0' + num
+  }
+  return num
+}
+
 export {
   Cache,
   LocalCache,
@@ -407,5 +415,6 @@ export {
   isNumber,
   getTimer,
   wxScanQRCode,
-  getQuery
+  getQuery,
+  prefixInteger
 }

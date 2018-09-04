@@ -7,6 +7,7 @@
 
 <script>
   import { dateType } from 'lib/const'
+  import { prefixInteger } from 'lib/utils'
 
   export default {
     name: '',
@@ -103,9 +104,7 @@
           },
           onClose: ({cols}) => {
             if (mark) {
-              console.log('测试cols', cols)
-              console.log('测试cols【0】', cols[0])
-              let value = cols.reduce((colA, colB) => colA + '-' + colB.value, '').slice(1)
+              let value = cols.reduce((colA, colB) => colA + '-' + prefixInteger(colB.value), '').slice(1)
               this.displayValue = value
               this.$emit('input', value)
               this.$emit('change', value)

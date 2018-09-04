@@ -56,6 +56,12 @@ const actions = {
   },
   [native.doStaticsCar] ({state}, refs) {
     return applyClientMiddleware(api.doStaticsCar)(refs)
+  },
+  [native.doTrainSubjectTrainDay] ({state}, refs) {
+    return applyClientMiddleware(api.doTrainSubjectTrainDay)(refs)
+  },
+  [native.doTrainSubjectTrainMonth] ({state}, refs) {
+    return applyClientMiddleware(api.doTrainSubjectTrainMonth)(refs)
   }
 }
 let mutations = {

@@ -58,7 +58,9 @@ const globalConst = {
   resetPaper: 'resetPaper',
   doGetSubject: 'doGetSubject',
   doTrainSubjectHistory: 'doTrainSubjectHistory',
-  setTrainMode: 'setTrainMode'
+  setTrainMode: 'setTrainMode',
+  doTrainSubjectTrainDay: 'doTrainSubjectTrainDay',
+  doTrainSubjectTrainMonth: 'doTrainSubjectTrainMonth'
 }
 let methods = [SUCCESS.toLowerCase(), FAILURE.toLowerCase(), REQUEST.toLowerCase()]
 const mutationNames = {}

@@ -8,10 +8,13 @@
     margin-bottom: 40px;
     @include setFontSize($middleFontSize);
   }
-  .gt{
+  .gt {
     position: absolute;
+    top: 50%;
+    right: 35px;
     width: 15px;
     height: 15px;
+    transform: translateY(-50%) rotate(45deg);
 
   }
   .item-wrap {

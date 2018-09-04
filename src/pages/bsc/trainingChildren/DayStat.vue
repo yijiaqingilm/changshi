@@ -3,108 +3,126 @@
         <header>查询时间</header>
         <div class='time-group'>
             <div>
-                <input type="text" readonly class='time-input' placeholder="请选择时间"
-                       @click="openDayDatePicker"
-                       :value="dayDate">
+                <base-date-picker v-model="dayDate" text="请选择开始时间"
+                                  :mode="dateType.yearAndMonthAndDay"></base-date-picker>
             </div>
         </div>
         <div class='combo'>
-            <base-form-group class="mt-15" label="地址选择：">
-                <span class='s-select' @click="showPopup">{{currentAddress}}</span>
-            </base-form-group>
-            <base-form-group class="mt-15" label="客户选择：">
-                <base-select v-model="trainDayStat.client" text="请选择客户" :data="clientValue"></base-select>
-            </base-form-group>
+            <base-work-base :hasWorkBase="false" :hasMajor="false" @changeWorkBase="changeWorkBase"
+                            :mode="baseWorkMode.list"></base-work-base>
         </div>
         <line-10></line-10>
-        <chart :options="polar"></chart>
+        <chart :options="options"></chart>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex'
-  import { clientValue } from 'lib/const'
+  import { clientValue, dateType, baseWorkMode, globalConst as native } from 'lib/const'
   import emitter from 'mixins/emitter'
-  import moment from 'lib/moment'
   import { bus } from 'src/main'
+  import BaseWorkBase from 'components/baseWorkBase/BaseWorkBase'
 
   export default {
     mixins: [emitter],
     created () {
-      let option = {
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross',
-            label: {
-              backgroundColor: 'red'
-            }
-          }
-        },
-        xAxis: {
-          type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: [
-          {
-            name: '邮件营销2',
-            type: 'line',
-            stack: '总量',
-            data: [120, 132, 101, 134, 90, 230, 210]
-          },
-        ]
-      }
     },
     data () {
+      let options = {
+        title: {
+          text: '在线培训日统计图',
+          subtext: ''
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: ['在线答题', '视频培训', '考试']
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            dataView: {show: true, readOnly: false},
+            magicType: {show: true, type: ['line', 'bar']},
+            restore: {show: true},
+            saveAsImage: {show: true}
+          }
+        },
+        calculable: true,
+        xAxis: [
+          {
+            type: 'category',
+            data: ['人数', '次数']
+          }
+        ],
+        yAxis: [
+          {
+            type: 'value'
+          }
+        ],
+        color: ['#6dc394', '#dec562', '#ee8787'],
+        series: [
+          {
+            name: '在线答题',
+            type: 'bar',
+            data: [1, 2],
+          },
+          {
+            name: '视频培训',
+            type: 'bar',
+            data: [4, 5],
+          },
+          {
+            name: '考试',
+            type: 'bar',
+            data: [7, 8],
+          }
+        ]
+      }
+
       return {
+        baseWorkMode,
+        dateType,
         clientValue,
-        polar: {
-          title: {
-            text: '工单统计',
-            subtext: '',
-            x: 'center'
-          },
-          tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/>{b} : {c}个 ({d}%)'
-          },
-          legend: {
-            orient: 'vertical',
-            left: 'left',
-            data: ['已归档工单', '未归档工单', '待审核工单']
-          },
-          series: [
-            {
-              name: '工单统计',
-              type: 'pie',
-              radius: '55%',
-              center: ['50%', '60%'],
-              data: [
-                {value: 335, name: '已归档工单'},
-                {value: 310, name: '未归档工单'},
-                {value: 234, name: '待审核工单'},
-              ],
-              itemStyle: {
-                emphasis: {
-                  shadowBlur: 10,
-                  shadowOffsetX: 0,
-                  shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-              }
-            }
-          ]
-        }
+        dayDate: '',
+        options
       }
     },
     methods: {
-      openDayDatePicker (event) {
-        this.dispatchMethod('training-bsc', 'openDayDatePicker', event)
-      },
       showPopup () {
         bus.$emit('openCityPicker')
+      },
+      changeWorkBase (result) {
+        this.doStatics(result)
+      },
+      doStatics (result) {
+        let {
+          workBase,
+          client,
+          province,
+          city,
+          district,
+          major
+        } = result
+        this.$store.dispatch({
+          type: native.doTrainSubjectTrainDay,
+          province,
+          city,
+          district,
+          work_base: workBase,
+          client,
+          major,
+          start_date: this.startTime,
+          end_date: this.endTime
+        }).then(({data}) => {
+          let {leave, ariched, approve, unariched} = data
+          this.options.series[0].data = [
+            {value: leave, name: '遗留工单'},
+            {value: ariched, name: '已归档工单'},
+            {value: approve, name: '待审核工单'},
+            {value: unariched, name: '未归档工单'}
+          ]
+        })
       },
     },
     computed: {
@@ -112,14 +130,12 @@
         activeAddress: ({base}) => base.activeAddress,
         trainDayStat: ({bsc}) => bsc.trainDayStat,
       }),
-      dayDate () {
-        return this.trainDayStat.date && moment(this.trainDayStat.date).format('YYYY-MM-DD')
-      },
       currentAddress () {
         let currentAddress = this.activeAddress.provinceName + this.activeAddress.cityName + this.activeAddress.districtName
         return currentAddress.length > 0 ? currentAddress : '请选择地址'
       },
-    }
+    },
+    components: {BaseWorkBase}
   }
 </script>
 

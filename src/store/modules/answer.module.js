@@ -79,13 +79,12 @@ let mutations = {
     }
   },
   [mutationNames.doTrainSubject_success] (state, {data}) {
-    let {refid, title, subject, score, subjectType, answerTime} = data
-    console.log('what', title, data)
+    let {refid, levels, subject, score, subjectType, answerTime} = data
     state.paper.refId = refid
-    state.paper.title = title
+    state.paper.title = levels.name
     state.paper.count = subject
     state.paper.score = score
-    state.paper.sType = subjectType
+    state.paper.sType = subjectType.reduce((a, b) => a + ',' + b.name, '').slice(1)
     state.paper.expTime = answerTime
     let subjects = []
     //  state.paper.count

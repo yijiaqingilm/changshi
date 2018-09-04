@@ -30,7 +30,7 @@
         <base-form-group class="mt-15" label="客户选择：">
             <base-select v-model="client" text="请选择客户" :data="clientValue"></base-select>
         </base-form-group>
-        <base-form-group v-if='majorValue.length>0' class="mt-15" label="专业选择:">
+        <base-form-group v-if='hasMajor && majorValue.length>0' class="mt-15" label="专业选择:">
             <base-select v-model="major" text="请选择专业" :data="majorValue"></base-select>
         </base-form-group>
         <template v-if="hasWorkBase">
@@ -69,6 +69,10 @@
         default: baseWorkMode.base
       },
       hasWorkBase: {
+        type: Boolean,
+        default: true
+      },
+      hasMajor: {
         type: Boolean,
         default: true
       }

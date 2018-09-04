@@ -49,7 +49,7 @@
             left: 10,
             top: 20,
             bottom: 20,
-            data: ['工单总数', '已归档工单', '待审核工单', '未归档工单']
+            data: ['遗留工单', '已归档工单', '待审核工单', '未归档工单']
           },
           color: ['#a1d57d', '#6dc394', '#ee8787', '#dec562'],
           series: [
@@ -75,7 +75,7 @@
           ]
         },
         staticsWork: {
-          total: '',
+          leave: '',
           ariched: '',
           approve: '',
           unariched: ''
@@ -95,7 +95,6 @@
     methods: {
       changeWorkBase (result) {
         this.doStatics(result)
-
       },
       doStatics (result) {
         let {
@@ -117,9 +116,9 @@
           start_date: this.startTime,
           end_date: this.endTime
         }).then(({data}) => {
-          let {total, ariched, approve, unariched} = data
+          let {leave, ariched, approve, unariched} = data
           this.options.series[0].data = [
-            {value: total, name: '工单总数'},
+            {value: leave, name: '遗留工单'},
             {value: ariched, name: '已归档工单'},
             {value: approve, name: '待审核工单'},
             {value: unariched, name: '未归档工单'}
