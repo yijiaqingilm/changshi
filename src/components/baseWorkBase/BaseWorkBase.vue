@@ -6,20 +6,28 @@
         <div>
             <base-select v-model="client" text="请选择客户" :data="clientValue"></base-select>
         </div>
-        <div v-if='majorValue.length>0'>
+        <div v-if='hasMajor && majorValue.length>0'>
             <base-select v-model="major" text="请选择专业" :data="majorValue"></base-select>
         </div>
         <div class='point' v-if="hasWorkBase">
             <template v-if='workBaseList && workBaseList.length>0'>
-                <base-select v-model='workBase'
-                             text="请选择作业点"
-                             :data="workBaseList"
-                             nodeKey="id"
-                             @change="changePoint"
-                             nodeLabel="work_base"></base-select>
+                <div>
+                    <base-select v-model='workBase'
+                                 text="请选择作业点"
+                                 :data="workBaseList"
+                                 nodeKey="id"
+                                 @change="changePoint"
+                                 nodeLabel="work_base"></base-select>
+                </div>
+                <div @click="openAutoComplate" class='mt-15'>
+                    <input type="text" class='s-input' readonly v-model="workBaseName" placeholder="请搜索作业点">
+                </div>
+                <div class='mt-15'>
+                    <input class='s-input' placeholder="请从上方选择或搜索作业点" type="text" readonly v-model="workBaseName">
+                </div>
             </template>
             <div v-else class='hint'>
-                当前条件没有可选择的作业点
+                <!--当前条件没有可选择的作业点-->
             </div>
         </div>
     </div>
@@ -27,25 +35,33 @@
         <base-form-group class="mt-15" label="地址选择：">
             <span class='s-select' @click="showPopup">{{currentAddress}}</span>
         </base-form-group>
-        <base-form-group class="mt-15" label="客户选择：">
+        <base-form-group class="mt-15" label="客户选择：" mark>
             <base-select v-model="client" text="请选择客户" :data="clientValue"></base-select>
         </base-form-group>
-        <base-form-group v-if='hasMajor && majorValue.length>0' class="mt-15" label="专业选择:">
+        <base-form-group v-if='hasMajor && majorValue.length>0' class="mt-15" label="专业选择:" mark>
             <base-select v-model="major" text="请选择专业" :data="majorValue"></base-select>
         </base-form-group>
         <template v-if="hasWorkBase">
             <template v-if='workBaseList && workBaseList.length>0'>
                 <base-form-group class="mt-15" label="站点选择:">
-                    <base-select v-model='workBase'
-                                 text="请选择作业点"
-                                 :data="workBaseList"
-                                 nodeKey="id"
-                                 @change="changePoint"
-                                 nodeLabel="work_base"></base-select>
+                    <div>
+                        <base-select v-model='workBase'
+                                     text="请选择作业点"
+                                     :data="workBaseList"
+                                     nodeKey="id"
+                                     @change="changePoint"
+                                     nodeLabel="work_base"></base-select>
+                    </div>
+                    <div @click="openAutoComplate" class='mt-15'>
+                        <input type="text" class='s-input' readonly v-model="workBaseName" placeholder="请搜索作业点">
+                    </div>
+                    <div class='mt-15'>
+                        <input class='s-input' placeholder="请从上方选择或搜索作业点" type="text" readonly v-model="workBaseName">
+                    </div>
                 </base-form-group>
             </template>
             <div v-else class='hint'>
-                当前条件没有可选择的作业点
+                <!--当前条件没有可选择的作业点-->
             </div>
         </template>
     </div>
@@ -83,6 +99,7 @@
         baseWorkMode,
         workBaseList: [],
         workBase: '',
+        workBaseName: '',
         client: '',
         major: '',
         clientValue,
@@ -92,16 +109,46 @@
       bus.$on('changeCity', (cityInfo) => {
         this.changeCity(cityInfo)
       })
+      bus.$on('changeSearchValue', (searchValue) => {
+        this.workBaseName = searchValue
+      })
+      bus.$on('autocomplateChange', (value) => {
+        this.changePoint(value)
+      })
+      let {provinceName, cityName, districtName} = this.activeAddress
+      this.$emit('changeWorkBase', {
+        province: provinceName,
+        city: cityName,
+        district: districtName,
+      })
     },
     methods: {
+      openAutoComplate () {
+        bus.$emit('openAutoComplate', this.workBaseName, this.getJobPointList)
+      },
       showPopup () {
         bus.$emit('openCityPicker')
       },
+      getJobPointList () {
+        let {client, major} = this
+        let {provinceName, cityName, districtName} = this.activeAddress
+        return this.$store.dispatch({
+          type: native.doGetWorkBase,
+          province: provinceName,
+          city: cityName,
+          district: districtName,
+          client,
+          major,
+          name: this.workBaseName
+        })
+      },
       changePoint (value) {
-        this.jobPoint = value.displayValue
+        this.workBase = value.id
+        this.workBaseName = value.work_base
         let {provinceName, cityName, districtName} = this.activeAddress
         this.$emit('changeWorkBase', {
-          workBase: this.workBase, province: provinceName,
+          workBase: this.workBase,
+          province: provinceName,
           city: cityName,
           district: districtName,
           client: this.client,

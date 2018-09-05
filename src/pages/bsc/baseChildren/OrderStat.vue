@@ -1,6 +1,6 @@
 <template>
     <div>
-        <header>查询时间</header>
+        <header><span class="mark">*</span>查询时间</header>
         <div class='time-group'>
             <span class='time-slash'></span>
             <div>
@@ -16,7 +16,12 @@
             <base-work-base @changeWorkBase="changeWorkBase" :mode="baseWorkMode.list"></base-work-base>
         </div>
         <line-10></line-10>
-        <chart :options="options"></chart>
+        <template v-if="options.series[0].data.length>0">
+            <chart :options="options"></chart>
+        </template>
+        <template v-else>
+            <div class='text-center hint'>请筛选条件后查询数据</div>
+        </template>
     </div>
 </template>
 
@@ -35,6 +40,7 @@
         clientValue,
         majorValue,
         options: {
+          height: '400px',
           title: {
             text: '工单统计',
             x: 'center'
@@ -45,7 +51,7 @@
           },
           legend: {
             show: true,
-            orient: 'vertical',
+            orient: 'horizontal',
             left: 10,
             top: 20,
             bottom: 20,
@@ -56,7 +62,7 @@
             {
               name: '工单统计',
               type: 'pie',
-              radius: '55%',
+              radius: '40%',
               center: ['50%', '60%'],
               data: [],
               /* label: {
@@ -94,9 +100,10 @@
     },
     methods: {
       changeWorkBase (result) {
-        this.doStatics(result)
+        this.query = result
+        this.doStatics()
       },
-      doStatics (result) {
+      doStatics () {
         let {
           workBase,
           client,
@@ -104,7 +111,10 @@
           city,
           district,
           major
-        } = result
+        } = this.query
+        if (!this.startTime || !this.endTime || !client || !major) {
+          return
+        }
         this.$store.dispatch({
           type: native.doStaticsWork,
           province,
@@ -125,24 +135,28 @@
           ]
         })
       },
-      /*  openStartTime (event) {
-          this.dispatchMethod('base-bsc', 'openStartTime', event)
-        },
-        openEndTime (event) {
-          this.dispatchMethod('base-bsc', 'openEndTime', event)
-        },*/
     },
     computed: {
       ...mapState({
         activeAddress: ({base}) => base.activeAddress,
         orderStat: ({bsc}) => bsc.orderStat,
       }),
-      /* startTime () {
-         return this.orderStat.startDate && moment(this.orderStat.startDate).format('YYYY-MM-DD')
-       },
-       endTime () {
-         return this.orderStat.endDate && moment(this.orderStat.endDate).format('YYYY-MM-DD')
-       },*/
+    },
+    watch: {
+      'startTime': {
+        handler: function (nowStartTime, oldStartTime) {
+          if (nowStartTime && nowStartTime !== oldStartTime) {
+            this.doStatics()
+          }
+        }
+      },
+      'endTime': {
+        handler: function (nowEndTime, oldEndTime) {
+          if (nowEndTime && nowEndTime !== oldEndTime) {
+            this.doStatics()
+          }
+        }
+      }
     },
     components: {BaseWorkBase}
   }

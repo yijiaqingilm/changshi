@@ -1,6 +1,6 @@
 <template>
     <div>
-        <header>查询时间</header>
+        <header><span class="mark">*</span>查询时间</header>
         <div class='time-group'>
             <span class='time-slash'></span>
             <div>
@@ -17,7 +17,12 @@
                             :hasWorkBase="false"></base-work-base>
         </div>
         <line-10></line-10>
-        <chart :options="options"></chart>
+        <template v-if="options.series[0].data.length>0">
+            <chart :options="options"></chart>
+        </template>
+        <template v-else>
+            <div class='text-center hint'>请筛选条件后查询数据</div>
+        </template>
     </div>
 </template>
 
@@ -45,7 +50,7 @@
             formatter: '{a} <br/>{b} : {c}个 ({d}%)'
           },
           legend: {
-            orient: 'vertical',
+            orient: 'horizontal',
             left: 'left',
             data: ['非常好', '好', '良好', '合格', '不合格']
           },
@@ -54,7 +59,7 @@
             {
               name: '工单统计',
               type: 'pie',
-              radius: '55%',
+              radius: '40%',
               center: ['50%', '60%'],
               data: [],
               itemStyle: {
@@ -68,28 +73,39 @@
           ]
         },
         startTime: '',
-        endTime: ''
+        endTime: '',
+        query: {
+          workBase: '',
+          client: '',
+          province: '',
+          city: '',
+          district: '',
+          major: ''
+        },
       }
     },
     methods: {
       changeWorkBase (result) {
-        this.doStatics(result)
+        this.query = result
+        this.doStatics()
       },
-      doStatics (result) {
+      doStatics () {
         let {
           client,
           province,
           city,
           district,
           major
-        } = result
+        } = this.query
+        if (!this.startTime || !this.endTime || !client) {
+          return
+        }
         this.$store.dispatch({
           type: native.doStaticsRunStatus,
           province,
           city,
           district,
           client,
-          major,
           start_date: this.startTime,
           end_date: this.endTime
         }).then(({data}) => {
@@ -109,6 +125,22 @@
         activeAddress: ({base}) => base.activeAddress,
         anchorStat: ({bsc}) => bsc.anchorStat
       }),
+    },
+    watch: {
+      'startTime': {
+        handler: function (nowStartTime, oldStartTime) {
+          if (nowStartTime && nowStartTime !== oldStartTime) {
+            this.doStatics()
+          }
+        }
+      },
+      'endTime': {
+        handler: function (nowEndTime, oldEndTime) {
+          if (nowEndTime && nowEndTime !== oldEndTime) {
+            this.doStatics()
+          }
+        }
+      }
     },
     components: {BaseWorkBase}
   }

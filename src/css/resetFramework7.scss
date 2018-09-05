@@ -37,3 +37,7 @@
 .picker-items {
   font-size: 15px; /*no*/
 }
+
+.tabs-animated-wrap > .tabs > .tab {
+  overflow-y: auto;
+}

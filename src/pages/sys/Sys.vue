@@ -107,7 +107,7 @@
         this.$store.dispatch({
           type: native.doWorkNumberManage,
           page: this.page,
-          work_base: this.workBase,
+          work_base: workBase,
           client,
           major,
           province,

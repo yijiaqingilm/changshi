@@ -11,7 +11,11 @@
                 <f7-navbar title="" :back-link="false" sliding></f7-navbar>
                 <!-- Pages -->
                 <f7-pages>
-                    <f7-page>&nbsp;</f7-page>
+                    <f7-page>&nbsp;
+                        <autocomplate ref="autocomplate" v-model="searchValue"
+                                      @change="autocomplateChange"
+                                      :loadData="loadDataFun"></autocomplate>
+                    </f7-page>
                     <city-select @cityInfo="cityInfo"
                                  @changeCity="changeCity"
                                  :province_id="userInfo.province_id"
@@ -30,18 +34,37 @@
   import { mapState, mapGetters } from 'vuex'
   import CitySelect from 'components/baseCitySelect/CitySelect'
   import { bus } from 'src/main'
+  import Autocomplate from 'components/autocomplate/Autocomplate'
+  import debounce from 'lodash/debounce'
 
   export default {
     data () {
-      return {}
+      return {
+        searchValue: '',
+        loadDataFun: null
+      }
     },
     componentName: 'main',
     created: function () {
       bus.$on('openCityPicker', () => {
         this.$refs.citySelect.open()
       })
+      bus.$on('openAutoComplate', (searchValue, loadDataFun) => {
+        this.searchValue = searchValue
+        this.loadDataFun = loadDataFun
+        this.openAutoComplate()
+      })
     },
     methods: {
+      changeSearchValue () {
+        bus.$emit('changeSearchValue', this.searchValue)
+      },
+      openAutoComplate () {
+        this.$refs.autocomplate.open()
+      },
+      autocomplateChange (value) {
+        bus.$emit('autocomplateChange', value)
+      },
       cityInfo (cityInfo) {
         this.$store.commit(native.changeDyAddress, cityInfo)
       },
@@ -69,7 +92,16 @@
         userInfo: ({auth}) => auth.userInfo
       })
     },
-    components: {Loading, CitySelect}
+    watch: {
+      'searchValue': {
+        handler: function (nowSearchValue, oldSearchValue) {
+          if (nowSearchValue && nowSearchValue !== oldSearchValue) {
+            this.changeSearchValue()
+          }
+        }
+      }
+    },
+    components: {Loading, CitySelect, Autocomplate}
   }
 </script>
 <style lang="scss" type="text/css">

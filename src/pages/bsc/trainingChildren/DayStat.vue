@@ -1,6 +1,6 @@
 <template>
     <div>
-        <header>查询时间</header>
+        <header><span class="mark">*</span>查询时间</header>
         <div class='time-group'>
             <div>
                 <base-date-picker v-model="dayDate" text="请选择开始时间"
@@ -79,13 +79,20 @@
           }
         ]
       }
-
       return {
         baseWorkMode,
         dateType,
         clientValue,
         dayDate: '',
-        options
+        options,
+        query: {
+          workBase: '',
+          client: '',
+          province: '',
+          city: '',
+          district: '',
+          major: ''
+        }
       }
     },
     methods: {
@@ -93,27 +100,26 @@
         bus.$emit('openCityPicker')
       },
       changeWorkBase (result) {
-        this.doStatics(result)
+        this.query = result
+        this.doStatics()
       },
-      doStatics (result) {
+      doStatics () {
         let {
-          workBase,
           client,
           province,
           city,
           district,
-          major
-        } = result
+        } = this.query
+        if (!this.dayDate || !client) {
+          return
+        }
         this.$store.dispatch({
           type: native.doTrainSubjectTrainDay,
           province,
           city,
           district,
-          work_base: workBase,
           client,
-          major,
-          start_date: this.startTime,
-          end_date: this.endTime
+          day: this.dayDate
         }).then(({data}) => {
           let {leave, ariched, approve, unariched} = data
           this.options.series[0].data = [
@@ -135,7 +141,16 @@
         return currentAddress.length > 0 ? currentAddress : '请选择地址'
       },
     },
-    components: {BaseWorkBase}
+    components: {BaseWorkBase},
+    watch: {
+      'dayDate': {
+        handler: function (nowDayDate, oldDayDate) {
+          if (nowDayDate && nowDayDate !== oldDayDate) {
+            this.doStatics()
+          }
+        }
+      }
+    }
   }
 </script>
 

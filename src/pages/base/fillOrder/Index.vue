@@ -4,6 +4,7 @@
             <f7-nav-left back-link="返回" sliding></f7-nav-left>
             <f7-nav-center>作业填报</f7-nav-center>
         </f7-navbar>
+        {{jobCard}}
         <section>
             <header class='header'><span class='mark'>*</span>客户选择</header>
             <base-radio-group v-model="jobCard.client" class="radio-group">
@@ -328,14 +329,14 @@
         return currentAddress.length > 0 ? currentAddress : '请选择地址'
       },
       showAmmeter () {
-          /* switch (this.jobCard.major >>> 0) {
-           case major.jizhan:
-           case major.jf:
-           case major.wlan:
-           return true
-           default:
-           return false
-           }*/
+        /* switch (this.jobCard.major >>> 0) {
+         case major.jizhan:
+         case major.jf:
+         case major.wlan:
+         return true
+         default:
+         return false
+         }*/
         switch (this.jobCard.major >>> 0) {
           case major.xianlu:
           case major.jtzx:
@@ -344,9 +345,9 @@
             return true
         }
       },
-        /* showDynamotor () {
-         return generatorIds.indexOf(this.jobCard.workSort >>> 0) !== -1
-         },*/
+      /* showDynamotor () {
+       return generatorIds.indexOf(this.jobCard.workSort >>> 0) !== -1
+       },*/
       majorValue () {
         let {xianlu, jizhan, ironTower, jtzx, wlan, jf} = major
         switch (this.jobCard.client >>> 0) {
@@ -616,7 +617,7 @@
       // 发电机
       scanDynamotor (code) {
         if (__DEBUG__) {
-          code = 'rewrwrwr'
+          code = 'TY1-CS012'
         }
         this.doGetDynamotor(code)
       },

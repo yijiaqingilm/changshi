@@ -19,8 +19,8 @@ class ApiConfig {
 }
 
 let apiConfig = [
-  new ApiConfig(native.doTrainSubjectTrainDay, '/train-subject/train-day', 'get'),
-  new ApiConfig(native.doTrainSubjectTrainMonth, '/train-subject/train-month', 'get'),
+  new ApiConfig(native.doTrainSubjectTrainDay, '/statics/train-day', 'get'),
+  new ApiConfig(native.doTrainSubjectTrainMonth, '/statics/train-month', 'get'),
   new ApiConfig(native.doGetSubject, '/train-subject/get-subject'),
   new ApiConfig(native.doAnswer, '/train-subject/set-subject'),
   new ApiConfig(native.doWorkSender, '/work/sender'),

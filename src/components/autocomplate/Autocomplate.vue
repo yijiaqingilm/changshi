@@ -65,7 +65,6 @@
       onSearch () {
         if (this.loadData && Object.prototype.toString.call(this.loadData) === '[object Function]') {
           this.loadData().then(({data}) => {
-            console.log('data', data)
             this.searchList = data.work_base
           }).catch((error) => {
             this.$f7.alert(error, modalTitle)

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <header>查询时间</header>
+        <header><span class="mark">*</span>查询时间</header>
         <div class='time-group'>
             <div>
                 <base-date-picker v-model="veDate" text="请选择时间"
@@ -8,28 +8,32 @@
             </div>
         </div>
         <div class='combo'>
-            <base-form-group class="mt-15" label="地址选择：">
-                <span class='s-select' @click="showPopup">{{currentAddress}}</span>
-            </base-form-group>
-            <base-form-group class="mt-15" label="客户选择：">
-                <base-select v-model="veStat.client" text="请选择客户" :data="clientValue"></base-select>
-            </base-form-group>
+            <base-work-base :hasWorkBase="false" :hasMajor="false"
+                            @changeWorkBase="changeWorkBase"
+                            :mode="baseWorkMode.list"></base-work-base>
         </div>
         <line-10></line-10>
-        <chart :options="options"></chart>
+        <template v-if="options.series[0].data.length>0">
+            <chart :options="options"></chart>
+        </template>
+        <template v-else>
+            <div class='text-center hint'>请筛选条件后查询数据</div>
+        </template>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
   import { mapState } from 'vuex'
-  import { clientValue, globalConst as native, dateType } from 'lib/const'
+  import { clientValue, globalConst as native, dateType, baseWorkMode } from 'lib/const'
   import emitter from 'mixins/emitter'
   import { bus } from 'src/main'
+  import BaseWorkBase from 'components/baseWorkBase/BaseWorkBase'
 
   export default {
     mixins: [emitter],
     data () {
       return {
+        baseWorkMode,
         dateType,
         clientValue,
         carList: [],
@@ -89,25 +93,42 @@
             }
           ]
         },
-        veDate: ''
+        veDate: '',
+        query: {
+          workBase: '',
+          client: '',
+          province: '',
+          city: '',
+          district: '',
+          major: ''
+        }
       }
     },
     methods: {
+      changeWorkBase (result) {
+        this.query = result
+        this.doStaticsCar()
+      },
       showPopup () {
         bus.$emit('openCityPicker')
       },
       doStaticsCar () {
-        let {provinceName, cityName, districtName} = this.activeAddress
-        if (!provinceName || !cityName || !districtName || !this.veDate || !this.veStat.client) {
+        let {
+          client,
+          province,
+          city,
+          district,
+        } = this.query
+        if (!this.veDate || !client) {
           return
         }
         this.$store.dispatch({
           type: native.doStaticsCar,
-          province: provinceName,
-          city: cityName,
-          district: districtName,
+          province,
+          city,
+          district,
           month: this.veDate,
-          client: this.veStat.client
+          client
         }).then(({data}) => {
           this.carList = data
           let dataX = []
@@ -135,14 +156,16 @@
         return currentAddress.length > 0 ? currentAddress : '请选择地址'
       },
     },
-    /* watch: {
-       'veStat': {
-         handler (nowClient, oldClient) {
-           this.doStaticsCar()
-         },
-         deep: true
-       }
-     }*/
+    components: {BaseWorkBase},
+    watch: {
+      'veDate': {
+        handler (nowVeDate, oldVeDate) {
+          if (nowVeDate && nowVeDate !== oldVeDate) {
+            this.doStaticsCar()
+          }
+        }
+      }
+    }
   }
 </script>
 
