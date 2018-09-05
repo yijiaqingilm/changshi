@@ -6,7 +6,7 @@
         </f7-navbar>
         <section>
             <f7-block-title class="header">{{name}}专业题库</f7-block-title>
-            <template v-if="currentTrainMode.test">
+            <template v-if="!currentTrainMode.test">
                 <f7-list>
                     <f7-list-item v-for="(level,index) in levelList" @click="chooseLevel(level)" :key="index" link
                                   :title="level.name"></f7-list-item>

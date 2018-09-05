@@ -68,15 +68,8 @@ let mutations = {
     currentSubject.title = subject
     currentSubject.resolve = remark
     currentSubject.items = answer
-    if (__DEBUG__) {
-      currentSubject.items = [{id: 'A', name: '用于测试1', enabled: 1}, {id: 'B', name: '用于测试2', enabled: 0}]
-    }
     currentSubject.sort = sort
     currentSubject.answer = sort === subjectStatus.checkSubject ? [] : ''
-    if (__DEBUG__) {
-      currentSubject.sort = subjectStatus.checkSubject
-      currentSubject.answer = currentSubject.sort === subjectStatus.checkSubject ? [] : ''
-    }
   },
   [mutationNames.doTrainSubject_success] (state, {data}) {
     let {refid, levels, subject, score, subjectType, answerTime} = data

@@ -33,12 +33,14 @@
                                         </base-checkbox-group>
                                     </template>
                                     <template v-else>
-                                        <!--<f7-list-item required radio name="tst" value="a"
-                                                      title="Checkbox C"></f7-list-item>
-                                        <f7-list-item required radio name="tst" value="C"
-                                                      title="Checkbox C"></f7-list-item>
-                                        <f7-list-item checkbox name="t-c-1" value="B" title="Checkbox B"></f7-list-item>
-                                        <f7-list-item checkbox name="t-c-1" value="C" title="Checkbox C"></f7-list-item>-->
+                                        <f7-list-item v-for="(item,itemIndex) in subject.items"
+                                                      :key="itemIndex"
+                                                      radio
+                                                      v-model="subject.answer"
+                                                      @change="handleChangeAnswer(subject,item)"
+                                                      :name="'t-c-'+index"
+                                                      :value="item.id"
+                                                      :title="item.name"></f7-list-item>
                                     </template>
                                 </f7-list>
                             </section>
@@ -86,6 +88,11 @@
       })
     },
     methods: {
+      handleChangeAnswer (subject, item) {
+        console.log('subject,', subject)
+        console.log('item==>', item)
+        subject.answer = item.id
+      },
       changeItem (e) {
         console.log('log==>', e)
       },

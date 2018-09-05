@@ -4,8 +4,8 @@
   display: flex;
   .s-label {
     flex: none;
-    height: 50px;
-    line-height: 50px;
+    height: 80px;
+    line-height: 80px;
     min-width: 180px;
     &.title {
       @include setFontSize($middleFontSize);
