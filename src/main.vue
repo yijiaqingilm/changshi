@@ -101,7 +101,11 @@
         }
       }
     },
-    components: {Loading, CitySelect, Autocomplate}
+    components: {Loading, CitySelect, Autocomplate},
+    destroyed () {
+      bus.$off('openCityPicker')
+      bus.$off('openAutoComplate')
+    }
   }
 </script>
 <style lang="scss" type="text/css">

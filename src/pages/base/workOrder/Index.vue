@@ -19,9 +19,7 @@
                         :key="index"
                         :class="{['tab-'+type.value]:true}"
                         :active="workOrderType===type.value">
-                    <keep-alive>
-                        <component :is="'orderTypeView_'+ type.value"></component>
-                    </keep-alive>
+                    <component :is="'orderTypeView_'+ type.value"></component>
                 </f7-tab>
             </f7-tabs>
         </section>

@@ -25,7 +25,6 @@
       return {}
     },
     created () {
-      console.log('created', this.$slots.title)
     }
   }
 </script>

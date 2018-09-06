@@ -38,6 +38,7 @@
   import UpdateStatus from './chilren/UpdateStatus.vue'
   import CitySelect from 'components/baseCitySelect/CitySelect'
   import { modalTitle, globalConst as native } from 'lib/const'
+  import { bus } from 'src/main'
 
   const ammeterTypesStatus = {
     updateAddress: 0,
@@ -97,6 +98,7 @@
       },
       cityInfo (cityInfo) {
         this.$store.commit(native.changeDyAddress, cityInfo)
+        bus.$emit('changeNowCity', cityInfo)
       },
       openNowCityPicker () {
         this.$refs.citySelect.open()

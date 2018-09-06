@@ -24,7 +24,6 @@ export default function clientMiddleware (client) {
     commit(mutation_request, rest)
     return new Promise((resolve, reject) => {
       promise(client).then((result) => {
-        console.log('test', result)
         if (result.code === 1) {
           commit(mutation_success, {
             data: result.data, refs: rest

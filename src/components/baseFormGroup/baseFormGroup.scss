@@ -4,8 +4,8 @@
   display: flex;
   .s-label {
     flex: none;
-    height: 80px;
-    line-height: 80px;
+    height: 60px;
+    line-height: 60px;
     min-width: 180px;
     &.title {
       @include setFontSize($middleFontSize);
@@ -18,8 +18,8 @@
       @include ellipsis;
     }
     .s-text {
-      height: 50px;
-      line-height: 50px;
+      height: 60px;
+      line-height: 60px;
       @include ellipsis;
     }
   }

@@ -229,6 +229,11 @@
           }
         }
       }
+    },
+    destroyed () {
+      bus.$off('changeCity')
+      bus.$off('changeSearchValue')
+      bus.$off('autocomplateChange')
     }
   }
 </script>

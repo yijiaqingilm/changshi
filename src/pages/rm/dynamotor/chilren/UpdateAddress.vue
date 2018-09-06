@@ -23,12 +23,23 @@
                 </div>
                 <div v-if="point==addressStatus.static">
                     <div v-if='workBaseList && workBaseList.length>0'>
-                        <base-select v-model='workBase'
-                                     text="请选择站点"
-                                     :data="workBaseList"
-                                     nodeKey="id"
-                                     widthAuto
-                                     nodeLabel="work_base"></base-select>
+                        <div>
+                            <base-select v-model='workBase'
+                                         text="请选择站点"
+                                         :data="workBaseList"
+                                         nodeKey="id"
+                                         widthAuto
+                                         nodeLabel="work_base"></base-select>
+                        </div>
+                        <div>
+                            <div @click="openAutoComplate" class='mt-15'>
+                                <input type="text" class='s-input' readonly v-model="workBaseName" placeholder="请搜索站点">
+                            </div>
+                            <div class='mt-15'>
+                                <input class='s-input' placeholder="请从上方选择或搜索站点" type="text" readonly
+                                       v-model="workBaseName">
+                            </div>
+                        </div>
                     </div>
                     <div class='hint' v-else>
                         当前地址没有可选站点
@@ -49,7 +60,7 @@
   import { globalConst as native, modalTitle } from 'lib/const'
   import emitter from 'mixins/emitter'
   import { mapState } from 'vuex'
-  import { aMapUtil } from 'lib/utils'
+  import { bus } from 'src/main'
 
   let addressStatus = {
     store: 0,
@@ -67,19 +78,31 @@
         point: addressStatus.store,
         adress: '',
         workBase: '',
+        workBaseName: '',
         workBaseList: [],
       }
     },
     mixins: [emitter],
     created () {
-      /* let {provinceName, cityName, districtName} = this.activeAddress
-      this.$store.commit(native.changeDyAddress, {
-        province: provinceName,
-        city: cityName,
-        district: districtName
-      })*/
+      let {province, city, district} = this.nowAddress
+      if (province && city && district) {
+        this.loadBaseWork()
+      }
+      bus.$on('changeNowCity', () => {
+        this.loadBaseWork()
+      })
+      bus.$on('changeSearchValue', (searchValue) => {
+        this.workBaseName = searchValue
+      })
+      bus.$on('autocomplateChange', (value) => {
+        this.workBase = value.id
+        this.workBaseName = value.work_base
+      })
     },
     methods: {
+      openAutoComplate () {
+        bus.$emit('openAutoComplate', this.workBaseName, this.changePointList)
+      },
       submit () {
         if (!this.nowAddressInfo) {
           this.$f7.alert('请选择最新存放地址', modalTitle)
@@ -112,7 +135,7 @@
         }
         this.dispatchMethod('dynamotor', 'openNowCityPicker')
       },
-      changePointList () {
+      loadBaseWork () {
         let {province, city, district} = this.nowAddress
         if (!province || !city || !district || !this.dyCode) {
           return
@@ -122,13 +145,26 @@
           province,
           city,
           district,
-          code: this.dyCode
+          code: this.dyCode,
         }).then(({data}) => {
-          console.log(data, '======')
           let workBase = data
           if (workBase && Array.isArray(workBase)) {
             this.workBaseList = workBase
           }
+        })
+      },
+      changePointList () {
+        let {province, city, district} = this.nowAddress
+        if (!province || !city || !district || !this.dyCode) {
+          return
+        }
+        return this.$store.dispatch({
+          type: native.doWorkBaseDynamotor,
+          province,
+          city,
+          district,
+          code: this.dyCode,
+          name: this.workBaseName
         })
       },
     },
@@ -142,12 +178,17 @@
       }),
       nowAddressInfo () {
         let {province, city, district} = this.nowAddress
-        if (province && city && district) {
+        /* if (province && city && district) {
           this.changePointList()
-        }
+        }*/
         return province + city + district
       },
     },
+    destroyed () {
+      bus.$off('changeNowCity')
+      bus.$off('changeSearchValue')
+      bus.$off('autocomplateChange')
+    }
   }
 </script>
 

@@ -35,7 +35,9 @@
       }
     },
     created () {
+      console.log('created===>>', this.$refs)
       bus.$on([native.clearReviewOrder], () => {
+        console.log('clearReviewOrder===>>', this.$refs)
         this.resetData()
       })
     },
@@ -44,9 +46,11 @@
         this.$router.loadPage(`/base/workOrder/detail/${order.id}`)
       },
       resetData () {
-        this.$refs.loadComponent.$emit('$InfiniteLoading:reset')
-        this.page = 1
-        this.workList = []
+        this.$nextTick(() => {
+          this.$refs.loadComponent.$emit('$InfiniteLoading:reset')
+          this.page = 1
+          this.workList = []
+        })
       },
       loadData ($state) {
         this.$store.dispatch({
@@ -69,7 +73,10 @@
       },
     },
     computed: {},
-    components: {InfiniteLoading}
+    components: {InfiniteLoading},
+    destroyed () {
+      bus.$off([native.clearReviewOrder])
+    }
   }
 </script>
 
