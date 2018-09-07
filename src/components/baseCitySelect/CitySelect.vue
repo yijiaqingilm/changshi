@@ -111,11 +111,16 @@
         let {commit, dispatch} = this.$store
         this.province = province.name
         this.provinceId = province.id
-        if (province.id !== this.activeAddress.provinceId) {
+        /* if (province.id !== this.activeAddress.provinceId) {
           commit(native.resetCity)
           commit(native.resetDistrict)
           this.$emit('changeCity', {provinceName: province.name, provinceId: province.id})
-        }
+        }*/
+
+        commit(native.resetCity)
+        commit(native.resetDistrict)
+        this.$emit('changeCity', {provinceName: province.name, provinceId: province.id})
+
         commit(native.doSelectProvince, {
           provinceId: province.id, provinceName: province.name
         })
@@ -130,7 +135,7 @@
         let {commit, dispatch} = this.$store
         this.city = city.name
         this.cityId = city.id
-        if (city.id !== this.activeAddress.cityId) {
+        /* if (city.id !== this.activeAddress.cityId) {
           commit(native.resetDistrict)
           this.$emit('changeCity', {
             provinceName: this.province,
@@ -138,7 +143,14 @@
             cityName: city.name,
             cityId: city.id
           })
-        }
+        }*/
+        commit(native.resetDistrict)
+        this.$emit('changeCity', {
+          provinceName: this.province,
+          provinceId: this.provinceId,
+          cityName: city.name,
+          cityId: city.id
+        })
         commit(native.doSelectCity, {
           cityId: city.id,
           cityName: city.name

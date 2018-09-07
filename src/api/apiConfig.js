@@ -1,67 +1,65 @@
 import { globalConst as native } from 'lib/const'
-import api from './api'
+
+const getReuqest = 'get'
+const postRequest = 'post'
 
 class ApiConfig {
-  constructor (name, url, config, method = 'post') {
+  constructor (name, url, config, method = postRequest) {
     this.name = name
     this.url = url
     this.method = method
-    if (config && typeof config === 'object') {
-      this.config = config
-      this.method = method
-    } else if (config && typeof config === 'string') {
+    this.config = config
+    if (config && typeof config === 'string') {
       this.method = config
-    } else {
       this.config = {}
     }
-
   }
 }
 
 let apiConfig = [
-  new ApiConfig(native.doTrainSubjectTrainDay, '/statics/train-day', 'get'),
-  new ApiConfig(native.doTrainSubjectTrainMonth, '/statics/train-month', 'get'),
+  new ApiConfig(native.doTrainSubjectTrainDay, '/statics/train-day', getReuqest),
+  new ApiConfig(native.doTrainSubjectTrainMonth, '/statics/train-month', getReuqest),
   new ApiConfig(native.doGetSubject, '/train-subject/get-subject'),
   new ApiConfig(native.doAnswer, '/train-subject/set-subject'),
   new ApiConfig(native.doWorkSender, '/work/sender'),
-  new ApiConfig(native.doGetWorkBase, '/work-base/index', {global: false}, 'get'),
-  new ApiConfig(native.doAddressProvinceList, '/address/index', {global: false}, 'get'),
-  new ApiConfig(native.doAddressCityList, '/address/index', {global: false}, 'get'),
-  new ApiConfig(native.doAddressDistrictList, '/address/index', {global: false}, 'get'),
-  new ApiConfig(native.doGetAmmeter, '/ammeter/index', 'get'),
-  new ApiConfig(native.doGetDynamotor, '/dynamotor/index', 'get'),
+  new ApiConfig(native.doGetWorkBase, '/work-base/index', {global: false}, getReuqest),
+  new ApiConfig(native.doAddressProvinceList, '/address/index', {global: false}, getReuqest),
+  new ApiConfig(native.doAddressCityList, '/address/index', {global: false}, getReuqest),
+  new ApiConfig(native.doAddressDistrictList, '/address/index', {global: false}, getReuqest),
+  new ApiConfig(native.doGetAmmeter, '/ammeter/index', getReuqest),
+  new ApiConfig(native.doGetDynamotor, '/dynamotor/index', getReuqest),
   new ApiConfig(native.doDynamotorUpdateStatus, '/dynamotor/update-status'),
   new ApiConfig(native.doDynamotorCreate, '/dynamotor/create'),
-  new ApiConfig(native.doWorkNumber, '/work-number/index', 'get'),
-  new ApiConfig(native.doWorkNumberManage, '/work-number/manage', 'get'),
+  new ApiConfig(native.doWorkNumber, '/work-number/index', getReuqest),
+  new ApiConfig(native.doWorkNumberManage, '/work-number/manage', getReuqest),
   new ApiConfig(native.doWorkNumberApprove, '/work-number/approve'),
   new ApiConfig(native.doWorkNumberCancel, '/work-number/cancel'),
-  new ApiConfig(native.doWorkNumberDetail, '/work-number/detail', 'get'),
+  new ApiConfig(native.doWorkNumberDetail, '/work-number/detail', getReuqest),
   new ApiConfig(native.doWorkNumberUpdate, '/work-number/update'),
-  new ApiConfig(native.doLeaveQuestion, '/leave-question/index', 'get'),
-  new ApiConfig(native.doLeaveQuestionDetail, '/leave-question/detail', 'get'),
+  new ApiConfig(native.doLeaveQuestion, '/leave-question/index', getReuqest),
+  new ApiConfig(native.doLeaveQuestionDetail, '/leave-question/detail', getReuqest),
   new ApiConfig(native.doLeaveQuestionUpdate, '/leave-question/update'),
-  new ApiConfig(native.doWorkSort, '/work-sort/index', 'get'),
+  new ApiConfig(native.doWorkSort, '/work-sort/index', getReuqest),
   new ApiConfig(native.doLogin, '/user/login'),
-  new ApiConfig(native.doWxLogin, '/user/wx-login', 'get'),
-  new ApiConfig(native.doCarDetail, '/car/detail', 'get'),
+  new ApiConfig(native.doWxLogin, '/user/wx-login', getReuqest),
+  new ApiConfig(native.doCarDetail, '/car/detail', getReuqest),
   new ApiConfig(native.startOff, '/car/create'),
   new ApiConfig(native.getTo, '/car/update'),
-  new ApiConfig(native.doDynamotorHistory, '/dynamotor/history', 'get'),
-  new ApiConfig(native.doCarHistory, '/car/history', 'get'),
-  new ApiConfig(native.doWorkNumberStatics, '/work-number/statics', 'get'),
+  new ApiConfig(native.doDynamotorHistory, '/dynamotor/history', getReuqest),
+  new ApiConfig(native.doCarHistory, '/car/history', getReuqest),
+  new ApiConfig(native.doWorkNumberStatics, '/work-number/statics', getReuqest),
   new ApiConfig(native.doWorkNumberAccess, '/work-number/access'),
   new ApiConfig(native.doWorkNumberDeny, '/work-number/deny'),
   new ApiConfig(native.doDynamotorUpdate, '/dynamotor/update'),
-  new ApiConfig(native.doWorkBaseDynamotor, '/work-base/dynamotor', 'get'),
-  new ApiConfig(native.doStaticsPower, '/statics/power', 'get'),
-  new ApiConfig(native.doStaticsCar, '/statics/car', 'get'),
-  new ApiConfig(native.doStaticsWork, '/statics/work', 'get'),
-  new ApiConfig(native.doStaticsRunStatus, '/statics/run-status', 'get'),
-  new ApiConfig(native.doStaticsApproveNum, '/statics/approve-num', 'get'),
-  new ApiConfig(native.doTrainMajor, '/train-major/index', 'get'),
-  new ApiConfig(native.doTrainLevel, '/train-level/index', 'get'),
-  new ApiConfig(native.doTrainSubject, '/train-subject/index', 'get'),
-  new ApiConfig(native.doTrainSubjectHistory, '/train-subject/history', 'get')
+  new ApiConfig(native.doWorkBaseDynamotor, '/work-base/dynamotor', getReuqest),
+  new ApiConfig(native.doStaticsPower, '/statics/power', getReuqest),
+  new ApiConfig(native.doStaticsCar, '/statics/car', getReuqest),
+  new ApiConfig(native.doStaticsWork, '/statics/work', getReuqest),
+  new ApiConfig(native.doStaticsRunStatus, '/statics/run-status', getReuqest),
+  new ApiConfig(native.doStaticsApproveNum, '/statics/approve-num', getReuqest),
+  new ApiConfig(native.doTrainMajor, '/train-major/index', getReuqest),
+  new ApiConfig(native.doTrainLevel, '/train-level/index', getReuqest),
+  new ApiConfig(native.doTrainSubject, '/train-subject/index', getReuqest),
+  new ApiConfig(native.doTrainSubjectHistory, '/train-subject/history', getReuqest)
 ]
 export default apiConfig
