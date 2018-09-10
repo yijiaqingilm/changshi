@@ -5,14 +5,14 @@ import AnswerHome from 'src/pages/training/answer/Answer.home.vue'
 import Answer2Begin from 'src/pages/training/Begin2Answer.vue'
 import TrainingLogs from 'src/pages/training/trainingLogs/TrainingLogs.vue'
 import ChooseLevel from 'src/pages/training/ChooseLevel.vue'
+import myRouter from 'lib/MyRouterResolver'
 
-let router = [
-  {path: '/training/answer', component: Answer},
-  {path: '/training/video/main', component: VideoMain},
-  {path: '/training/home/:trainType', component: TrainHome},
-  {path: '/training/answer/home', component: AnswerHome},
-  {path: '/training/begin', component: Answer2Begin},
-  {path: '/training/logs', component: TrainingLogs},
-  {path: '/training/chooseLevel/:typeId/:id', component: ChooseLevel}
-]
-export default router
+let trainingRouter = myRouter()
+trainingRouter.addComponent('answer', Answer)
+trainingRouter.addComponent('video/main', VideoMain)
+trainingRouter.addComponent('home/:trainType', TrainHome)
+trainingRouter.addComponent('answer/home', AnswerHome)
+trainingRouter.addComponent('begin', Answer2Begin)
+trainingRouter.addComponent('logs', TrainingLogs)
+trainingRouter.addComponent('chooseLevel/:typeId/:id', ChooseLevel)
+export default trainingRouter

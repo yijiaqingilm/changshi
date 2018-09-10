@@ -4,10 +4,10 @@
 import Dynamotor from 'src/pages/rm/dynamotor/Dynamotor.vue'
 import Vehicle from 'src/pages/rm/vehicle/Vehicle.vue'
 import Logs from 'src/pages/rm/rmLogs/RmLogs.vue'
+import myRouter from 'lib/MyRouterResolver'
 
-let router = [
-  {path: '/rm/dynamotor', component: Dynamotor},
-  {path: '/rm/vehicle', component: Vehicle},
-  {path: '/rm/logs', component: Logs}
-]
-export default router
+let rmRouter = myRouter()
+rmRouter.addComponent('dynamotor', Dynamotor)
+rmRouter.addComponent('vehicle', Vehicle)
+rmRouter.addComponent('logs', Logs)
+export default rmRouter

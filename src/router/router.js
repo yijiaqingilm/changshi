@@ -7,11 +7,17 @@ import baseRouter from './base.router'
 import bscRouter from './bsc.router'
 import rmRouter from './rm.router'
 import sysRouter from './sys.router'
+import myRouter from 'lib/MyRouterResolver'
 
-let router = [
-  {path: '/jump', component: Jump},
-  {path: '/error', component: Err},
-  {path: '/home', component: Home},
-  {path: '/login', component: Login}
-]
-export default [].concat(router).concat(trainingRouter).concat(baseRouter).concat(bscRouter).concat(rmRouter).concat(sysRouter)
+let router = myRouter()
+router.addComponent('jump', Jump)
+router.addComponent('error', Err)
+router.addComponent('home', Home)
+router.addComponent('login', Login)
+router.use('/base', baseRouter)
+router.use('/bsc', bscRouter)
+router.use('/rm', rmRouter)
+router.use('/sys', sysRouter)
+router.use('/training', trainingRouter)
+let routerAll = router.resolverAll()
+export default routerAll
