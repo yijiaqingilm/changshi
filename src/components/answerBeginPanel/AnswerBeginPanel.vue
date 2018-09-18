@@ -10,7 +10,7 @@
             <div>预计答题时间：{{dateTime}}分钟</div>
         </section>
         <footer>
-            <f7-button @click="beginAnswer" active full big>开始答题</f7-button>
+            <f7-button @click="submit" active full big>{{submitText}}</f7-button>
         </footer>
     </div>
 </template>
@@ -23,14 +23,18 @@
       count: {},
       score: {},
       type: {},
-      dateTime: {}
+      dateTime: {},
+      submitText: {
+        type: String,
+        default: '开始答题'
+      }
     },
     data () {
       return {}
     },
     methods: {
-      beginAnswer () {
-        this.$emit('beginAnswer')
+      submit () {
+        this.$emit('submit')
       }
     }
   }

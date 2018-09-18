@@ -1,23 +1,3 @@
-/* router.use('/base',baseRouter)
- let baseRouter = new Router()
- baaseRouter.addComponent('/fillorder',FillOrder)
-  ====>
-  router:{
-    path:'/'
-    router:{
-       path:'/',
-       compoents:[{}]
-    }
-    components:[{}],
-    methods:{
-      use(path,Router)
-      addComponent(componentName,component)
-      all() ==> 返回所有的 组件数组
-    }
-  }
-  ===>
-  compoents:{name:'compoents'}
-*/
 var getChildRouterPaths = (routers) => routers.map((router) => router.path)
 
 function resovleComonent (router) {

@@ -19,8 +19,9 @@ class ApiConfig {
 let apiConfig = [
   new ApiConfig(native.doTrainSubjectTrainDay, '/statics/train-day', getReuqest),
   new ApiConfig(native.doTrainSubjectTrainMonth, '/statics/train-month', getReuqest),
-  new ApiConfig(native.doGetSubject, '/train-subject/get-subject'),
-  new ApiConfig(native.doAnswer, '/train-subject/set-subject'),
+  new ApiConfig(native.doGetSubject, '/train-subject/get-subject', {global: false}, getReuqest),
+  new ApiConfig(native.doAnswer, '/train-subject/set-subject', {global: false}),
+  new ApiConfig(native.doTest, '/train-subject/set-exm', {global: false}),
   new ApiConfig(native.doWorkSender, '/work/sender'),
   new ApiConfig(native.doGetWorkBase, '/work-base/index', {global: false}, getReuqest),
   new ApiConfig(native.doAddressProvinceList, '/address/index', {global: false}, getReuqest),
@@ -60,6 +61,14 @@ let apiConfig = [
   new ApiConfig(native.doTrainMajor, '/train-major/index', getReuqest),
   new ApiConfig(native.doTrainLevel, '/train-level/index', getReuqest),
   new ApiConfig(native.doTrainSubject, '/train-subject/index', getReuqest),
-  new ApiConfig(native.doTrainSubjectHistory, '/train-subject/history', getReuqest)
+  new ApiConfig(native.doTrainSubjectHistory, '/train-subject/history', getReuqest),
+  new ApiConfig(native.doTrainMajor2Movie, '/train-major/movie', getReuqest),
+  new ApiConfig(native.doTrainLevel2Movie, '/train-level/movie', getReuqest),
+  new ApiConfig(native.doTrainSubject2Movie, '/train-subject/movie-info', getReuqest),
+  new ApiConfig(native.doGetMovie, '/train-subject/get-movie', getReuqest),
+  new ApiConfig(native.doGetTest, '/train-subject/get-exm', {global: false}, getReuqest),
+  new ApiConfig(native.doTrainSubjectExm, '/train-subject/exm', getReuqest),
+  new ApiConfig(native.doGetExmInfo, '/train-subject/exm-info', getReuqest),
+  new ApiConfig(native.startTest, '/train-subject/time', getReuqest)
 ]
 export default apiConfig

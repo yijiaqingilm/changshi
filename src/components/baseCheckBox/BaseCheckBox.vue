@@ -2,7 +2,8 @@
     <li>
         <label class="label-checkbox item-content" :class="{'no-border':noBorder}">
             <!-- Checked by default -->
-            <input v-model="model" type="checkbox" @change="handleChange" :name="name" :value="label">
+            <input v-model="model" type="checkbox" @change="handleChange" :disabled="disabled" :name="name"
+                   :value="label">
             <div class="item-media">
                 <i class="icon icon-form-checkbox"></i>
             </div>
@@ -21,6 +22,10 @@
       label: [String, Number, Boolean],
       name: [String, Number],
       noBorder: {
+        type: Boolean,
+        default: false
+      },
+      disabled: {
         type: Boolean,
         default: false
       }

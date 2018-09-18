@@ -4,7 +4,7 @@
             <f7-nav-left>
                 <f7-link @click="goBack"><i class="icon icon-back"></i><span>返回</span></f7-link>
             </f7-nav-left>
-            <f7-nav-center>答题</f7-nav-center>
+            <f7-nav-center>考试</f7-nav-center>
         </f7-navbar>
         <section v-if="paper">
             <header>
@@ -18,6 +18,7 @@
                 <f7-tabs animated v-if="paper.subjects && paper.subjects.length>0">
                     <f7-tab v-for="(subject,index) in paper.subjects"
                             :key="index" :class="['tab-'+(index+1)]">
+                        {{subject}}
                         <section class='subject'>
                             <section class='s-body'>
                                 <f7-block-title>{{index+1}}.{{subject.title}}</f7-block-title>
@@ -47,14 +48,14 @@
                                 </f7-list>
                             </section>
                             <line-10></line-10>
-                            <footer class='tab-footer' v-show="subject.hasAnswer">
+                            <!--<footer class='tab-footer' v-show="subject.hasAnswer">
                                 <div v-if="subject.isRight">回答正确，正确答案：{{subject.rightAnswer}}</div>
                                 <div v-else>回答错误，正确答案:{{subject.rightAnswer}}</div>
                                 <div class='f-resolve'>
                                     <div>答案解析：</div>
                                     <div>{{subject.resolve}}</div>
                                 </div>
-                            </footer>
+                            </footer>-->
                         </section>
                     </f7-tab>
                 </f7-tabs>
@@ -96,7 +97,7 @@
       },
       loadSubject () {
         return this.$store.dispatch({
-          type: native.doGetSubject,
+          type: native.doGetTest,
           page: this.paper.currentProgress,
         })
       },
@@ -146,7 +147,7 @@
         }
         answer = !checkedAnswer.some((item) => item.enabled >>> 0 === 0)
         this.$store.dispatch({
-          type: native.doAnswer,
+          type: native.doTest,
           page: currentProgress,
           answer,
           refid: this.paper.refId

@@ -23,13 +23,13 @@
     },
     created () {
       let queryType = ''
+      console.log('what?')
       switch (this.mode >>> 0) {
         case trainModes.video:
-          queryType = 'video'
+          console.log('what?', native.doTrainMajor2Movie)
+          queryType = native.doTrainMajor2Movie
           break
         case trainModes.test:
-          queryType = 'test'
-          break
         case trainModes.answer:
         default:
           queryType = native.doTrainMajor

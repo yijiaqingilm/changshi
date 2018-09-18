@@ -6,24 +6,29 @@
         </f7-navbar>
         <section>
             <f7-block-title class="header">{{name}}专业题库</f7-block-title>
-            <template v-if="!currentTrainMode.test">
+            <template v-if="currentTrainMode!==trainModes.test">
                 <f7-list>
                     <f7-list-item v-for="(level,index) in levelList" @click="chooseLevel(level)" :key="index" link
                                   :title="level.name"></f7-list-item>
                 </f7-list>
             </template>
             <template v-else>
-               <list>
-                   <list-item title="一级" :startTime="2018" :endTime="2019" :limit="60"></list-item>
-                   <list-item title="一级" :startTime="2018" :endTime="2019" :limit="60"></list-item>
-               </list>
+                <list>
+                    <list-item v-for="(level,index) in levelList"
+                               @click="chooseLevel(level)"
+                               :key="index"
+                               :title="level.level.name"
+                               :startTime="level.start_time"
+                               :endTime="level.end_time"
+                               :limit="level.limit_long"></list-item>
+                </list>
             </template>
         </section>
     </f7-page>
 </template>
 
 <script>
-  import { globalConst as native } from 'lib/const'
+  import { globalConst as native, trainModes } from 'lib/const'
   import { mapState } from 'vuex'
   import TestList from 'components/testList/TestList'
   import TestListItem from 'components/testList/TestListItem'
@@ -32,6 +37,7 @@
     name: '',
     data () {
       return {
+        trainModes,
         majorId: '',
         categoryId: '',
         name: '',
@@ -44,13 +50,36 @@
       if (this.$route.options && this.$route.options.query) {
         this.name = this.$route.options.query.name
       }
-      this.$store.dispatch({
-        type: native.doTrainLevel,
-        category: this.categoryId,
-        major_id: this.majorId
-      }).then(({data}) => {
-        this.levelList = data
-      })
+      switch (this.currentTrainMode) {
+        case trainModes.test:
+          this.$store.dispatch({
+            type: native.doTrainSubjectExm,
+            category: this.categoryId,
+            major_id: this.majorId
+          }).then(({data}) => {
+            this.levelList = data
+          })
+          break
+        case trainModes.video:
+          this.$store.dispatch({
+            type: native.doTrainLevel2Movie,
+            category: this.categoryId,
+            major_id: this.majorId
+          }).then(({data}) => {
+            this.levelList = data
+          })
+          break
+        case trainModes.answer:
+        default:
+          this.$store.dispatch({
+            type: native.doTrainLevel,
+            category: this.categoryId,
+            major_id: this.majorId
+          }).then(({data}) => {
+            this.levelList = data
+          })
+          break
+      }
     },
     computed: {
       ...mapState({
@@ -59,13 +88,24 @@
     },
     methods: {
       chooseLevel (level) {
-        this.$store.commit(native.setCurrentSubject, {
+        let {commit} = this.$store
+        commit(native.resetPaper)
+        commit(native.setCurrentSubject, {
           levelId: level.refid,
           trainType: this.categoryId,
           major: this.majorId
         })
         this.$router.loadPage('/training/begin')
-      }
+        /* if (this.currentTrainMode === trainModes.test) {
+          this.$store.dispatch({
+            type: native.startTest,
+            ref_id: level.refid
+          })
+        } else {
+          this.$router.loadPage('/training/begin')
+        }*/
+
+      },
     },
     components: {'list': TestList, 'list-item': TestListItem}
   }

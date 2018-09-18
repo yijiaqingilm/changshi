@@ -60,7 +60,17 @@ const globalConst = {
   doTrainSubjectHistory: 'doTrainSubjectHistory',
   setTrainMode: 'setTrainMode',
   doTrainSubjectTrainDay: 'doTrainSubjectTrainDay',
-  doTrainSubjectTrainMonth: 'doTrainSubjectTrainMonth'
+  doTrainSubjectTrainMonth: 'doTrainSubjectTrainMonth',
+  doSetQuizBeginTime: 'doSetQuizBeginTime',
+  doTrainMajor2Movie: 'doTrainMajor2Movie',
+  doTrainLevel2Movie: 'doTrainLevel2Movie',
+  doTrainSubject2Movie: 'doTrainSubject2Movie',
+  doGetMovie: 'doGetMovie',
+  doTrainSubjectExm: 'doTrainSubjectExm',
+  doGetExmInfo: 'doGetExmInfo',
+  doTest: 'doTest',
+  doGetTest: 'doGetTest',
+  startTest: 'startTest'
 }
 let methods = [SUCCESS.toLowerCase(), FAILURE.toLowerCase(), REQUEST.toLowerCase()]
 const mutationNames = {}
@@ -203,12 +213,18 @@ const baseWorkMode = {
 const trainTypeStatus = {
   skill: 1,
   manage: 2,
+  videoSkill: 3,
+  videoManage: 4
 }
 const trainTypes = [
   {value: trainTypeStatus.skill, label: '技能培训类题库'},
   {value: trainTypeStatus.manage, label: '管理培训类题库'}
 ]
-const trainObj = arr2obj(trainTypes, 'value', 'label')
+const videoTypes = [
+  {value: trainTypeStatus.videoSkill, label: '技能培训类题库'},
+  {value: trainTypeStatus.videoManage, label: '管理培训类题库'}
+]
+const trainObj = arr2obj(trainTypes.concat(videoTypes), 'value', 'label')
 const dateType = {
   year: 0,
   yearAndMonth: 1,
@@ -234,6 +250,9 @@ class Subject {
     this.hasAnswer = hasAnswer
     this.items = items
     this.sort = sort
+    this.isRight = false
+    this.rightAnswer = null
+    this.id = null
   }
 }
 
@@ -279,5 +298,6 @@ export {
   subjectTypes,
   Subject,
   trainModes,
-  arr2obj
+  arr2obj,
+  videoTypes
 }

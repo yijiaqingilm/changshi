@@ -27,6 +27,7 @@
                             <base-select v-model='workBase'
                                          text="请选择站点"
                                          :data="workBaseList"
+                                         @change="changePoint"
                                          nodeKey="id"
                                          widthAuto
                                          nodeLabel="work_base"></base-select>
@@ -95,13 +96,25 @@
         this.workBaseName = searchValue
       })
       bus.$on('autocomplateChange', (value) => {
-        this.workBase = value.id
-        this.workBaseName = value.work_base
+        this.changePoint(value)
       })
     },
     methods: {
+      changePoint (value) {
+        this.workBase = value.id
+        this.workBaseName = value.work_base
+        let {provinceName, cityName, districtName} = this.activeAddress
+        this.$emit('changeWorkBase', {
+          workBase: this.workBase,
+          province: provinceName,
+          city: cityName,
+          district: districtName,
+          client: this.client,
+          major: this.major
+        })
+      },
       openAutoComplate () {
-        bus.$emit('openAutoComplate', this.workBaseName, this.changePointList)
+        bus.$emit('openAutoComplate', this.workBaseName, this.getJobPointList)
       },
       submit () {
         if (!this.nowAddressInfo) {
@@ -147,13 +160,13 @@
           district,
           code: this.dyCode,
         }).then(({data}) => {
-          let workBase = data
+          let workBase = data.work_base
           if (workBase && Array.isArray(workBase)) {
             this.workBaseList = workBase
           }
         })
       },
-      changePointList () {
+      getJobPointList () {
         let {province, city, district} = this.nowAddress
         if (!province || !city || !district || !this.dyCode) {
           return
@@ -178,9 +191,6 @@
       }),
       nowAddressInfo () {
         let {province, city, district} = this.nowAddress
-        /* if (province && city && district) {
-          this.changePointList()
-        }*/
         return province + city + district
       },
     },

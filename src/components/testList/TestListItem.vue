@@ -1,6 +1,6 @@
 <template>
     <div class='wrap'>
-        <section class="list-item">
+        <section class="list-item" @click="_click">
             <header>{{title}}</header>
             <section class='item-wrap'>
                 <div>开卷时间：{{startTime}}</div>
@@ -21,7 +21,12 @@
       endTime: [String, Number],
       limit: [String, Number]
     },
-    name: ''
+    name: '',
+    methods: {
+      _click () {
+        this.$emit('click')
+      }
+    }
   }
 </script>
 

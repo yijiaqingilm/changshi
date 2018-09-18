@@ -63,7 +63,7 @@
               let {value, displayValue} = cols[0]
               this.displayValue = displayValue
               this.$emit('input', value >>> 0)
-              this.$emit('change', this.data.filter((row) => row.id === (value >>> 0))[0])
+              this.$emit('change', this.data.filter((row) => (row.id >>> 0) === (value >>> 0))[0])
             }
           },
           onOpen: (picker) => {
