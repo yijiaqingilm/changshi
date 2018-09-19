@@ -70,7 +70,8 @@ const globalConst = {
   doGetExmInfo: 'doGetExmInfo',
   doTest: 'doTest',
   doGetTest: 'doGetTest',
-  startTest: 'startTest'
+  startTest: 'startTest',
+  doVideo: 'doVideo'
 }
 let methods = [SUCCESS.toLowerCase(), FAILURE.toLowerCase(), REQUEST.toLowerCase()]
 const mutationNames = {}
@@ -243,13 +244,13 @@ const subjectTypes = [
 ]
 
 class Subject {
-  constructor (title, answer, resolve, hasAnswer = false, items = [], sort) {
-    this.title = title
-    this.answer = answer
-    this.resolve = resolve
-    this.hasAnswer = hasAnswer
-    this.items = items
-    this.sort = sort
+  constructor () {
+    this.title = null
+    this.answer = null
+    this.resolve = null
+    this.hasAnswer = false
+    this.items = []
+    this.sort = null
     this.isRight = false
     this.rightAnswer = null
     this.id = null

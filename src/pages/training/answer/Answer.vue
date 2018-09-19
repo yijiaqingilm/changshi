@@ -18,9 +18,10 @@
                 <f7-tabs animated v-if="paper.subjects && paper.subjects.length>0">
                     <f7-tab v-for="(subject,index) in paper.subjects"
                             :key="index" :class="['tab-'+(index+1)]">
-                        <section class='subject'>
+                        <section class='subject' v-if="subject.id">
                             <section class='s-body'>
-                                <f7-block-title>{{index+1}}.{{subject.title}}</f7-block-title>
+                                <f7-block-title>{{index+1}}.{{subject.title}}({{sortText(subject.sort)}})
+                                </f7-block-title>
                                 <f7-list form no-hairlines no-hairlines-between>
                                     <template v-if="subject.sort===subjectStatus.checkSubject">
                                         <base-checkbox-group v-model="subject.answer">
@@ -48,8 +49,8 @@
                             </section>
                             <line-10></line-10>
                             <footer class='tab-footer' v-show="subject.hasAnswer">
-                                <div v-if="subject.isRight">回答正确，正确答案：{{subject.rightAnswer}}</div>
-                                <div v-else>回答错误，正确答案:{{subject.rightAnswer}}</div>
+                                <div class='answer-right' v-if="subject.isRight">回答正确，正确答案：{{subject.rightAnswer}}</div>
+                                <div class='answer-left' v-else>回答错误，正确答案:{{subject.rightAnswer}}</div>
                                 <div class='f-resolve'>
                                     <div>答案解析：</div>
                                     <div>{{subject.resolve}}</div>
@@ -83,6 +84,7 @@
       }
     },
     created () {
+      this.$$('.pages .cached').remove()
       this.loadSubject()
     },
     mounted () {
@@ -91,6 +93,16 @@
       })
     },
     methods: {
+      sortText (sort) {
+        switch (sort >>> 0) {
+          case subjectStatus.checkSubject:
+            return '多选题'
+          case subjectStatus.switchSubject:
+            return '判断题'
+          case subjectStatus.radioSubject:
+            return '单选题'
+        }
+      },
       goBack () {
         this.$router.back()
       },
@@ -101,7 +113,7 @@
         })
       },
       handleChangeAnswer (subject, item) {
-        console.log('subject,', subject)
+        console.log('subject,', subject, this.paper)
         console.log('item==>', item)
         subject.answer = item.id
       },
@@ -145,6 +157,9 @@
           return
         }
         answer = !checkedAnswer.some((item) => item.enabled >>> 0 === 0)
+        if (subject.sort === subjectStatus.checkSubject && checkedAnswer.length !== subject.items.filter((item) => item.enabled >>> 0 === 1).length) {
+          answer = false
+        }
         this.$store.dispatch({
           type: native.doAnswer,
           page: currentProgress,
@@ -153,6 +168,7 @@
         })
       },
       doPrev () {
+        console.log(this.$f7.showTab, '======>', this.$$)
         this.paper.currentProgress--
         this.$f7.showTab(`.tab-${this.paper.currentProgress}`)
       },

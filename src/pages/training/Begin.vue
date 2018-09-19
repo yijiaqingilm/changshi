@@ -1,7 +1,9 @@
 <template>
     <f7-page class=''>
         <f7-navbar>
-            <f7-nav-left back-link="返回" sliding></f7-nav-left>
+            <f7-nav-left>
+                <f7-link @click="goBack"><i class="icon icon-back"></i><span>返回</span></f7-link>
+            </f7-nav-left>
             <f7-nav-center>{{title}}</f7-nav-center>
         </f7-navbar>
         <begin-panel :title='trainObj[currentSubject.trainType].value'
@@ -17,7 +19,7 @@
 </template>
 
 <script>
-  import { globalConst as native, trainObj, trainModes } from 'lib/const'
+  import { globalConst as native, trainObj, trainModes, modalTitle } from 'lib/const'
   import BeginPanel from 'components/answerBeginPanel/AnswerBeginPanel.vue'
   import { mapState } from 'vuex'
 
@@ -32,7 +34,7 @@
     },
     created () {
       let {levelId, trainType, major} = this.currentSubject
-      console.log(this.currentSubject, 'currentSubject')
+      console.log(this.currentSubject, 'currentSubject', 'currentTrainMode', this.currentTrainMode)
       switch (this.currentTrainMode) {
         case trainModes.test:
           this.title = '进入考试'
@@ -72,6 +74,11 @@
       })
     },
     methods: {
+      goBack () {
+        this.$f7.confirm('是否确定退出？退出本次答题将作废', modalTitle, () => {
+          this.$router.back()
+        })
+      },
       begin () {
         this.$store.commit(native.doSetQuizBeginTime)
         switch (this.currentTrainMode) {

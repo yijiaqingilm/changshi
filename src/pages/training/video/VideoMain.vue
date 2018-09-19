@@ -1,86 +1,74 @@
 <template>
-    <f7-page class='video'>
+    <f7-page class='answer'>
         <f7-navbar>
-            <f7-nav-left :back-link="false" sliding></f7-nav-left>
-            <f7-nav-center><!--视频答题--></f7-nav-center>
+            <f7-nav-left back-link="返回" sliding></f7-nav-left>
+            <f7-nav-center>视频答题</f7-nav-center>
         </f7-navbar>
         <section>
             <header>
-                <div class='v-h-title'>
-                    已观看时间：{{currentTime}}分钟
-                </div>
+                <!--<div class='v-h-title'>
+                    已观看时间：{{paper.currentVideoTime}}秒
+                </div>-->
                 <div>
                     <div class='dplayer'></div>
                 </div>
             </header>
-            <div @click="hidePauseBtn">暂停</div>
-            <div @click="play()">播放</div>
-            <template v-if='isShow'>
-                <section v-if="paper">
-                    <header>
-                        <div class='progress'>
-                            <f7-progressbar :progress="paperProgres"></f7-progressbar>
-                        </div>
-                        <div class='step'><span
-                                class='current'>{{paper.currentProgress}}</span><span>/{{paper.count}}</span>
-                        </div>
-                    </header>
-                    <section>
-                        <f7-tabs animated v-if="paper.subjects && paper.subjects.length>0">
-                            <f7-tab v-for="(subject,index) in paper.subjects"
-                                    :key="index" :class="['tab-'+(index+1)]">
-                                <section class='subject'>
-                                    <section class='s-body'>
-                                        <f7-block-title>{{index+1}}.{{subject.title}}</f7-block-title>
-                                        <f7-list form no-hairlines no-hairlines-between>
-                                            <template v-if="subject.sort===subjectStatus.checkSubject">
-                                                <base-checkbox-group v-model="subject.answer">
-                                                    <base-checkbox v-for="(item,itemIndex) in subject.items"
-                                                                   :name="'t-c-'+index"
-                                                                   no-border
-                                                                   :disabled="subject.hasAnswer"
-                                                                   :label="item.id"
-                                                                   :title="item.chacter+'.'+item.name"
-                                                                   :key="itemIndex"></base-checkbox>
-                                                </base-checkbox-group>
-                                            </template>
-                                            <template v-else>
-                                                <f7-list-item v-for="(item,itemIndex) in subject.items"
-                                                              :key="itemIndex"
-                                                              radio
-                                                              @change="handleChangeAnswer(subject,item)"
-                                                              :name="'t-c-'+index"
-                                                              :disabled="subject.hasAnswer"
-                                                              :checked="subject.answer===item.id"
-                                                              :value="item.id"
-                                                              :title="item.chacter+'.'+item.name"></f7-list-item>
-                                            </template>
-                                        </f7-list>
-                                    </section>
-                                    <line-10></line-10>
-                                    <footer class='tab-footer' v-show="subject.hasAnswer">
-                                        <div v-if="subject.isRight">回答正确，正确答案：{{subject.rightAnswer}}</div>
-                                        <div v-else>回答错误，正确答案:{{subject.rightAnswer}}</div>
-                                        <div class='f-resolve'>
-                                            <div>答案解析：</div>
-                                            <div>{{subject.resolve}}</div>
-                                        </div>
-                                    </footer>
-                                </section>
-                            </f7-tab>
-                        </f7-tabs>
+            <template v-if=' paper && paper.isShowVideo'>
+                <!--<header>
+                    <div class='progress'>
+                        <f7-progressbar :progress="paperProgres"></f7-progressbar>
+                    </div>
+                    <div class='step'><span
+                            class='current'>{{paper.currentProgress}}</span><span>/{{paper.count}}</span>
+                    </div>
+                </header>-->
+                <section class='subject'>
+                    <section class='s-body'>
+                        <f7-block-title>
+                            {{paper.currentProgress}}.{{currentSubject.title}}({{sortText(currentSubject.sort)}})
+                        </f7-block-title>
+                        <f7-list form no-hairlines no-hairlines-between>
+                            <template v-if="currentSubject.sort===subjectStatus.checkSubject">
+                                <base-checkbox-group v-model="currentSubject.answer">
+                                    <base-checkbox v-for="(item,itemIndex) in currentSubject.items"
+                                                   :name="'t-c-'+paper.currentProgress"
+                                                   no-border
+                                                   :disabled="currentSubject.hasAnswer"
+                                                   :label="item.id"
+                                                   :title="item.chacter+'.'+item.name"
+                                                   :key="itemIndex"></base-checkbox>
+                                </base-checkbox-group>
+                            </template>
+                            <template v-else>
+                                <f7-list-item v-for="(item,itemIndex) in currentSubject.items"
+                                              :key="itemIndex"
+                                              radio
+                                              @change="handleChangeAnswer(currentSubject,item)"
+                                              :name="'t-c-'+paper.currentProgress"
+                                              :disabled="currentSubject.hasAnswer"
+                                              :checked="currentSubject.answer===item.id"
+                                              :value="item.id"
+                                              :title="item.chacter+'.'+item.name"></f7-list-item>
+                            </template>
+                        </f7-list>
                     </section>
-                    <footer>
-                        <f7-block class='footer-button'>
-                            <f7-button active full big v-show="showPrev()" @click="doPrev()">上一题</f7-button>
-                            <f7-button active full big v-show="showNext()" @click="doNext()">下一题</f7-button>
-                            <f7-button active full big v-show="showRes()" @click="doAnswer()">确认</f7-button>
-                            <f7-button active full big v-show="showSubmit()" @click="doAnswerSubmit()">提交</f7-button>
-                        </f7-block>
+                    <line-10></line-10>
+                    <footer class='tab-footer' v-show="currentSubject.hasAnswer">
+                        <div class='answer-right' v-if="currentSubject.isRight">
+                            回答正确，正确答案：{{currentSubject.rightAnswer}}
+                        </div>
+                        <div class='answer-left' v-else>回答错误，正确答案:{{currentSubject.rightAnswer}}</div>
+                        <div class='f-resolve'>
+                            <div>答案解析：</div>
+                            <div>{{currentSubject.resolve}}</div>
+                        </div>
                     </footer>
                 </section>
                 <footer>
-                    <f7-button @click="doAnswer()">确认</f7-button>
+                    <f7-block class='footer-button'>
+                        <f7-button active full big v-show="showNext()" @click="doNext()">继续观看视频</f7-button>
+                        <f7-button active full big v-show="showRes()" @click="doAnswer()">确认</f7-button>
+                    </f7-block>
                 </footer>
             </template>
         </section>
@@ -97,23 +85,37 @@
     name: 'videoMain',
     data () {
       return {
-        isShow: false,
         dp: null,
-        currentTime: 0,
-        step: 2,
+        step: 60,
         subjectStatus,
 
       }
     },
     created () {
+      this.$$('.pages .cached').remove()
+      if (__DEBUG__) {
+        this.step = 5
+      } else {
+        this.step = Math.floor(60 / this.paper.rate)
+      }
       this.loadSubject()
     },
     methods: {
+      sortText (sort) {
+        switch (sort >>> 0) {
+          case subjectStatus.checkSubject:
+            return '多选题'
+          case subjectStatus.switchSubject:
+            return '判断题'
+          case subjectStatus.radioSubject:
+            return '单选题'
+        }
+      },
       loadSubject () {
-        return this.$store.dispatch({
+        this.$store.dispatch({
           type: native.doGetMovie,
           page: this.paper.currentProgress,
-          movie_id: this.paper.refId
+          movie_id: this.paper.movieId
         })
       },
       handleChangeAnswer (subject, item) {
@@ -123,21 +125,6 @@
       },
       changeItem (e) {
         console.log('log==>', e)
-      },
-      showPrev () {
-        return this.paper.currentProgress !== 1
-      },
-      showNext () {
-        let {currentProgress, subjects} = this.paper
-        return subjects[currentProgress] && subjects[currentProgress - 1].hasAnswer
-      },
-      showRes () {
-        let {currentProgress, subjects} = this.paper
-        return subjects[currentProgress - 1] && !subjects[currentProgress - 1].hasAnswer
-      },
-      showSubmit () {
-        let {currentProgress, subjects} = this.paper
-        return currentProgress === subjects.length && subjects[currentProgress - 1].hasAnswer
       },
       doAnswer () {
         // 回答逻辑
@@ -161,21 +148,34 @@
           return
         }
         answer = !checkedAnswer.some((item) => item.enabled >>> 0 === 0)
+        if (subject.sort === subjectStatus.checkSubject && checkedAnswer.length !== subject.items.filter((item) => item.enabled >>> 0 === 1).length) {
+          answer = false
+        }
         this.$store.dispatch({
-          type: native.doAnswer,
+          type: native.doVideo,
           page: currentProgress,
           answer,
           refid: this.paper.refId
         })
       },
-      doPrev () {
-        this.paper.currentProgress--
-        this.$f7.showTab(`.tab-${this.paper.currentProgress}`)
+      showNext () {
+        let {currentProgress, subjects} = this.paper
+        return subjects[currentProgress - 1].hasAnswer
+      },
+      showRes () {
+        let {currentProgress, subjects} = this.paper
+        return subjects[currentProgress - 1] && !subjects[currentProgress - 1].hasAnswer
       },
       doNext () {
-        this.paper.currentProgress++
-        this.loadSubject()
-        this.$f7.showTab(`.tab-${this.paper.currentProgress}`)
+        this.play()
+        this.paper.isShowVideo = false
+        this.paper.videoPlay = true
+        if (this.paper.currentProgress >= this.paper.count) {
+          this.$f7.alert('恭喜您完成视频培训', modalTitle)
+        } else {
+          this.paper.currentProgress++
+          this.loadSubject()
+        }
 
       },
       doAnswerSubmit () {
@@ -186,17 +186,15 @@
       },
       pause () {
         this.dp.pause()
-      },
-      hidePauseBtn () {
-        this.dp.pause()
-        this.$$('.dplayer  .dplayer-play-icon').hide()
+        this.$$('.dplayer-icons-left').hide()
       },
       play () {
-        this.$$('.dplayer  .dplayer-play-icon').show()
         this.dp.play()
+        this.$$('.dplayer-icons-left').show()
       },
       showSubject () {
-        this.hidePauseBtn()
+        this.paper.isShowVideo = true
+        this.pause()
       }
     },
     mounted () {
@@ -211,23 +209,39 @@
           screenshot: true,
           hotkey: true,
           preload: 'auto',
-          logo: 'logo.png',
+          // logo: 'logo.png',
           volume: 0.7,
           mutex: true,
           video: {
-            url: 'https://lightsns.oss-cn-qingdao.aliyuncs.com/demo_video.mp4',
-            pic: require('../../../assets/icon_add.png'),
+            // this.paper.moviePath
+            // https://lightsns.oss-cn-qingdao.aliyuncs.com/demo_video.mp4
+            url: this.paper.moviePath,
+            // pic: require('../../../assets/icon_add.png'),
             type: 'auto'
           },
         })
         this.$$('.dplayer  .dplayer-setting').hide()
         this.$$('.dplayer .dplayer-full').hide()
         this.dp.on('timeupdate', () => {
-          this.currentTime = Math.floor(this.dp.video.currentTime / 60)
+          this.paper.currentVideoTime = Math.floor(this.dp.video.currentTime)
         })
+        let layer = document.createElement('div')
+        layer.style.position = 'absolute'
+        layer.style.bottom = '33px'
+        layer.style.width = 'calc(100% - 40px)'
+        layer.style.height = '3px'
+        layer.style.zIndex = '999'
+        layer.style.padding = '5px 0'
+        this.$$('.dplayer-controller').append(layer)
+        this.dp.seek(this.paper.currentVideoTime)
+        this.paper.videoPlay ? this.play() : this.pause()
       })
     },
     computed: {
+      currentSubject () {
+        let {currentProgress, subjects} = this.paper
+        return subjects[currentProgress - 1]
+      },
       paperProgres () {
         let {currentProgress, count} = this.paper
         return (currentProgress / count) * 100
@@ -239,9 +253,12 @@
       })
     },
     watch: {
-      currentTime (nowTime, oldTime) {
-        if (nowTime % this.step === 0) {
-          this.showSubject()
+      'paper.currentVideoTime': {
+        handler (nowTime, oldTime) {
+          if (nowTime % this.step === 0) {
+            this.paper.videoPlay = false
+            this.showSubject()
+          }
         }
       }
     }
@@ -249,5 +266,5 @@
 </script>
 
 <style lang="scss" scoped type="text/css">
-
+    @import "../../../css/answer.scss";
 </style>

@@ -18,10 +18,10 @@
                 <f7-tabs animated v-if="paper.subjects && paper.subjects.length>0">
                     <f7-tab v-for="(subject,index) in paper.subjects"
                             :key="index" :class="['tab-'+(index+1)]">
-                        {{subject}}
                         <section class='subject'>
                             <section class='s-body'>
-                                <f7-block-title>{{index+1}}.{{subject.title}}</f7-block-title>
+                                <f7-block-title>{{index+1}}.{{subject.title}}({{sortText(subject.sort)}})
+                                </f7-block-title>
                                 <f7-list form no-hairlines no-hairlines-between>
                                     <template v-if="subject.sort===subjectStatus.checkSubject">
                                         <base-checkbox-group v-model="subject.answer">
@@ -84,6 +84,7 @@
       }
     },
     created () {
+      this.$$('.pages .cached').remove()
       this.loadSubject()
     },
     mounted () {
@@ -92,6 +93,16 @@
       })
     },
     methods: {
+      sortText (sort) {
+        switch (sort >>> 0) {
+          case subjectStatus.checkSubject:
+            return '多选题'
+          case subjectStatus.switchSubject:
+            return '判断题'
+          case subjectStatus.radioSubject:
+            return '单选题'
+        }
+      },
       goBack () {
         this.$router.back()
       },
@@ -146,6 +157,9 @@
           return
         }
         answer = !checkedAnswer.some((item) => item.enabled >>> 0 === 0)
+        if (subject.sort === subjectStatus.checkSubject && checkedAnswer.length !== subject.items.filter((item) => item.enabled >>> 0 === 1).length) {
+          answer = false
+        }
         this.$store.dispatch({
           type: native.doTest,
           page: currentProgress,

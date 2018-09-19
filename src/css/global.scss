@@ -431,3 +431,13 @@ textarea {
 .hint {
   color: #b91212;
 }
+
+.answer-right {
+  @include setFontSize($middleFontSize);
+  color: #039311;
+}
+
+.answer-left {
+  @include setFontSize($middleFontSize);
+  color: #b91212;
+}

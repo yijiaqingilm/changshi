@@ -20,23 +20,30 @@ const state = {
     endTime: '',
     consumetime: '',
     rate: '',
-    moviePath: ''
+    moviePath: '',
+    movieId: '',
+    currentVideoTime: 0,
+    videoPlay: true,
+    isShowVideo: false
   },
   currentSubject: {
     levelId: '',
     trainType: '',
     major: '',
-  }
+  },
 }
 
 function setPaper (state, data) {
-  let {refid, levels, subject, score, subjectType, answerTime} = data
+  let {refid, levels, subject, score, subjectType, answerTime, rate, moviePath, movie_id} = data
   state.paper.refId = refid
   state.paper.title = levels.name
   state.paper.count = subject
   state.paper.score = score
   state.paper.sType = subjectType.reduce((a, b) => a + ',' + b.name, '').slice(1)
   state.paper.expTime = answerTime
+  state.paper.rate = rate
+  state.paper.moviePath = moviePath
+  state.paper.movieId = movie_id
   let subjects = []
   for (let i = 0; i < state.paper.count; i++) {
     subjects.push(new Subject())
@@ -106,10 +113,18 @@ const actions = {
     return applyClientMiddleware(api.doTrainLevel2Movie)(refs)
   },
   [native.doTrainSubject2Movie] ({state}, refs) {
-    return applyClientMiddleware(api.doTrainSubject2Movie)(refs)
+    if (!state.paper.refId) {
+      return applyClientMiddleware(api.doTrainSubject2Movie)(refs)
+    }
   },
   [native.doGetMovie] ({state}, refs) {
-    return applyClientMiddleware(api.doGetMovie)(refs)
+    let currentSubject = state.paper.subjects[state.paper.currentProgress - 1]
+    if (!currentSubject.id) {
+      return applyClientMiddleware(api.doGetMovie)(refs)
+    }
+  },
+  [native.doVideo] ({state}, refs) {
+    return applyClientMiddleware(api.doVideo)(refs)
   },
   /* ----------- 考试模块 -------------*/
   [native.doTrainSubjectExm] ({state}, refs) {
@@ -127,7 +142,10 @@ const actions = {
     return applyClientMiddleware(api.doTest)(refs)
   },
   [native.doGetTest] ({state}, refs) {
-    return applyClientMiddleware(api.doGetTest)(refs)
+    let currentSubject = state.paper.subjects[state.paper.currentProgress - 1]
+    if (!currentSubject.id) {
+      return applyClientMiddleware(api.doGetTest)(refs)
+    }
   }
 }
 let mutations = {
@@ -141,6 +159,9 @@ let mutations = {
     setCurrentSubject(state, {data, refs})
   },
   [mutationNames.doGetTest_success] (state, {data, refs}) {
+    setCurrentSubject(state, {data, refs})
+  },
+  [mutationNames.doGetMovie_success] (state, {data, refs}) {
     setCurrentSubject(state, {data, refs})
   },
   [mutationNames.doTrainSubject_success] (state, {data}) {
@@ -166,7 +187,11 @@ let mutations = {
       beginTime: '',
       endTime: '',
       rate: '',
-      moviePath: ''
+      moviePath: '',
+      movieId: '',
+      currentVideoTime: 0,
+      videoPlay: true,
+      isShowVideo: false
     }
   },
   [native.doSetQuizBeginTime] (state) {
@@ -180,6 +205,9 @@ let mutations = {
     doAnswer(state, {data, refs})
   },
   [mutationNames.doTest_success] (state, {data, refs}) {
+    doAnswer(state, {data, refs})
+  },
+  [mutationNames.doVideo_success] (state, {data, refs}) {
     doAnswer(state, {data, refs})
   }
 }

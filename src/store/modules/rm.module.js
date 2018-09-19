@@ -19,11 +19,6 @@ const state = {
     }
   },
   dyCode: '',
-  vehicleInfo: {
-    out: {},
-    retract: {},
-    mileage: 0,
-  },
 }
 const getters = {}
 const actions = {

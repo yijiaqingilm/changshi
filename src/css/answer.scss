@@ -23,6 +23,7 @@
 
 .tab-footer {
   .f-resolve {
+    margin-top: 10px;
     > div {
       @include setFontSize($maxFontSize);
       &:first-child {
