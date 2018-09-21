@@ -10,6 +10,10 @@
                 <scan-input v-model="carnumber" @scan="scanCode"></scan-input>
             </base-form-group>
         </header>
+        <line-10></line-10>
+        <base-form-group class="title" label="出车里程数" isTitle>
+            <input type="number" v-model="info.outMileage" class='s-input' placeholder='请输入里程数'>
+        </base-form-group>
         <section class='info-panel'>
             <header>出车信息</header>
             <section class='panel-context'>
@@ -21,21 +25,7 @@
                 </base-form-group>
             </section>
         </section>
-        <section class='info-panel' v-if='vehicleInfo.retract.address'>
-            <header>收车信息</header>
-            <section class='panel-context'>
-                <base-form-group label="收车时间">
-                    {{vehicleInfo.retract.date && vehicleInfo.retract.date | dateFormat}}
-                </base-form-group>
-                <base-form-group label="收车位置" :ellipsis="false">
-                    {{vehicleInfo.retract.address && vehicleInfo.retract.address}}
-                </base-form-group>
-            </section>
-        </section>
         <section class='context'>
-            <base-form-group label="出车里程数" isTitle>
-                <input type="number" v-model="info.outMileage" class='s-input' placeholder='请输入里程数'>
-            </base-form-group>
             <base-form-group label="加油费用" isTitle>
                 <input type="number" v-model="info.oilfee" class='s-input' placeholder='请输入加油费用，无填0'>
             </base-form-group>
@@ -60,6 +50,17 @@
             <base-form-group label="备注" isTitle>
                 <input type="text" v-model='info.remark' class='s-input' placeholder='请填写备注(非必填)'>
             </base-form-group>
+        </section>
+        <section class='info-panel' v-if='vehicleInfo.retract.address'>
+            <header>收车信息</header>
+            <section class='panel-context'>
+                <base-form-group label="收车时间">
+                    {{vehicleInfo.retract.date && vehicleInfo.retract.date | dateFormat}}
+                </base-form-group>
+                <base-form-group label="收车位置" :ellipsis="false">
+                    {{vehicleInfo.retract.address && vehicleInfo.retract.address}}
+                </base-form-group>
+            </section>
         </section>
         <section class='footer'>
             <f7-button big full active :color="btnOutCarDisable ? 'gray':''" @click='debounceStartOff'
@@ -108,6 +109,11 @@
       }
     },
     created () {
+      this.$store.dispatch({
+        type: native.getUserUseCarInfo
+      }).then((data) => {
+        console.log('data====>', data)
+      })
       this.validator = new Validator({
         oilfee: 'required',
         bridgefee: 'required',
@@ -126,11 +132,11 @@
           this.$f7.alert('请扫描车牌号', modalTitle)
           return
         }
+        if (parseFloat(this.info.outMileage, 10) < parseFloat(this.vehicleInfo.mileage, 10)) {
+          this.$f7.alert('出车里程数必须大于或等于上一次收车里程数', modalTitle)
+          return
+        }
         this.$f7.confirm('是否确认出车', modalTitle, () => {
-          if (parseFloat(this.info.outMileage, 10) < parseFloat(this.vehicleInfo.mileage, 10)) {
-            this.$f7.alert('出车里程数必须大于或等于上一次收车里程数', modalTitle)
-            return
-          }
           this.$store.dispatch({
             type: native.startOff,
             license_plate: this.carnumber,
@@ -139,6 +145,8 @@
             console.log('出车成功', data)
             this.vehicleInfo.out.date = data.out.date
             this.vehicleInfo.out.position = data.out.position
+          }).catch((error) => {
+            this.$f7.alert(error, modalTitle)
           })
         })
 
@@ -206,7 +214,7 @@
       },
       scanCode (code) {
         if (__DEBUG__) {
-          this.carnumber = '粤B2500'
+          this.carnumber = '闽U5634'
         } else {
           this.carnumber = code
         }

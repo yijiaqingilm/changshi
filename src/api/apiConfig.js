@@ -20,8 +20,8 @@ let apiConfig = [
   new ApiConfig(native.doTrainSubjectTrainDay, '/statics/train-day', getReuqest),
   new ApiConfig(native.doTrainSubjectTrainMonth, '/statics/train-month', getReuqest),
   new ApiConfig(native.doGetSubject, '/train-subject/get-subject', {global: false}, getReuqest),
-  new ApiConfig(native.doAnswer, '/train-subject/set-subject', {global: false}),
-  new ApiConfig(native.doTest, '/train-subject/set-exm', {global: false}),
+  new ApiConfig(native.doAnswer, '/train-subject/set-subject'),
+  new ApiConfig(native.doTest, '/train-subject/set-exm'),
   new ApiConfig(native.doWorkSender, '/work/sender'),
   new ApiConfig(native.doGetWorkBase, '/work-base/index', {global: false}, getReuqest),
   new ApiConfig(native.doAddressProvinceList, '/address/index', {global: false}, getReuqest),
@@ -70,6 +70,7 @@ let apiConfig = [
   new ApiConfig(native.doTrainSubjectExm, '/train-subject/exm', getReuqest),
   new ApiConfig(native.doGetExmInfo, '/train-subject/exm-info', getReuqest),
   new ApiConfig(native.startTest, '/train-subject/time', getReuqest),
-  new ApiConfig(native.doVideo, '/train-subject/set-movie')
+  new ApiConfig(native.doVideo, '/train-subject/set-movie'),
+  new ApiConfig(native.getUserUseCarInfo, '/car/get-out')
 ]
 export default apiConfig

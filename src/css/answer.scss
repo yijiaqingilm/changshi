@@ -25,7 +25,7 @@
   .f-resolve {
     margin-top: 10px;
     > div {
-      @include setFontSize($maxFontSize);
+      @include setFontSize($middleFontSize);
       &:first-child {
         color: #999;
       }

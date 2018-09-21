@@ -22,6 +22,9 @@ const state = {
 }
 const getters = {}
 const actions = {
+  [native.getUserUseCarInfo] ({state}, refs) {
+    return applyClientMiddleware(api.getUserUseCarInfo)(refs)
+  },
   [native.doDynamotorUpdate] ({state}, refs) {
     return applyClientMiddleware(api.doDynamotorUpdate)(refs)
   },

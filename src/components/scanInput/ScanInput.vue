@@ -1,7 +1,8 @@
 <template>
     <span class='scan-input'>
         <div class='scan' @click="scan"></div>
-        <input type="text" v-model='mode' @keyup.enter="onSearch" :placeholder='placeholder' class='s-scan'>
+        <input type="text" v-model='mode' :disabled="disable" @keyup.enter="onSearch" :placeholder='placeholder'
+               class='s-scan'>
     </span>
 </template>
 
@@ -15,6 +16,10 @@
       placeholder: {
         type: String,
         default: '请扫描'
+      },
+      disable: {
+        type: Boolean,
+        default: false
       }
     },
     data () {
@@ -32,9 +37,15 @@
     },
     methods: {
       onSearch () {
+        if (this.disable) {
+          return
+        }
         this.$emit('scan', this.value)
       },
       scan () {
+        if (this.disable) {
+          return
+        }
         if (__DEBUG__) {
           this.$emit('scan', '')
         } else {

@@ -41,3 +41,26 @@
 .tabs-animated-wrap > .tabs > .tab {
   overflow-y: auto;
 }
+
+.form-radio input[type="radio"]:checked ~ i, label.label-radio input[type="radio"]:checked ~ .item-inner {
+  background-image: url("~assets/radio_check.png");
+  background-size: 32px;
+}
+
+.form-radio input[type="radio"] ~ i, label.label-radio input[type="radio"] ~ .item-inner {
+  background-image: url("~assets/radio.png");
+  background-repeat: no-repeat;
+  background-size: 32px;
+}
+
+label.label-radio input[type="radio"] ~ .item-inner {
+  background-position: 0 center;
+}
+
+label.label-radio input[type="radio"]:checked ~ .item-inner {
+  background-position: 0 center;
+}
+
+label.label-radio input[type="radio"] ~ .item-inner {
+  padding: 0 35px; /*no*/
+}
