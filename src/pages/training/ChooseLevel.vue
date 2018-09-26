@@ -115,7 +115,10 @@
 
           })
         } else if (this.currentTrainMode === trainModes.video) {
-          this.$router.loadPage('/training/chooseVideo')
+          this.$router.load({
+            url: '/training/chooseVideo',
+            query: {name: this.name}
+          })
         } else {
           this.$router.loadPage('/training/begin')
         }

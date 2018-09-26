@@ -5,7 +5,7 @@
             <f7-nav-center>视频选择</f7-nav-center>
         </f7-navbar>
         <section>
-            <f7-block-title class="header">xxxx专业题库</f7-block-title>
+            <f7-block-title class="header">{{name}}专业题库</f7-block-title>
             <section v-for="(videoInfo,index) in videoList" @click="goBegin(videoInfo)">
                 <f7-card>
                     <f7-card-content :inner="false">
@@ -26,10 +26,14 @@
     name: 'beginAnswer',
     data () {
       return {
-        videoList: []
+        videoList: [],
+        name: ''
       }
     },
     created () {
+      if (this.$route.options && this.$route.options.query) {
+        this.name = this.$route.options.query.name
+      }
       this.$store.dispatch({
         type: native.doVideoList,
         refid: this.currentSubject.levelId
