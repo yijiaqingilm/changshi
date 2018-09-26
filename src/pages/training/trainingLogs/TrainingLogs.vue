@@ -11,7 +11,7 @@
         </h-list>
         <section>
             <list>
-                <list-item v-for="(item,index) in historyList" :key="index" :title="sortObj[item.sort].value" :score="score"
+                <list-item v-for="(item,index) in historyList" :key="index" :title="item.sort.name" :score="item.score"
                            subTitle="2018-01-15"></list-item>
             </list>
             <infinite-loading @infinite="loadData">

@@ -78,6 +78,9 @@ function doAnswer (state, {data, refs}) {
 
 const getters = {}
 const actions = {
+  [native.doVideoList] ({state}, refs) {
+    return applyClientMiddleware(api.doVideoList)(refs)
+  },
   [native.doTrainSubjectHistory] ({state}, refs) {
     return applyClientMiddleware(api.doTrainSubjectHistory)(refs)
   },
@@ -149,6 +152,9 @@ const actions = {
   }
 }
 let mutations = {
+  [native.setVideoPath] (state, videoPath) {
+    state.paper.moviePath = videoPath
+  },
   [native.setTrainMode] (state, mode = trainModes.answer) {
     state.currentTrainMode = mode
   },
@@ -198,8 +204,7 @@ let mutations = {
     state.paper.beginTime = new Date()
   },
   [native.setCurrentSubject] (state, params) {
-    let {levelId, trainType, major} = params
-    state.currentSubject = {levelId, trainType, major}
+    state.currentSubject = params
   },
   [mutationNames.doAnswer_success] (state, {data, refs}) {
     doAnswer(state, {data, refs})

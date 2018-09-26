@@ -35,7 +35,7 @@
         <base-form-group class="mt-15" label="地址选择：">
             <span class='s-select' @click="showPopup">{{currentAddress}}</span>
         </base-form-group>
-        <base-form-group class="mt-15" label="客户选择：" mark>
+        <base-form-group v-if="hasClient" class="mt-15" label="客户选择：" mark>
             <base-select v-model="client" text="请选择客户" :data="clientValue"></base-select>
         </base-form-group>
         <base-form-group v-if='hasMajor && majorValue.length>0' class="mt-15" label="专业选择:" mark>
@@ -89,6 +89,10 @@
         default: true
       },
       hasMajor: {
+        type: Boolean,
+        default: true
+      },
+      hasClient: {
         type: Boolean,
         default: true
       }

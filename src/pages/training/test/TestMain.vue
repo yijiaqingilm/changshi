@@ -7,6 +7,10 @@
             <f7-nav-center>考试</f7-nav-center>
         </f7-navbar>
         <section v-if="paper">
+            <div class='clock-wrap'>
+                <div>考试倒计时</div>
+                <div>59"50'</div>
+            </div>
             <header>
                 <div class='progress'>
                     <f7-progressbar :progress="paperProgres"></f7-progressbar>
@@ -179,7 +183,7 @@
       },
       doAnswerSubmit () {
         let {score, consumetime} = this.paper
-        this.$f7.alert(`<div>用时：${consumetime}分钟</div><div>得分：${score}分</div>`, '提交成功！', () => {
+        this.$f7.alert(`<div>用时：${consumetime}分钟</div><div>得分：${score}</div>`, '提交成功！', () => {
           this.$router.loadPage('/training/home/' + trainModes.answer)
         })
       }

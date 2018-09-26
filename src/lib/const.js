@@ -72,7 +72,9 @@ const globalConst = {
   doGetTest: 'doGetTest',
   startTest: 'startTest',
   doVideo: 'doVideo',
-  getUserUseCarInfo: 'getUserUseCarInfo'
+  getUserUseCarInfo: 'getUserUseCarInfo',
+  doVideoList: 'doVideoList',
+  setVideoPath: 'setVideoPath'
 }
 let methods = [SUCCESS.toLowerCase(), FAILURE.toLowerCase(), REQUEST.toLowerCase()]
 const mutationNames = {}

@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class='combo'>
-            <base-work-base :hasWorkBase="false" :hasMajor="false" @changeWorkBase="changeWorkBase"
+            <base-work-base :hasClient="false" :hasWorkBase="false" :hasMajor="false" @changeWorkBase="changeWorkBase"
                             :mode="baseWorkMode.list"></base-work-base>
         </div>
         <line-10></line-10>
@@ -22,6 +22,7 @@
   import emitter from 'mixins/emitter'
   import { bus } from 'src/main'
   import BaseWorkBase from 'components/baseWorkBase/BaseWorkBase'
+  import keyBy from 'lodash/keyBy'
 
   export default {
     mixins: [emitter],
@@ -65,17 +66,17 @@
           {
             name: '在线答题',
             type: 'bar',
-            data: [1, 2],
+            data: [],
           },
           {
             name: '视频培训',
             type: 'bar',
-            data: [4, 5],
+            data: [],
           },
           {
             name: '考试',
             type: 'bar',
-            data: [7, 8],
+            data: [],
           }
         ]
       }
@@ -105,12 +106,11 @@
       },
       doStatics () {
         let {
-          client,
           province,
           city,
           district,
         } = this.query
-        if (!this.dayDate || !client) {
+        if (!this.dayDate) {
           return
         }
         this.$store.dispatch({
@@ -118,16 +118,12 @@
           province,
           city,
           district,
-          client,
           day: this.dayDate
         }).then(({data}) => {
-          let {leave, ariched, approve, unariched} = data
-          this.options.series[0].data = [
-            {value: leave, name: '遗留工单'},
-            {value: ariched, name: '已归档工单'},
-            {value: approve, name: '待审核工单'},
-            {value: unariched, name: '未归档工单'}
-          ]
+          let keys = keyBy(data, 'sort')
+          this.options.series[0].data = [keys['0'].person, keys['0'].amount]
+          this.options.series[1].data = [keys['1'].person, keys['1'].amount]
+          this.options.series[2].data = [keys['2'].person, keys['2'].amount]
         })
       },
     },

@@ -399,6 +399,16 @@ function prefixInteger (num) {
   return num
 }
 
+/**
+ * 数组萃取数组对象中的某个属性，返回一个数组
+ * @param arr
+ * @param propertyName
+ * @returns {Array}
+ */
+function pluckArray (arr, propertyName) {
+  return arr.reduce((a, b) => a.concat(b[propertyName]), [])
+}
+
 export {
   Cache,
   LocalCache,
@@ -416,5 +426,6 @@ export {
   getTimer,
   wxScanQRCode,
   getQuery,
-  prefixInteger
+  prefixInteger,
+  pluckArray
 }

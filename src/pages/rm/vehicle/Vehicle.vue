@@ -25,7 +25,7 @@
                 </base-form-group>
             </section>
         </section>
-        <section class='context'>
+        <section class='context' v-if="vehicleInfo.out.date">
             <base-form-group label="加油费用" isTitle>
                 <input type="number" v-model="info.oilfee" class='s-input' placeholder='请输入加油费用，无填0'>
             </base-form-group>
@@ -130,6 +130,10 @@
       startOff () {
         if (!this.carnumber) {
           this.$f7.alert('请扫描车牌号', modalTitle)
+          return
+        }
+        if (!this.info.outMileage) {
+          this.$f7.alert('出车里程数需大于0', modalTitle)
           return
         }
         if (parseFloat(this.info.outMileage, 10) < parseFloat(this.vehicleInfo.mileage, 10)) {

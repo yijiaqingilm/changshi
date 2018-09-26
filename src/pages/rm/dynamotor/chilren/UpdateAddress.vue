@@ -2,7 +2,7 @@
     <div class='update-address' v-if="dy && dy.code">
         <div class='group'>
             <base-form-group class='title' label="当前发电机存放点" isTitle>
-                {{dy.work_base?'固定油机':'仓库'}}
+                {{dy.is_fixed==='Y'?'固定油机':'仓库'}}
             </base-form-group>
             <base-form-group :label="dy.province+dy.city+dy.district+'('+dy.work_base+')'"></base-form-group>
         </div>

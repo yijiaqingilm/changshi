@@ -23,10 +23,8 @@
     },
     created () {
       let queryType = ''
-      console.log('what?')
       switch (this.mode >>> 0) {
         case trainModes.video:
-          console.log('what?', native.doTrainMajor2Movie)
           queryType = native.doTrainMajor2Movie
           break
         case trainModes.test:
@@ -43,7 +41,6 @@
     },
     methods: {
       goChooseLevel (item) {
-        // this.$router.loadPage()
         this.$router.load({
           url: `/training/chooseLevel/${this.type}/${item.id}`,
           query: {name: item.name}

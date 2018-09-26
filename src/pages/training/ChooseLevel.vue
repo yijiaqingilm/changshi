@@ -32,6 +32,7 @@
   import { mapState } from 'vuex'
   import TestList from 'components/testList/TestList'
   import TestListItem from 'components/testList/TestListItem'
+  import { modalTitle } from '../../lib/const'
 
   export default {
     name: '',
@@ -95,15 +96,29 @@
           trainType: this.categoryId,
           major: this.majorId
         })
-        this.$router.loadPage('/training/begin')
-        /* if (this.currentTrainMode === trainModes.test) {
+        if (this.currentTrainMode === trainModes.test) {
           this.$store.dispatch({
             type: native.startTest,
-            ref_id: level.refid
+            refid: level.refid
+          }).then((data) => {
+            let status = data.data
+            if (__DEBUG__) {
+              this.$router.loadPage('/training/begin')
+            }
+            if (status === 0) {
+              this.$router.loadPage('/training/begin')
+            } else if (status === 1) {
+              this.$f7.alert('未到考试时间', modalTitle)
+            } else {
+              this.$f7.alert('已过期考试', modalTitle)
+            }
+
           })
+        } else if (this.currentTrainMode === trainModes.video) {
+          this.$router.loadPage('/training/chooseVideo')
         } else {
           this.$router.loadPage('/training/begin')
-        }*/
+        }
 
       },
     },

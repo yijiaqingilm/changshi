@@ -7,7 +7,9 @@
         <section>
             <div>本套题 题数：{{count}}题<span v-if='score&&score>0'>总分：{{score}}分</span></div>
             <div>题目类型：{{type}}</div>
-            <div v-if="currentTrainMode!==trainModes.answer">预计答题时间：{{dateTime}}分钟</div>
+            <div v-if="currentTrainMode===trainModes.test">预计答题时间：{{dateTime}}分钟</div>
+            <div v-else-if="currentTrainMode===trainModes.video">视频时长：{{dateTime}}分钟</div>
+            <div v-else></div>
         </section>
         <footer>
             <f7-button @click="submit" active full big>{{submitText}}</f7-button>

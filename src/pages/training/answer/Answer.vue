@@ -180,7 +180,7 @@
       },
       doAnswerSubmit () {
         let {score, consumetime} = this.paper
-        this.$f7.alert(`<div>用时：${consumetime}分钟</div><div>得分：${score}分</div>`, '提交成功！', () => {
+        this.$f7.alert(`<div>用时：${consumetime}分钟</div><div>得分：${score}</div>`, '提交成功！', () => {
           this.$router.loadPage('/training/home/' + trainModes.answer)
         })
       }

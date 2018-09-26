@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class='combo'>
-            <base-work-base :hasWorkBase="false" :hasMajor="false" @changeWorkBase="changeWorkBase"
+            <base-work-base :hasClient="false" :hasWorkBase="false" :hasMajor="false" @changeWorkBase="changeWorkBase"
                             :mode="baseWorkMode.list"></base-work-base>
         </div>
         <line-10></line-10>
@@ -22,6 +22,7 @@
   import emitter from 'mixins/emitter'
   import { bus } from 'src/main'
   import BaseWorkBase from 'components/baseWorkBase/BaseWorkBase'
+  import { pluckArray } from 'lib/utils'
 
   export default {
     mixins: [emitter],
@@ -52,7 +53,7 @@
         xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+          data: []
         },
         yAxis: {
           type: 'value'
@@ -62,19 +63,19 @@
             name: '在职人数',
             type: 'line',
             stack: '总量',
-            data: [120, 132, 101, 134, 90, 230, 210]
+            data: []
           },
           {
             name: '练习人数',
             type: 'line',
             stack: '总量',
-            data: [220, 182, 191, 234, 290, 330, 310]
+            data: []
           },
           {
             name: '参训率',
             type: 'line',
             stack: '总量',
-            data: [150, 232, 201, 154, 190, 330, 410]
+            data: []
           },
         ]
       }
@@ -105,12 +106,11 @@
       },
       doStatics () {
         let {
-          client,
           province,
           city,
           district,
         } = this.query
-        if (!this.dayDate || !client) {
+        if (!this.dayDate) {
           return
         }
         this.$store.dispatch({
@@ -118,16 +118,16 @@
           province,
           city,
           district,
-          client,
           month: this.dayDate
         }).then(({data}) => {
-          let {leave, ariched, approve, unariched} = data
-          this.options.series[0].data = [
-            {value: leave, name: '遗留工单'},
-            {value: ariched, name: '已归档工单'},
-            {value: approve, name: '待审核工单'},
-            {value: unariched, name: '未归档工单'}
-          ]
+          let days = pluckArray(data, 'day')
+          let onjobs = pluckArray(data, 'onjob')
+          let amounts = pluckArray(data, 'amount')
+          let rates = pluckArray(data, 'rate')
+          this.options.xAxis.data = days
+          this.options.series[0].data = onjobs
+          this.options.series[1].data = amounts
+          this.options.series[2].data = rates
         })
       },
     },

@@ -5,6 +5,13 @@
         <!-- Statusbar -->
         <f7-statusbar></f7-statusbar>
         <!-- Main Views -->
+        <city-select @cityInfo="cityInfo"
+                     @changeCity="changeCity"
+                     :province_id="userInfo.province_id"
+                     :city_id="userInfo.city_id"
+                     :district_id="userInfo.district_id"
+                     ref="citySelect">
+        </city-select>
         <f7-views>
             <f7-view id="main-view" navbar-through :toolbar-fixed="true" :dynamic-navbar="true" main :domCache="true">
                 <!-- Navbar -->
@@ -16,13 +23,6 @@
                                       @change="autocomplateChange"
                                       :loadData="loadDataFun"></autocomplate>
                     </f7-page>
-                    <city-select @cityInfo="cityInfo"
-                                 @changeCity="changeCity"
-                                 :province_id="userInfo.province_id"
-                                 :city_id="userInfo.city_id"
-                                 :district_id="userInfo.district_id"
-                                 ref="citySelect">
-                    </city-select>
                 </f7-pages>
             </f7-view>
         </f7-views>
@@ -35,7 +35,6 @@
   import CitySelect from 'components/baseCitySelect/CitySelect'
   import { bus } from 'src/main'
   import Autocomplate from 'components/autocomplate/Autocomplate'
-  import debounce from 'lodash/debounce'
 
   export default {
     data () {

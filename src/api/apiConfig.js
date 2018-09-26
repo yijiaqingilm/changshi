@@ -69,8 +69,9 @@ let apiConfig = [
   new ApiConfig(native.doGetTest, '/train-subject/get-exm', {global: false}, getReuqest),
   new ApiConfig(native.doTrainSubjectExm, '/train-subject/exm', getReuqest),
   new ApiConfig(native.doGetExmInfo, '/train-subject/exm-info', getReuqest),
-  new ApiConfig(native.startTest, '/train-subject/time', getReuqest),
+  new ApiConfig(native.startTest, '/train-subject/exm-start', getReuqest),
   new ApiConfig(native.doVideo, '/train-subject/set-movie'),
-  new ApiConfig(native.getUserUseCarInfo, '/car/get-out')
+  new ApiConfig(native.getUserUseCarInfo, '/car/get-out'),
+  new ApiConfig(native.doVideoList, '/train-subject/train-movie', getReuqest)
 ]
 export default apiConfig
