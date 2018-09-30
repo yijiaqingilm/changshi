@@ -101,16 +101,18 @@
             type: native.startTest,
             refid: level.refid
           }).then((data) => {
+            commit(native.initTestTime, {
+              startTime: level.start_time,
+              endTime: level.end_time
+            })
             let status = data.data
             if (__DEBUG__) {
               this.$router.loadPage('/training/begin')
             }
             if (status === 0) {
               this.$router.loadPage('/training/begin')
-            } else if (status === 1) {
-              this.$f7.alert('未到考试时间', modalTitle)
             } else {
-              this.$f7.alert('已过期考试', modalTitle)
+              this.$f7.alert('非考试时间，无法参加考试', modalTitle)
             }
 
           })

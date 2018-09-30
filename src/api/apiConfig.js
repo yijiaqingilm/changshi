@@ -72,6 +72,7 @@ let apiConfig = [
   new ApiConfig(native.startTest, '/train-subject/exm-start', getReuqest),
   new ApiConfig(native.doVideo, '/train-subject/set-movie'),
   new ApiConfig(native.getUserUseCarInfo, '/car/get-out'),
-  new ApiConfig(native.doVideoList, '/train-subject/train-movie', getReuqest)
+  new ApiConfig(native.doVideoList, '/train-subject/train-movie', getReuqest),
+  new ApiConfig(native.remainingTime, '/train-subject/exm-expire', getReuqest)
 ]
 export default apiConfig

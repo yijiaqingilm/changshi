@@ -46,6 +46,8 @@
     },
     methods: {
       goBegin (videoInfo) {
+        let {commit} = this.$store
+        commit(native.resetPaper)
         this.$store.commit(native.setVideoPath, videoInfo.path)
         this.$router.loadPage('/training/begin')
       }

@@ -88,7 +88,7 @@
         dp: null,
         step: 60,
         subjectStatus,
-
+        isLookVideoOver: false
       }
     },
     created () {
@@ -170,17 +170,17 @@
         this.play()
         this.paper.isShowVideo = false
         this.paper.videoPlay = true
-        if (this.paper.currentProgress >= this.paper.count) {
-          this.$f7.alert('恭喜您完成视频培训', modalTitle)
-        } else {
+        if (this.paper.currentProgress < this.paper.count) {
           this.paper.currentProgress++
           this.loadSubject()
+        } else {
+          this.isLookVideoOver = true
         }
 
       },
       doAnswerSubmit () {
         let {score, consumetime} = this.paper
-        this.$f7.alert(`<div>用时：${consumetime}分钟</div><div>得分：${score}分</div>`, '提交成功！', () => {
+        this.$f7.alert(`<div>用时：${consumetime}</div><div>得分：${score}分</div>`, '提交成功！', () => {
           this.$router.loadPage('/training/home/' + trainModes.answer)
         })
       },
@@ -204,7 +204,7 @@
           container: dplayerWrap[dplayerWrap.length - 1],
           autoplay: false,
           theme: '#FADFA3',
-          loop: true,
+          loop: false,
           lang: 'zh-cn',
           screenshot: true,
           hotkey: true,
@@ -224,6 +224,11 @@
         this.$$('.dplayer .dplayer-full').hide()
         this.dp.on('timeupdate', () => {
           this.paper.currentVideoTime = Math.floor(this.dp.video.currentTime)
+        })
+        this.dp.on('ended', () => {
+          this.$f7.alert('恭喜您完成视频培训', modalTitle, () => {
+            this.$router.loadPage('/training/home/' + trainModes.video)
+          })
         })
         let layer = document.createElement('div')
         layer.style.position = 'absolute'
@@ -255,7 +260,7 @@
     watch: {
       'paper.currentVideoTime': {
         handler (nowTime, oldTime) {
-          if (nowTime % this.step === 0) {
+          if (nowTime % this.step === 0 && !this.isLookVideoOver) {
             this.paper.videoPlay = false
             this.showSubject()
           }

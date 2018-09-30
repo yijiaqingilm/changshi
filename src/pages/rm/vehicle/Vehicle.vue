@@ -7,7 +7,7 @@
         <header>
             <hint>提示：出车及收车信息根据触发‘出车’及‘收车’按键时自动生成</hint>
             <base-form-group class="title" label="车牌号" isTitle>
-                <scan-input v-model="carnumber" @scan="scanCode"></scan-input>
+                <scan-input v-model="carnumber" :disable="isScan" @scan="scanCode"></scan-input>
             </base-form-group>
         </header>
         <line-10></line-10>
@@ -105,13 +105,24 @@
           retractLat: '',
           remark: ''
         },
-        carnumber: ''
+        carnumber: '',
+        mark: false,
+        isScan: true
       }
     },
     created () {
       this.$store.dispatch({
         type: native.getUserUseCarInfo
-      }).then((data) => {
+      }).then(({data}) => {
+        if (data) {
+          this.isScan = true
+          this.carnumber = data.carnumber
+          this.info.outMileage = data.mileage
+          this.vehicleInfo.out.date = data.date
+          this.vehicleInfo.out.position = data.position
+        } else {
+          this.isScan = false
+        }
         console.log('data====>', data)
       })
       this.validator = new Validator({
@@ -185,36 +196,43 @@
           }, 2000)
           return
         }
-        this.$f7.confirm('是否确认收车？', modalTitle, () => {
-          let that = this
+        let that = this
+        if (!this.mark) {
+          this.mark = true
           aMapUtil.geolocation().then((data) => {
-            let formattedAddress = data.formattedAddress
-            let {lat, lng} = data.position
-            that.$set(that.vehicleInfo.retract, 'date', new Date())
-            that.$set(that.vehicleInfo.retract, 'address', formattedAddress)
-            that.$store.dispatch({
-              type: native.getTo,
-              license_plate: that.carnumber,
-              out_mileage: outMileage,
-              oilfee,
-              bridgefee,
-              servicefee,
-              otherfee,
-              totalfee: that.totalFee,
-              retract_mileage: retractMileage,
-              mileage: that.totalMileage,
-              remark
-            }).then(() => {
-              that.$f7.alert('收车成功', modalTitle)
-              that.carnumber = ''
-              that.vehicleInfo.out.date = ''
-              that.vehicleInfo.out.position = ''
-              that.vehicleInfo.retract.date = ''
-              that.vehicleInfo.retract.address = ''
-              that.info = {}
+            this.$f7.confirm('是否确认收车？', modalTitle, () => {
+              let formattedAddress = data.formattedAddress
+              let {lat, lng} = data.position
+              that.$set(that.vehicleInfo.retract, 'date', new Date())
+              that.$set(that.vehicleInfo.retract, 'address', formattedAddress)
+              that.$store.dispatch({
+                type: native.getTo,
+                license_plate: that.carnumber,
+                out_mileage: outMileage,
+                oilfee,
+                bridgefee,
+                servicefee,
+                otherfee,
+                totalfee: that.totalFee,
+                retract_mileage: retractMileage,
+                mileage: that.totalMileage,
+                remark
+              }).then(() => {
+                this.mark = false
+                that.$f7.alert('收车成功', modalTitle)
+                that.carnumber = ''
+                that.vehicleInfo.out.date = ''
+                that.vehicleInfo.out.position = ''
+                that.vehicleInfo.retract.date = ''
+                that.vehicleInfo.retract.address = ''
+                that.info = {}
+              }).catch((error) => {
+                this.mark = false
+                that.$f7.alert(error, modalTitle)
+              })
             })
           })
-        })
+        }
       },
       scanCode (code) {
         if (__DEBUG__) {

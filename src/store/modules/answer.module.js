@@ -31,6 +31,10 @@ const state = {
     trainType: '',
     major: '',
   },
+  testTime: {
+    startTime: '',
+    endTime: ''
+  }
 }
 
 function setPaper (state, data) {
@@ -42,7 +46,6 @@ function setPaper (state, data) {
   state.paper.sType = subjectType.reduce((a, b) => a + ',' + b.name, '').slice(1)
   state.paper.expTime = answerTime
   state.paper.rate = rate
-  state.paper.moviePath = moviePath
   state.paper.movieId = movie_id
   let subjects = []
   for (let i = 0; i < state.paper.count; i++) {
@@ -78,6 +81,9 @@ function doAnswer (state, {data, refs}) {
 
 const getters = {}
 const actions = {
+  [native.remainingTime] ({state}, refs) {
+    return applyClientMiddleware(api.remainingTime)(refs)
+  },
   [native.doVideoList] ({state}, refs) {
     return applyClientMiddleware(api.doVideoList)(refs)
   },
@@ -152,6 +158,9 @@ const actions = {
   }
 }
 let mutations = {
+  [native.initTestTime] (state, time) {
+    state.testTime = time
+  },
   [native.setVideoPath] (state, videoPath) {
     state.paper.moviePath = videoPath
   },
