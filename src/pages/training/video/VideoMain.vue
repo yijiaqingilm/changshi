@@ -99,6 +99,9 @@
         this.step = Math.floor(60 / this.paper.rate)
       }
       this.loadSubject()
+      if (this.paper.currentProgress >= this.paper.count) {
+        this.isLookVideoOver = true
+      }
     },
     methods: {
       sortText (sort) {

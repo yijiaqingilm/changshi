@@ -34,7 +34,7 @@ const state = {
   testTime: {
     startTime: '',
     endTime: ''
-  }
+  },
 }
 
 function setPaper (state, data) {
