@@ -12,7 +12,7 @@
         <section>
             <list>
                 <list-item v-for="(item,index) in historyList" :key="index" :title="item.sort.name" :score="item.score"
-                           subTitle="2018-01-15"></list-item>
+                           :subTitle="item.day"></list-item>
             </list>
             <infinite-loading @infinite="loadData">
                 <div slot="no-results">没有数据</div>

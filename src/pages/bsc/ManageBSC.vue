@@ -96,6 +96,11 @@
     },
     created () {
     },
+    mounted(){
+      this.$nextTick(() => {
+        this.$$('.pages .cached').remove()
+      })
+    },
     methods: {
       openDyDatePicker (event) {
         console.log('触发')

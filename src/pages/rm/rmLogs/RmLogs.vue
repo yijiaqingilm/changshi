@@ -47,6 +47,11 @@
     },
     created () {
     },
+    mounted(){
+      this.$nextTick(() => {
+        this.$$('.pages .cached').remove()
+      })
+    },
     computed: {},
     methods: {
       showTab (value) {

@@ -46,8 +46,8 @@ let apiConfig = [
   new ApiConfig(native.doCarDetail, '/car/detail', getReuqest),
   new ApiConfig(native.startOff, '/car/create'),
   new ApiConfig(native.getTo, '/car/update'),
-  new ApiConfig(native.doDynamotorHistory, '/dynamotor/history', getReuqest),
-  new ApiConfig(native.doCarHistory, '/car/history', getReuqest),
+  new ApiConfig(native.doDynamotorHistory, '/dynamotor/history', {global: false}, getReuqest),
+  new ApiConfig(native.doCarHistory, '/car/history', {global: false}, getReuqest),
   new ApiConfig(native.doWorkNumberStatics, '/work-number/statics', getReuqest),
   new ApiConfig(native.doWorkNumberAccess, '/work-number/access'),
   new ApiConfig(native.doWorkNumberDeny, '/work-number/deny'),
@@ -73,6 +73,7 @@ let apiConfig = [
   new ApiConfig(native.doVideo, '/train-subject/set-movie'),
   new ApiConfig(native.getUserUseCarInfo, '/car/get-out'),
   new ApiConfig(native.doVideoList, '/train-subject/train-movie', getReuqest),
-  new ApiConfig(native.remainingTime, '/train-subject/exm-expire', getReuqest)
+  new ApiConfig(native.remainingTime, '/train-subject/exm-expire', getReuqest),
+  new ApiConfig(native.submitTest, '/train-subject/get-exm-info', getReuqest)
 ]
 export default apiConfig

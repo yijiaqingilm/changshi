@@ -94,7 +94,7 @@
     created () {
       this.$$('.pages .cached').remove()
       if (__DEBUG__) {
-        this.step = 5
+        this.step = 15
       } else {
         this.step = Math.floor(60 / this.paper.rate)
       }
@@ -233,6 +233,12 @@
             this.$router.loadPage('/training/home/' + trainModes.video)
           })
         })
+        this.dp.on('play', () => {
+          this.paper.videoPlay ? this.play() : this.pause()
+        })
+        this.dp.on('canplay', () => {
+          this.dp.seek(this.paper.currentVideoTime)
+        })
         let layer = document.createElement('div')
         layer.style.position = 'absolute'
         layer.style.bottom = '33px'
@@ -241,8 +247,8 @@
         layer.style.zIndex = '999'
         layer.style.padding = '5px 0'
         this.$$('.dplayer-controller').append(layer)
-        this.dp.seek(this.paper.currentVideoTime)
-        this.paper.videoPlay ? this.play() : this.pause()
+        // this.dp.seek(this.paper.currentVideoTime)
+        // this.paper.videoPlay ? this.play() : this.pause()
       })
     },
     computed: {
@@ -263,7 +269,7 @@
     watch: {
       'paper.currentVideoTime': {
         handler (nowTime, oldTime) {
-          if (nowTime % this.step === 0 && !this.isLookVideoOver) {
+          if (nowTime !== 0 && nowTime % this.step === 0 && !this.isLookVideoOver) {
             this.paper.videoPlay = false
             this.showSubject()
           }

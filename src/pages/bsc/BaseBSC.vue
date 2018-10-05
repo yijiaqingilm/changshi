@@ -85,6 +85,11 @@
     },
     created () {
     },
+    mounted(){
+      this.$nextTick(() => {
+        this.$$('.pages .cached').remove()
+      })
+    },
     methods: {
       showTab (value) {
         this.$f7.showTab(`.tab-${value}`)

@@ -49,11 +49,11 @@ module.exports = {
     // with this option, according to the CSS-Loader README
     // (https://github.com/webpack/css-loader#sourcemaps)
     // In our experience, they generally work as expected,
-    // just be aware of this issue when enabling this option.
+    // just be aware of this issue when enabling this option. http://192.168.1.103:8008/#/home
     cssSourceMap: true,
     globals: {
       __DEBUG__: true,
-      serverUrl: JSON.stringify('http://127.0.0.1:8008/api'),
+      serverUrl: JSON.stringify('http://192.168.1.103:8008/api'),
       VERSION: JSON.stringify('V.1.0'),
       appId: JSON.stringify('wx0cb3ab16edb62a97'),
     }

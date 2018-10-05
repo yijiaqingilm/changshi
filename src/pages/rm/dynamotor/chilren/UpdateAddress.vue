@@ -1,10 +1,9 @@
 <template>
     <div class='update-address' v-if="dy && dy.code">
         <div class='group'>
-            <base-form-group class='title' label="当前发电机存放点" isTitle>
-                {{dy.is_fixed==='Y'?'固定油机':'仓库'}}
+            <base-form-group class='title' label="当前发电机存放点" isTitle :item="dy.is_fixed==='Y'?'固定油机':'仓库'">
             </base-form-group>
-            <base-form-group :label="dy.province+dy.city+dy.district+'('+dy.work_base+')'"></base-form-group>
+            <base-form-group :label="currentAddress(dy)"></base-form-group>
         </div>
         <line-10></line-10>
         <div class='group'>
@@ -100,6 +99,9 @@
       })
     },
     methods: {
+      currentAddress(dy){
+        return dy.province + dy.city + dy.district + (dy.work_base && '(' + dy.work_base + ')')
+      },
       changePoint (value) {
         this.workBase = value.id
         this.workBaseName = value.work_base

@@ -57,7 +57,7 @@
           color: ['#6dc394', '#a1d57d', '#91b0e8', '#dec562', '#ee8787'],
           series: [
             {
-              name: '工单统计',
+              name: '维护点运行状况统计',
               type: 'pie',
               radius: '40%',
               center: ['50%', '60%'],
@@ -107,7 +107,8 @@
           district,
           client,
           start_date: this.startTime,
-          end_date: this.endTime
+          end_date: this.endTime,
+          major
         }).then(({data}) => {
           let {stat1, stat2, stat3, stat4, stat5} = data
           this.options.series[0].data = [

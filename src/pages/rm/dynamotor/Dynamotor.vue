@@ -79,6 +79,11 @@
       })
       this.$store.commit(native.clearDy)
     },
+    mounted(){
+      this.$nextTick(() => {
+        this.$$('.pages .cached').remove()
+      })
+    },
     methods: {
       getDy (code) {
         this.$store.state.rm.dyCode = code

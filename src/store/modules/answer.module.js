@@ -81,6 +81,9 @@ function doAnswer (state, {data, refs}) {
 
 const getters = {}
 const actions = {
+  [native.submitTest] ({state}, refs) {
+    return applyClientMiddleware(api.submitTest)(refs)
+  },
   [native.remainingTime] ({state}, refs) {
     return applyClientMiddleware(api.remainingTime)(refs)
   },

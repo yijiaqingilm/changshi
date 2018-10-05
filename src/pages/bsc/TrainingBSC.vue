@@ -96,6 +96,11 @@
     },
     created () {
     },
+    mounted(){
+      this.$nextTick(() => {
+        this.$$('.pages .cached').remove()
+      })
+    },
     methods: {
       openDayDatePicker (event) {
         this.$refs.dayDate.open(event)

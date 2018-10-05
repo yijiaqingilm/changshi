@@ -132,6 +132,7 @@
         }
       },
       goBack () {
+        clearInterval(this.clock)
         this.$router.back()
       },
       loadSubject () {
@@ -206,9 +207,14 @@
 
       },
       doAnswerSubmit () {
-        let {score, consumetime} = this.paper
-        this.$f7.alert(`<div>用时：${consumetime}</div><div>得分：${score}分</div>`, '提交成功！', () => {
-          this.$router.loadPage('/training/home/' + trainModes.answer)
+        this.$store.dispatch({
+          type: native.submitTest,
+        }).then((data) => {
+          console.log('data==>', data)
+          let {score, consumetime} = this.paper
+          this.$f7.alert(`<div>用时：${consumetime}</div><div>得分：${score}分</div>`, '提交成功！', () => {
+            this.$router.loadPage('/training/home/' + trainModes.answer)
+          })
         })
       }
     },
@@ -217,7 +223,7 @@
         // 59"50'
         let minute = Math.floor(this.remainingTime / 60)
         let second = this.remainingTime % 60
-        return `${minute}"${second}'`
+        return `${minute}'${second}"`
       },
       paperProgres () {
         let {currentProgress, count} = this.paper
@@ -228,6 +234,9 @@
           return answer.paper
         }
       })
+    },
+    destroyed () {
+      clearInterval(this.clock)
     }
   }
 </script>
