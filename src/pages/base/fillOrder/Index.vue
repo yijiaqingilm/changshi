@@ -432,7 +432,7 @@
         if (this.btnDyStartTimeDisable) {
           return
         }
-        let code = this.jobCard.dynamotor.code
+        let code = this.jobCard.dynamotor.id
         if (!code) {
           this.$f7.alert('请先获取发电机信息', modalTitle)
           return
@@ -615,9 +615,6 @@
       },
       // 发电机
       scanDynamotor (code) {
-        if (__DEBUG__) {
-          code = 'TY1-CS012'
-        }
         this.doGetDynamotor(code)
       },
       doGetDynamotor (code) {

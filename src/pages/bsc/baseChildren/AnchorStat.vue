@@ -2,15 +2,14 @@
     <div>
         <header><span class="mark">*</span>查询时间</header>
         <div class='time-group'>
-            <span class='time-slash'></span>
             <div>
-                <base-date-picker v-model="startTime" text="请选择开始时间"
+                <base-date-picker v-model="startTime" text="请选择时间"
                                   :mode="dateType.yearAndMonthAndDay"></base-date-picker>
             </div>
-            <div>
+            <!--<div>
                 <base-date-picker v-model="endTime" text="请选择结束时间"
                                   :mode="dateType.yearAndMonthAndDay"></base-date-picker>
-            </div>
+            </div>-->
         </div>
         <div class='combo'>
             <base-work-base @changeWorkBase="changeWorkBase" :mode="baseWorkMode.list"
@@ -97,7 +96,7 @@
           district,
           major
         } = this.query
-        if (!this.startTime || !this.endTime || !client) {
+        if (!this.startTime || !client) {
           return
         }
         this.$store.dispatch({
@@ -106,8 +105,7 @@
           city,
           district,
           client,
-          start_date: this.startTime,
-          end_date: this.endTime,
+          day: this.startTime,
           major
         }).then(({data}) => {
           let {stat1, stat2, stat3, stat4, stat5} = data
@@ -135,13 +133,6 @@
           }
         }
       },
-      'endTime': {
-        handler: function (nowEndTime, oldEndTime) {
-          if (nowEndTime && nowEndTime !== oldEndTime) {
-            this.doStatics()
-          }
-        }
-      }
     },
     components: {BaseWorkBase}
   }

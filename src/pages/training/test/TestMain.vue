@@ -105,12 +105,7 @@
           this.remainingTime--
           if (this.remainingTime === 0) {
             clearInterval(this.clock)
-            console.log('考试结束')
-            let consumetime = 0
-            let score = 0
-            this.$f7.alert(`<div>用时：${consumetime}</div><div>得分：${score}分</div>`, '提交成功！', () => {
-              this.$router.loadPage('/training/home/' + trainModes.answer)
-            })
+            this.doAnswerSubmit()
           }
         }, 1000)
       })
@@ -211,7 +206,7 @@
           type: native.submitTest,
         }).then((data) => {
           console.log('data==>', data)
-          let {score, consumetime} = this.paper
+          let {score, consumetime} = data.data
           this.$f7.alert(`<div>用时：${consumetime}</div><div>得分：${score}分</div>`, '提交成功！', () => {
             this.$router.loadPage('/training/home/' + trainModes.answer)
           })

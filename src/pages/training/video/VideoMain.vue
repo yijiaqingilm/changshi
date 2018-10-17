@@ -5,14 +5,9 @@
             <f7-nav-center>视频答题</f7-nav-center>
         </f7-navbar>
         <section>
-            <header>
-                <!--<div class='v-h-title'>
-                    已观看时间：{{paper.currentVideoTime}}秒
-                </div>-->
-                <div>
-                    <div class='dplayer'></div>
-                </div>
-            </header>
+            <div>
+                <div class='dplayer'></div>
+            </div>
             <template v-if=' paper && paper.isShowVideo'>
                 <!--<header>
                     <div class='progress'>
@@ -94,7 +89,7 @@
     created () {
       this.$$('.pages .cached').remove()
       if (__DEBUG__) {
-        this.step = 15
+        this.step = 5
       } else {
         this.step = Math.floor(60 / this.paper.rate)
       }
@@ -237,7 +232,7 @@
           this.paper.videoPlay ? this.play() : this.pause()
         })
         this.dp.on('canplay', () => {
-          this.dp.seek(this.paper.currentVideoTime)
+          this.dp.seek(this.paper.currentVideoTime + 1)
         })
         let layer = document.createElement('div')
         layer.style.position = 'absolute'
@@ -249,6 +244,9 @@
         this.$$('.dplayer-controller').append(layer)
         // this.dp.seek(this.paper.currentVideoTime)
         // this.paper.videoPlay ? this.play() : this.pause()
+        if (this.paper.isShowVideo) {
+          this.pause()
+        }
       })
     },
     computed: {

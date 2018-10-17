@@ -69,12 +69,12 @@
             data: [],
           },
           {
-            name: '视频培训',
+            name: '考试',
             type: 'bar',
             data: [],
           },
           {
-            name: '考试',
+            name: '视频培训',
             type: 'bar',
             data: [],
           }

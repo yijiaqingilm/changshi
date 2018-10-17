@@ -37,7 +37,7 @@
           trigger: 'axis'
         },
         legend: {
-          data: ['在职人数', '练习人数', '参训率']
+          data: ['在职人数', '练习人数']
         },
         grid: {
           left: '3%',
@@ -67,12 +67,6 @@
           },
           {
             name: '练习人数',
-            type: 'line',
-            stack: '总量',
-            data: []
-          },
-          {
-            name: '参训率',
             type: 'line',
             stack: '总量',
             data: []
@@ -127,7 +121,6 @@
           this.options.xAxis.data = days
           this.options.series[0].data = onjobs
           this.options.series[1].data = amounts
-          this.options.series[2].data = rates
         })
       },
     },
