@@ -5,7 +5,7 @@
             <f7-nav-center>遗留问题工单({{total}})</f7-nav-center>
         </f7-navbar>
         <div class='detail-header'>
-            <base-work-base @changeWorkBase="changeWorkBase"></base-work-base>
+            <base-work-base @changeWorkBase="changeWorkBase" hasLevel></base-work-base>
         </div>
         <base-list :type="listType">
             <base-list-item v-for="(question,index) in quesitonList"
@@ -53,14 +53,15 @@
     },
     methods: {
       changeWorkBase (result) {
-        let {workBase, client, province, city, district, major} = result
+        let {workBase, client, province, city, district, major, level} = result
         this.query = {
           workBase,
           client,
           province,
           city,
           district,
-          major
+          major,
+          level
         }
         if (!this.isLoadData) {
           this.isLoadData = true
@@ -78,7 +79,7 @@
         this.$router.loadPage(`/base/questionOrder/detail/${order.id}`)
       },
       loadData ($state) {
-        let {workBase, client, major, province, city, district} = this.query
+        let {workBase, client, major, province, city, district, level} = this.query
         this.$store.dispatch({
           type: native.doLeaveQuestion,
           page: this.page,
@@ -87,7 +88,8 @@
           major,
           province,
           city,
-          district
+          district,
+          level
         }).then(({data}) => {
           console.log('data', data)
           let items = data.items

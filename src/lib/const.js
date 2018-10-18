@@ -158,7 +158,7 @@ const workOrderTypeStatus = {
   done: 3
 }
 const workOrderTypes = [
-  {value: workOrderTypeStatus.undone, label: '未归档'},
+  {value: workOrderTypeStatus.undone, label: '未提交'},
   {value: workOrderTypeStatus.review, label: '待审核'},
   {value: workOrderTypeStatus.done, label: '已归档'}
 ]

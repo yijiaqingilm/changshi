@@ -6,7 +6,7 @@
         </f7-navbar>
         <h-list>
             <h-list-item desc="工单总数" :title="statics.total"></h-list-item>
-            <h-list-item desc="未归档工单" :title="statics.unariched"></h-list-item>
+            <h-list-item desc="未提交工单" :title="statics.unariched"></h-list-item>
             <h-list-item desc="待审核工单" :title="statics.approve"></h-list-item>
             <h-list-item desc="已归档工单" :title="statics.ariched"></h-list-item>
         </h-list>

@@ -1,7 +1,9 @@
 <template>
     <f7-page class='fill-order'>
         <f7-navbar>
-            <f7-nav-left back-link="返回" sliding></f7-nav-left>
+            <f7-nav-left>
+                <f7-link @click="goBack"><i class="icon icon-back"></i><span>返回</span></f7-link>
+            </f7-nav-left>
             <f7-nav-center>作业填报</f7-nav-center>
         </f7-navbar>
         <section>
@@ -307,9 +309,6 @@
       this.validator = new Validator({
         workBase: 'required',
         workSort: 'required',
-        content: 'required',
-        startDate: 'required',
-        endDate: 'required',
       })
       this.$set(this, 'errors', this.validator.errorBag)
     },
@@ -392,6 +391,11 @@
       }
     },
     methods: {
+      goBack () {
+        this.$f7.confirm('你还未保存填报内容，是否确认退出？', modalTitle, () => {
+          this.$router.back()
+        })
+      },
       openAutoComplate () {
         this.$refs.autocomplate.open()
       },
@@ -478,37 +482,28 @@
         this.validator.validateAll({
           workBase,
           workSort,
-          content,
-          startDate: displayStartDate,
-          endDate: displayEndDate,
         })
         //  校验信息
         if (this.errors.errors.length > 0) {
           this.$f7.addNotification({
+            hold: 2000,
             media: ('<span className=\'iconfont icon-error\'></span>'),
             title: '提示',
             message: this.errors.errors[0].msg
           })
-          setTimeout(() => {
-            this.$f7.closeNotification('.notifications')
-          }, 2000)
-          return
-        }
-        if (this.jobCard.endDate - this.jobCard.startDate < 0) {
-          this.$f7.alert('结束时间不能小于开始时间', modalTitle)
           return
         }
 
-        if (this.showDynamotor && (!this.btnDyStartTimeDisable || !this.btnDyEndTimeDisable)) {
+        /* if (this.showDynamotor && (!this.btnDyStartTimeDisable || !this.btnDyEndTimeDisable)) {
           this.$f7.alert('未结束发电不能提交工单', modalTitle)
           return
-        }
-        if (this.showDynamotor && !dynamotor.oilfee) {
+        }*/
+        /* if (this.showDynamotor && !dynamotor.oilfee) {
           this.$f7.alert('请填写发电费用', modalTitle)
           return
-        }
+        }*/
 
-        if (isLeaveQuestion) {
+        /* if (isLeaveQuestion) {
           if (leave.length === 0) {
             this.$f7.alert('请添加遗留问题', modalTitle)
             return
@@ -520,7 +515,7 @@
               return
             }
           }
-        }
+        }*/
         if (this.showAmmeter) {
           for (let i = 0; i < ammeter.length; i++) {
             let ammeterItem = ammeter[i]
@@ -622,12 +617,24 @@
           type: native.doGetDynamotor,
           code
         }).then((data) => {
-          this.jobCard.dynamotor.id = data.data.id
-          this.jobCard.dynamotor.code = code
-          let that = this
-          aMapUtil.geolocation().then((data) => {
-            that.jobCard.poweradd = data.formattedAddress
-          })
+          let initDy = function () {
+            this.jobCard.dynamotor.id = data.data.id
+            this.jobCard.dynamotor.code = code
+            let that = this
+            aMapUtil.geolocation().then((data) => {
+              that.jobCard.poweradd = data.formattedAddress
+            })
+          }
+          if (this.jobCard.dynamotor.id && this.jobCard.dynamotor.id !== data.data.id) {
+            initDy.bind(this)()
+            this.jobCard.dynamotor.startTime = ''
+            this.jobCard.dynamotor.endTime = ''
+            this.btnDyStartTimeDisable = false
+            this.btnDyEndTimeDisable = true
+            this.jobCard.dynamotor.duration = ''
+          } else {
+            initDy.bind(this)()
+          }
         }).catch((error) => {
           this.$f7.alert(error, modalTitle)
         })

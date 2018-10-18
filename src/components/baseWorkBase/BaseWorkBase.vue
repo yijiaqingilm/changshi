@@ -30,6 +30,9 @@
                 <!--当前条件没有可选择的作业点-->
             </div>
         </div>
+        <div v-if="hasLevel">
+            <base-select v-model="level" text="遗留问题级别筛选" :data="levelValue"></base-select>
+        </div>
     </div>
     <div class='base-work-base' v-else>
         <base-form-group class="mt-15" label="地址选择：">
@@ -74,7 +77,8 @@
     majorValue,
     client as clientObj,
     major as majorObj,
-    baseWorkMode
+    baseWorkMode,
+    levelValue
   } from 'lib/const'
   import { bus } from 'src/main'
   // major=2,client=1
@@ -95,6 +99,10 @@
       hasClient: {
         type: Boolean,
         default: true
+      },
+      hasLevel: {
+        type: Boolean,
+        default: false
       }
     },
     name: '',
@@ -107,6 +115,8 @@
         client: '',
         major: '',
         clientValue,
+        level: '',
+        levelValue
       }
     },
     created () {
@@ -186,7 +196,8 @@
           city: cityName,
           district: districtName,
           client: this.client,
-          major: this.major
+          major: this.major,
+          level: this.level
         })
       }
     },
@@ -227,6 +238,13 @@
         }
       },
       'major': {
+        handler (nowMajor, oldMajor) {
+          if (nowMajor !== oldMajor) {
+            this.changeCity(this.activeAddress)
+          }
+        }
+      },
+      'level': {
         handler (nowMajor, oldMajor) {
           if (nowMajor !== oldMajor) {
             this.changeCity(this.activeAddress)

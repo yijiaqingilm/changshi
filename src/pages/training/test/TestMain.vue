@@ -208,7 +208,7 @@
           console.log('data==>', data)
           let {score, consumetime} = data.data
           this.$f7.alert(`<div>用时：${consumetime}</div><div>得分：${score}分</div>`, '提交成功！', () => {
-            this.$router.loadPage('/training/home/' + trainModes.answer)
+            this.$router.loadPage('/training/home/' + trainModes.test)
           })
         })
       }
