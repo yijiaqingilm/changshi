@@ -99,9 +99,7 @@ const actions = {
   },
   [native.doWorkNumberDetail] ({state}, refs) {
     let workOrderId = refs.work_id
-    if (isEmptyObject(state.workOrder[workOrderId])) {
-      return applyClientMiddleware(api.doWorkNumberDetail)(refs)
-    }
+    return applyClientMiddleware(api.doWorkNumberDetail)(refs)
   },
   [native.doWorkNumberUpdate] ({state}, refs) {
     return applyClientMiddleware(api.doWorkNumberUpdate)(refs)

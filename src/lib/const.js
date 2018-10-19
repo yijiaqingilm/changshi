@@ -269,6 +269,27 @@ const trainModes = {
   video: 2
 }
 
+export class Ammeter {
+  constructor (code, date, displayDate, currentNum, useNum, img, prevNum, id, displayImg) {
+    this.code = code
+    this.date = date || new Date().toISOString()
+    this.displayDate = displayDate
+    this.currentNum = currentNum
+    this.prevNum = prevNum
+    this.useNum = useNum
+    this.img = img
+    this.id = id
+    this.displayImg = displayImg
+  }
+}
+
+export class Question {
+  constructor (question = '', l = level.two) {
+    this.question = question
+    this.level = l
+  }
+}
+
 export {
   globalConst,
   modalTitle,

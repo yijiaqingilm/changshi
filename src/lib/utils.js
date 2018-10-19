@@ -291,7 +291,7 @@ let margeMutations = (actions) => {
   return mutations
 }
 
-const dataFormat = (value, format = 'YYYY-MM-DD HH:mm:ss') => {
+const dateFormat = (value, format = 'YYYY-MM-DD HH:mm:ss') => {
   return moment(value).format(format)
 }
 
@@ -419,7 +419,7 @@ export {
   findRule,
   wx_share,
   margeMutations,
-  dataFormat,
+  dateFormat,
   getSignature,
   aMapUtil,
   isNumber,

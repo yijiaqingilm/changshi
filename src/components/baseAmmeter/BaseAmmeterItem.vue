@@ -52,8 +52,8 @@
       code: String,
       date: String,
       displayDate: String,
-      prevNum: String,
-      currentNum: String,
+      prevNum: [String, Number],
+      currentNum: [String, Number],
       useNum: [String, Number],
       img: {
         type: [Object, String],
@@ -85,6 +85,7 @@
       openDatePicker (event) {
         // bus.$emit('openDatePicker', {event, refName: `ammeterTime${this.index}`})
         this.dispatchMethod('fillorder', 'openDatePicker', {event, index: this.index})
+        this.dispatchMethod('workOrderEdit', 'openDatePicker', {event, index: this.index})
       },
       handleDel () {
         this.$f7.confirm('确定删除？', modalTitle, () => {
