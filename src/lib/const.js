@@ -284,7 +284,8 @@ export class Ammeter {
 }
 
 export class Question {
-  constructor (question = '', l = level.two) {
+  constructor (question = '', l = level.two, id = '') {
+    this.id = id
     this.question = question
     this.level = l
   }

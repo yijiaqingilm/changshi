@@ -123,8 +123,18 @@
                     </ammeter-item>
                 </ammeter-group>
             </div>
-            <f7-block>
-                <f7-button big full active @click="save">保存</f7-button>
+            <f7-block v-if="!jobCard.isLeaveQuestion">
+                <f7-button big full active @click="save('save')">保存</f7-button>
+            </f7-block>
+            <f7-block v-else>
+                <f7-grid>
+                    <f7-col width="50">
+                        <f7-button big full active @click="save('save')">保存</f7-button>
+                    </f7-col>
+                    <f7-col width="50">
+                        <f7-button big full active @click="save('submit')">提交遗留问题工单</f7-button>
+                    </f7-col>
+                </f7-grid>
             </f7-block>
         </section>
         <div slot="fixed">
@@ -195,8 +205,7 @@
       })
     },
     methods: {
-      save () {
-        console.log('save')
+      save (act) {
         let {id, content, displayStartDate, displayEndDate, fee, refWorkNumber, isLeaveQuestion, leave, ammeter, dynamotor, poweradd} = this.jobCard
         if (this.showAmmeter) {
           for (let i = 0; i < ammeter.length; i++) {
@@ -248,13 +257,17 @@
           leave: JSON.stringify(leave),
           ammeter: JSON.stringify(ammeterList),
           power: dynamotor.id ? JSON.stringify(dynamotorObj) : '{}',
-          poweradd
+          poweradd,
+          act
         }).then(() => {
           this.$f7.alert('修改成功', modalTitle, () => {
           })
         }).catch((error) => {
           this.$f7.alert(error, modalTitle)
         })
+      },
+      updateToQuestionOrder () {
+
       }
     },
     computed: {
