@@ -69,7 +69,7 @@
             <base-select v-model='jobCard.workSort' nodeKey="id" nodeLabel="name" text="请选择作业类别"
                          :data="workSortList" @change="changeWorkSort"></base-select>
         </base-form-group>
-        <base-form-group class="m-40" label="作业起止时间" mark></base-form-group>
+        <base-form-group class="m-40" label="作业起止时间" ></base-form-group>
         <div class='time-group'>
             <span class='time-slash'></span>
             <div>
@@ -82,7 +82,7 @@
             </div>
         </div>
         <section class='mt-40'>
-            <header><span class='mark'>*</span>作业内容</header>
+            <header>作业内容</header>
             <div class='mt-30'>
                 <textarea class='s-textarea' v-model="jobCard.content" placeholder='请填写详细的作业内容'></textarea>
             </div>

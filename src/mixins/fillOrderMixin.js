@@ -279,7 +279,7 @@ const fillOrdermixin = {
           }
         }
       }*/
-      if (this.showAmmeter) {
+      /* if (this.showAmmeter) {
         for (let i = 0; i < ammeter.length; i++) {
           let ammeterItem = ammeter[i]
           if (!ammeterItem.currentNum) {
@@ -290,23 +290,12 @@ const fillOrdermixin = {
             this.$f7.alert('请填写电表使用度数', modalTitle)
             return
           }
-          if (__DEBUG__) {
-            ammeterItem.img = 'test'
-          }
-          if (!ammeterItem.img) {
-            this.$f7.alert('请选择电表照片', modalTitle)
-            return
-          }
         }
-      }
+      }*/
 
       let ammeterList = ammeter.map((row) => {
         let {currentNum, useNum, ...rest} = row
-        if (__DEBUG__) {
-          return {current_num: currentNum, use_num: useNum, ...rest, img: 'test'}
-        } else {
-          return {current_num: currentNum, use_num: useNum, ...rest}
-        }
+        return {current_num: currentNum, use_num: useNum, ...rest}
       })
       let dynamotorObj = Object.assign({}, dynamotor)
       if (dynamotorObj.id) {

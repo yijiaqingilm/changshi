@@ -25,7 +25,7 @@
     </div>
 </template>
 <script>
-  import { globalConst as native, pageSize, workOrderTypeStatus } from 'lib/const'
+  import { globalConst as native, pageSize, workOrderTypeStatus, modalTitle } from 'lib/const'
   import InfiniteLoading from 'vue-infinite-loading'
   import { mapState } from 'vuex'
   import { bus } from 'src/main'
@@ -51,6 +51,8 @@
             this.statics.unariched--
             this.statics.total--
             this.workList.splice(index, 1)
+          }).catch((error) => {
+            this.$f7.alert(error, modalTitle)
           })
         })
       },
@@ -68,6 +70,8 @@
             this.statics.unariched--
             console.log('emit??===>>')
             bus.$emit(native.clearReviewOrder)
+          }).catch((error) => {
+            this.$f7.alert(error, modalTitle)
           })
         })
       },

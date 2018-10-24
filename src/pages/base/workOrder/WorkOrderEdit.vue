@@ -62,46 +62,48 @@
             </question-group>
             <div v-if="showDynamotor">
                 <line-10></line-10>
-                <base-form-group class="m-40" label="发电机记录" isTitle></base-form-group>
-                <base-form-group class="m-40" label="发电机编号">
-                    <scan-input v-model="jobCard.dynamotor.code" @scan="scanDynamotor"
-                                placeholder="请扫描或输入编号"></scan-input>
-                </base-form-group>
-                <base-form-group class="m-40" label="发电时间">
-                    <div class='dy-date'>
-                        <div>
-                            <template v-if="jobCard.dynamotor.startTime">{{jobCard.dynamotor.startTime| dateFormat}}
-                            </template>
+                <section class='edit-context'>
+                    <base-form-group class="m-40" label="发电机记录" isTitle></base-form-group>
+                    <base-form-group class="m-40" label="发电机编号">
+                        <scan-input v-model="jobCard.dynamotor.code" @scan="scanDynamotor"
+                                    placeholder="请扫描或输入编号"></scan-input>
+                    </base-form-group>
+                    <base-form-group class="m-40" label="发电时间">
+                        <div class='dy-date'>
+                            <div>
+                                <template v-if="jobCard.dynamotor.startTime">{{jobCard.dynamotor.startTime| dateFormat}}
+                                </template>
+                            </div>
+                            <div>
+                                <f7-button active :color="btnDyStartTimeDisable? 'gray' :''" full @click="startDy">开始发电
+                                </f7-button>
+                            </div>
                         </div>
-                        <div>
-                            <f7-button active :color="btnDyStartTimeDisable? 'gray' :''" full @click="startDy">开始发电
-                            </f7-button>
+                    </base-form-group>
+                    <base-form-group class="m-40" label="结束时间">
+                        <div class='dy-date'>
+                            <div>
+                                <template v-if="jobCard.dynamotor.endTime">{{jobCard.dynamotor.endTime | dateFormat}}
+                                </template>
+                            </div>
+                            <div>
+                                <f7-button active :color="btnDyEndTimeDisable? 'gray' :''" full @click="endDy">结束发电
+                                </f7-button>
+                            </div>
                         </div>
-                    </div>
-                </base-form-group>
-                <base-form-group class="m-40" label="结束时间">
-                    <div class='dy-date'>
-                        <div>
-                            <template v-if="jobCard.dynamotor.endTime">{{jobCard.dynamotor.endTime | dateFormat}}
-                            </template>
-                        </div>
-                        <div>
-                            <f7-button active :color="btnDyEndTimeDisable? 'gray' :''" full @click="endDy">结束发电
-                            </f7-button>
-                        </div>
-                    </div>
-                </base-form-group>
-                <base-form-group class="m-40" label="发电时长">
-                    <template v-if="jobCard.dynamotor.duration">
-                        {{getTimer(jobCard.dynamotor.duration)}}
-                    </template>
-                </base-form-group>
-                <base-form-group class="m-40" label="发电费用">
-                    <input type="number" placeholder="请填写发电费用" class='s-input' v-model='jobCard.dynamotor.oilfee'>
-                </base-form-group>
-                <base-form-group class="m-40" label="备注">
-                    <input type="text" placeholder="请输入备注" class='s-input' v-model='jobCard.dynamotor.remark'>
-                </base-form-group>
+                    </base-form-group>
+                    <base-form-group class="m-40" label="发电时长">
+                        <template v-if="jobCard.dynamotor.duration">
+                            {{getTimer(jobCard.dynamotor.duration)}}
+                        </template>
+                    </base-form-group>
+                    <base-form-group class="m-40" label="发电费用">
+                        <input type="number" placeholder="请填写发电费用" class='s-input' v-model='jobCard.dynamotor.oilfee'>
+                    </base-form-group>
+                    <base-form-group class="m-40" label="备注">
+                        <input type="text" placeholder="请输入备注" class='s-input' v-model='jobCard.dynamotor.remark'>
+                    </base-form-group>
+                </section>
             </div>
             <div v-if="showAmmeter">
                 <line-10></line-10>
@@ -124,15 +126,15 @@
                 </ammeter-group>
             </div>
             <f7-block v-if="!jobCard.isLeaveQuestion">
-                <f7-button big full active @click="save('save')">保存</f7-button>
+                <f7-button full active @click="save('save')">保存</f7-button>
             </f7-block>
             <f7-block v-else>
                 <f7-grid>
                     <f7-col width="50">
-                        <f7-button big full active @click="save('save')">保存</f7-button>
+                        <f7-button full active @click="save('save')">保存</f7-button>
                     </f7-col>
                     <f7-col width="50">
-                        <f7-button big full active @click="save('submit')">提交遗留问题工单</f7-button>
+                        <f7-button full active @click="save('submit')">提交遗留问题工单</f7-button>
                     </f7-col>
                 </f7-grid>
             </f7-block>
@@ -158,7 +160,7 @@
 </template>
 
 <script>
-  import { modalTitle, globalConst as native, Ammeter } from 'lib/const'
+  import { modalTitle, globalConst as native, Ammeter, Question } from 'lib/const'
   import { mapState } from 'vuex'
   import fillOrder from 'mixins/fillOrderMixin'
   import BaseRadioGroup from 'components/baseRadioGroup/BaseRadioGroup'
@@ -188,7 +190,7 @@
         let {data} = result
         this.showDynamotor = data.work_sort === '发电'
         this.jobCard.major = data.work_major
-        this.jobCard.startDate = new Date(data.created_at).toISOString()
+        this.jobCard.startDate = new Date(data.start_date).toISOString()
         this.jobCard.endDate = new Date(data.end_date).toISOString()
         this.jobCard.displayStartDate = data.created_at
         this.jobCard.displayEndDate = data.end_date
@@ -199,42 +201,22 @@
         this.jobCard.ammeter = data.ammeter.map((row) => {
           let {fast_num, id, img, last_num, meter_code, table_time, use_num} = row
           let date = new Date(table_time).toISOString()
-          let ammeter = new Ammeter(meter_code, date, table_time, last_num, use_num, '', fast_num, id, img)
+          let ammeter = new Ammeter(meter_code, date, table_time, last_num, use_num, img, fast_num, id, img)
           return ammeter
+        })
+        this.jobCard.leave = data.leave.map((row) => {
+          console.log('row==>', row)
+          let {id, question, level} = row
+          return new Question(question, level, id)
         })
       })
     },
     methods: {
       save (act) {
         let {id, content, displayStartDate, displayEndDate, fee, refWorkNumber, isLeaveQuestion, leave, ammeter, dynamotor, poweradd} = this.jobCard
-        if (this.showAmmeter) {
-          for (let i = 0; i < ammeter.length; i++) {
-            let ammeterItem = ammeter[i]
-            if (!ammeterItem.currentNum) {
-              this.$f7.alert('请填写本周期抄电表度数', modalTitle)
-              return
-            }
-            if (!ammeterItem.useNum) {
-              this.$f7.alert('请填写电表使用度数', modalTitle)
-              return
-            }
-            if (__DEBUG__) {
-              ammeterItem.img = 'test'
-            }
-            if (!ammeterItem.img) {
-              this.$f7.alert('请选择电表照片', modalTitle)
-              return
-            }
-          }
-        }
-
         let ammeterList = ammeter.map((row) => {
           let {currentNum, useNum, ...rest} = row
-          if (__DEBUG__) {
-            return {current_num: currentNum, use_num: useNum, ...rest, img: 'test'}
-          } else {
-            return {current_num: currentNum, use_num: useNum, ...rest}
-          }
+          return {current_num: currentNum, use_num: useNum, ...rest}
         })
         let dynamotorObj = Object.assign({}, dynamotor)
         if (dynamotorObj.id) {
