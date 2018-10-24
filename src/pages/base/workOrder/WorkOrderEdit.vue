@@ -205,7 +205,6 @@
           return ammeter
         })
         this.jobCard.leave = data.leave.map((row) => {
-          console.log('row==>', row)
           let {id, question, level} = row
           return new Question(question, level, id)
         })
