@@ -201,13 +201,51 @@
         this.jobCard.ammeter = data.ammeter.map((row) => {
           let {fast_num, id, img, last_num, meter_code, table_time, use_num} = row
           let date = new Date(table_time).toISOString()
-          let ammeter = new Ammeter(meter_code, date, table_time, last_num, use_num, img, fast_num, id, img)
+          let ammeter = new Ammeter(meter_code, date, table_time, last_num, use_num, '', fast_num, id, img)
           return ammeter
         })
         this.jobCard.leave = data.leave.map((row) => {
           let {id, question, level} = row
           return new Question(question, level, id)
         })
+        this.jobCard.major = data.majorId
+        if (data.power && data.power.length > 0) {
+          let {id, duration, end_date, oilfee, powercode, remark, start_date} = data.power[0]
+          /* dynamotor: {
+          id: '',
+          code: '',
+          startTime: '',
+          endTime: '',
+          duration: '',
+          oilfee: '',
+          remark: ''
+        }*/
+          this.jobCard.dynamotor = {
+            id,
+            code: powercode,
+            startTime: start_date ? new Date(start_date).getTime() : '',
+            endTime: end_date ? new Date(end_date).getTime() : '',
+            duration,
+            oilfee,
+            remark
+          }
+          let {startTime, endTime} = this.jobCard.dynamotor
+          if (id) {
+            if (startTime && endTime) {
+              this.btnDyStartTimeDisable = true
+              this.btnDyEndTimeDisable = true
+            } else if (startTime) {
+              this.btnDyStartTimeDisable = false
+              this.btnDyEndTimeDisable = true
+            } else {
+              this.btnDyStartTimeDisable = true
+              this.btnDyEndTimeDisable = true
+            }
+          } else {
+            this.btnDyStartTimeDisable = true
+            this.btnDyEndTimeDisable = true
+          }
+        }
       })
     },
     methods: {
@@ -215,6 +253,9 @@
         let {id, content, displayStartDate, displayEndDate, fee, refWorkNumber, isLeaveQuestion, leave, ammeter, dynamotor, poweradd} = this.jobCard
         let ammeterList = ammeter.map((row) => {
           let {currentNum, useNum, ...rest} = row
+          if (isNaN(useNum)) {
+            useNum = ''
+          }
           return {current_num: currentNum, use_num: useNum, ...rest}
         })
         let dynamotorObj = Object.assign({}, dynamotor)
@@ -244,7 +285,10 @@
           poweradd,
           act
         }).then(() => {
-          this.$f7.alert('修改成功', modalTitle, () => {
+          this.$f7.alert(act === 'save' ? '修改成功' : '提交成功', modalTitle, () => {
+            if (act !== 'save') {
+              this.$router.back()
+            }
           })
         }).catch((error) => {
           this.$f7.alert(error, modalTitle)

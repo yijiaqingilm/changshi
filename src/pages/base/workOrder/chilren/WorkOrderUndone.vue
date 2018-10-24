@@ -43,7 +43,7 @@
         this.$router.loadPage(`/base/workOrder/detail/${order.id}`)
       },
       hanleDel (order = {}, index) {
-        this.$f7.confirm('是否确定该工单作废？', '', () => {
+        this.$f7.confirm('是否确定该工单作废？', modalTitle, () => {
           this.$store.dispatch({
             type: native.doWorkNumberCancel,
             work_id: order.id
@@ -60,7 +60,11 @@
         this.$router.loadPage(`/base/workOrder/edit/${order.id}`)
       },
       handleApply (order = {}, index) {
-        this.$f7.confirm('是否提交审核？', '', () => {
+        if (order.is_leave_question === 'Y') {
+          this.$f7.alert('该工单存在遗留问题，不能提交审核', modalTitle)
+          return
+        }
+        this.$f7.confirm('请确认所有填报信息完整再提交审核？', modalTitle, () => {
           this.$store.dispatch({
             type: native.doWorkNumberApprove,
             work_id: order.id
