@@ -218,6 +218,9 @@
           return {current_num: currentNum, use_num: useNum, ...rest}
         })
         let dynamotorObj = Object.assign({}, dynamotor)
+        if (dynamotorObj.code === '') {
+          dynamotorObj.id = ''
+        }
         if (dynamotorObj.id) {
           dynamotorObj.start_time = dateFormat(dynamotorObj.startTime)
           dynamotorObj.end_time = dateFormat(dynamotorObj.endTime)
