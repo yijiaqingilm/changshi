@@ -22,7 +22,7 @@
             </section>
             <line-10></line-10>
             <section class='detail-wrap' v-for="(ammeter,index) in workOrder.ammeter" :key="index">
-                <base-form-group :label="'电表'+ammeter.id" isTitle></base-form-group>
+                <base-form-group :label="'电表'+(index+1)" isTitle></base-form-group>
                 <base-form-group label="电表编号：" :item="ammeter.meter_code"></base-form-group>
                 <base-form-group label="抄表时间：" :item="ammeter.table_time"></base-form-group>
                 <base-form-group label="上次抄表数：" :item="ammeter.fast_num"></base-form-group>

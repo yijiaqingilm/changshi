@@ -235,10 +235,10 @@
               this.btnDyStartTimeDisable = true
               this.btnDyEndTimeDisable = true
             } else if (startTime) {
-              this.btnDyStartTimeDisable = false
-              this.btnDyEndTimeDisable = true
-            } else {
               this.btnDyStartTimeDisable = true
+              this.btnDyEndTimeDisable = false
+            } else {
+              this.btnDyStartTimeDisable = false
               this.btnDyEndTimeDisable = true
             }
           } else {
