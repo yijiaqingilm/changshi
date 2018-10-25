@@ -1,5 +1,5 @@
 <template>
-    <f7-page class='work-order'>
+    <f7-page class='work-order' @page:reinit="reinit">
         <f7-navbar>
             <f7-nav-left back-link="返回" sliding></f7-nav-left>
             <f7-nav-center>我的工单</f7-nav-center>
@@ -54,6 +54,13 @@
       })
     },
     methods: {
+      reinit () {
+        console.log('reinit')
+        setTimeout(() => {
+          this.$router.refreshPage()
+        }, 500)
+        // this.$router.
+      },
       showTab (value) {
         this.$f7.showTab(`.tab-${value}`)
       }

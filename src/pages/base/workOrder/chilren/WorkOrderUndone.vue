@@ -101,8 +101,6 @@
     },
     computed: {
       ...mapState({
-        workOrderPage: ({base}) => base.workOrderPage,
-        workOrderReviewList: ({base}) => base.workOrderReviewList,
         statics: ({base}) => base.workNumberStatics
       })
     },

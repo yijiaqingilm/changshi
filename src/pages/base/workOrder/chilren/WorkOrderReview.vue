@@ -35,9 +35,7 @@
       }
     },
     created () {
-      console.log('created===>>', this.$refs)
       bus.$on([native.clearReviewOrder], () => {
-        console.log('clearReviewOrder===>>', this.$refs)
         this.resetData()
       })
     },

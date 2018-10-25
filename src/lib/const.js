@@ -270,7 +270,7 @@ const trainModes = {
 }
 
 export class Ammeter {
-  constructor (code, date, displayDate, currentNum, useNum, img, prevNum, id, displayImg) {
+  constructor (code, date, displayDate, currentNum, useNum, img, prevNum, id, displayImg, meterdetailId = '') {
     this.code = code
     this.date = date || new Date().toISOString()
     this.displayDate = displayDate
@@ -280,6 +280,7 @@ export class Ammeter {
     this.img = img
     this.id = id
     this.displayImg = displayImg
+    this.meterdetailId = meterdetailId
   }
 }
 

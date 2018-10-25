@@ -199,9 +199,9 @@
         this.jobCard.refWorkNumber = data.ref_work_number
         this.jobCard.isLeaveQuestion = data.is_leave_question === 'Y'
         this.jobCard.ammeter = data.ammeter.map((row) => {
-          let {fast_num, id, img, last_num, meter_code, table_time, use_num} = row
+          let {fast_num, id, img, last_num, meter_code, table_time, use_num, meterdetail_id} = row
           let date = new Date(table_time).toISOString()
-          let ammeter = new Ammeter(meter_code, date, table_time, last_num, use_num, '', fast_num, id, img)
+          let ammeter = new Ammeter(meter_code, date, table_time, last_num, use_num, '', fast_num, id, img, meterdetail_id)
           return ammeter
         })
         this.jobCard.leave = data.leave.map((row) => {
@@ -252,11 +252,11 @@
       save (act) {
         let {id, content, displayStartDate, displayEndDate, fee, refWorkNumber, isLeaveQuestion, leave, ammeter, dynamotor, poweradd} = this.jobCard
         let ammeterList = ammeter.map((row) => {
-          let {currentNum, useNum, ...rest} = row
+          let {currentNum, useNum, meterdetailId, ...rest} = row
           if (isNaN(useNum)) {
             useNum = ''
           }
-          return {current_num: currentNum, use_num: useNum, ...rest}
+          return {current_num: currentNum, use_num: useNum, meterdetail_id: meterdetailId, ...rest}
         })
         let dynamotorObj = Object.assign({}, dynamotor)
         if (dynamotorObj.code === '') {
