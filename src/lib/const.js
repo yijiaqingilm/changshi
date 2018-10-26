@@ -77,7 +77,9 @@ const globalConst = {
   setVideoPath: 'setVideoPath',
   initTestTime: 'initTestTime',
   remainingTime: 'remainingTime',
-  submitTest: 'submitTest'
+  submitTest: 'submitTest',
+  doDelAmmeter: 'doDelAmmeter',
+  doDelQuestion: 'doDelQuestion'
 }
 let methods = [SUCCESS.toLowerCase(), FAILURE.toLowerCase(), REQUEST.toLowerCase()]
 const mutationNames = {}

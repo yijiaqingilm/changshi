@@ -60,6 +60,12 @@ const getters = {
   }
 }
 const actions = {
+  [native.doDelAmmeter] ({state}, refs) {
+    return applyClientMiddleware(api.doDelAmmeter)(refs)
+  },
+  [native.doDelQuestion] ({state}, refs) {
+    return applyClientMiddleware(api.doDelQuestion)(refs)
+  },
   [native.doWorkNumberAccess] ({state}, refs) {
     return applyClientMiddleware(api.doWorkNumberAccess)(refs)
   },

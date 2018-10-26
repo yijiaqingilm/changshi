@@ -21,7 +21,7 @@
 </template>
 
 <script>
-  import { level, levelValue } from 'lib/const'
+  import { level, levelValue, modalTitle } from 'lib/const'
 
   export default {
     props: {
@@ -40,7 +40,9 @@
     },
     methods: {
       handleDel () {
-        this.$emit('del')
+        this.$f7.confirm('确定删除？', modalTitle, () => {
+          this.$emit('del')
+        })
       }
     },
     computed: {

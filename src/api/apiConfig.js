@@ -74,6 +74,8 @@ let apiConfig = [
   new ApiConfig(native.getUserUseCarInfo, '/car/get-out'),
   new ApiConfig(native.doVideoList, '/train-subject/train-movie', getReuqest),
   new ApiConfig(native.remainingTime, '/train-subject/exm-expire', getReuqest),
-  new ApiConfig(native.submitTest, '/train-subject/get-exm-info', getReuqest)
+  new ApiConfig(native.submitTest, '/train-subject/get-exm-info', getReuqest),
+  new ApiConfig(native.doDelAmmeter, '/work-number/del-meter', {global: false}),
+  new ApiConfig(native.doDelQuestion, '/work-number/del-question', {global: false})
 ]
 export default apiConfig
