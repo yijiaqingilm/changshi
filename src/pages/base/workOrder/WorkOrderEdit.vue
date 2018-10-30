@@ -210,7 +210,7 @@
         })
         this.jobCard.major = data.majorId
         if (data.power && data.power.length > 0) {
-          let {id, duration, end_date, oilfee, powercode, remark, start_date} = data.power[0]
+          let {id, duration_time, end_date, oilfee, powercode, remark, start_date} = data.power[0]
           /* dynamotor: {
           id: '',
           code: '',
@@ -225,7 +225,7 @@
             code: powercode,
             startTime: start_date ? new Date(start_date).getTime() : '',
             endTime: end_date ? new Date(end_date).getTime() : '',
-            duration,
+            duration: duration_time,
             oilfee,
             remark
           }

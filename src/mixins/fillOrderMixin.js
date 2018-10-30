@@ -483,13 +483,13 @@ const fillOrdermixin = {
     },
     handleDelQuestion (question, index) {
       console.log('del 问题')
-      this.jobCard.leave.splice(index, 1)
       if (question.id) {
         this.$store.dispatch({
           type: native.doDelQuestion,
           id: question.id
         })
       }
+      this.jobCard.leave.splice(index, 1)
     },
     addQuestion () {
       this.jobCard.leave.push(new Question())
@@ -502,13 +502,13 @@ const fillOrdermixin = {
       this.jobCard.ammeter.push(new Ammeter())
     },
     handleDelAmmeter (ammeter, index) {
-      this.jobCard.ammeter.splice(index, 1)
-      if (ammeter.id) {
+      if (ammeter.meterdetailId) {
         this.$store.dispatch({
           type: native.doDelAmmeter,
-          id: ammeter.id
+          id: ammeter.meterdetailId
         })
       }
+      this.jobCard.ammeter.splice(index, 1)
     }
   },
 }
